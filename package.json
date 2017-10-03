@@ -12,7 +12,7 @@
     "url": "git+https://github.com/myOwnPortfolio-team/myOwnPortfolio-editor"
   },
   "version": "0.1.0",
-  "main": "electron.js",
+  "main": "main.js",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",

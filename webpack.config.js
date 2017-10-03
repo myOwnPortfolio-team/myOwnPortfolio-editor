@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: ['webpack/hot/only-dev-server', './src/react/index.js'],
+    app: ['webpack/hot/only-dev-server', './app/index.jsx'],
   },
   output: {
     path: path.resolve('./dist'),
@@ -16,7 +16,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js|.jsx?$/, loader: ['babel-loader'], exclude: /node_modules/ },
+      { test: /\.js$|.jsx$/, loader: ['babel-loader'], exclude: /node_modules/ },
       { test: /\.css$/, loader: ['style-loader', 'css-loader'] },
       { test: /\.scss$/, loader: ['style-loader', 'css-loader', 'sass-loader']}
     ]
