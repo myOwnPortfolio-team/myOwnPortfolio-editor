@@ -7,11 +7,11 @@ import './style/index.scss';
 
 function HelloWorld(props) {
   let message;
-  if (props.message) {
-    message = props.message.message;
+  if (props.message && props.message['hello-message']) {
+    message = props.message['hello-message'];
   }
   else {
-    message = 'Loading error';
+    message = 'Error';
   }
 
   return (
