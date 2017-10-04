@@ -31,12 +31,13 @@
   },
   "dependencies": {
     "electron": "^1.7.8",
+    "gulp": "^3.9.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-scripts": "^1.0.13"
   },
   "scripts": {
-    "start": "./node_modules/.bin/electron.cmd .",
+    "start": "./node_modules/.bin/electron .",
     "watch": "./node_modules/.bin/webpack-dev-server"
   }
 }
