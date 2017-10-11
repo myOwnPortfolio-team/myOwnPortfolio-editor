@@ -51,16 +51,11 @@ function createApplicationWindow() {
 
   // Envent launched when the window is closed
   applicationWindow.on('closed', () => {
-    console.log('Application window closed !');
     applicationWindow = null;
   });
-
-  console.log('Application window created !');
 }
 
 function createSplashScreen() {
-  console.log('Creating splash screen...');
-
   // Create splash screen
   splash = new BrowserWindow({
     title: applicationTitle,
@@ -82,22 +77,16 @@ function createSplashScreen() {
 
   // Event launched when the window is showed
   splash.on('show', () => {
-    console.log('Splash screen shown !');
-    
     // Loading operations
     setTimeout(() => {
-      console.log('Timer !');
       createApplicationWindow();
     }, 5000);
   });
 
   // Envent launched when the window is closed
   splash.on('closed', () => {
-    console.log('Splash screen closed !');
     splash = null;
   });
-
-  console.log('Splash screen created !');
 }
 
 // Setting first window to be showed by app
