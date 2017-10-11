@@ -1,41 +1,122 @@
-const {app, BrowserWindow} = require('electron');
-const path = require('path');
+// Load modules
+const electron = require('electron');
 const url = require('url');
+const path = require('path');
 
-// Keep a global reference to the window and avoid it to be garbage collected
-let win;
+// Electron
+const { app } = electron;
+const { BrowserWindow } = electron;
 
-function createWindow () {
-  // Create window
-  win = new BrowserWindow({width: 800, height: 600});
+// Constant variables
+const applicationTitle = 'My Own Portfolio';
+const splashScreenURL = url.format({
+  protocol: 'file',
+  slashes: true,
+  pathname: path.join(__dirname, 'public/splash.html'),
+});
+const applicationURL = url.format({
+  protocol: 'file',
+  slashes: true,
+  pathname: path.join(__dirname, 'public/index.html'),
+});
 
-  // Entry point
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'public/index.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
+// Window variables
+let splash;
+let applicationWindow;
 
-  // Actions to do when the window is closed
-  win.on('closed', () => {
-    win = null;
+function createApplicationWindow() {
+  console.log('Creating application window...');
+
+  // Create splash screen
+  applicationWindow = new BrowserWindow({
+    title: applicationTitle,
+    width: 800,
+    height: 600,
+    minimizable: true,
+    maximizable: true,
+    frame: true,
+    show: false,
   });
+
+  applicationWindow.loadURL(applicationURL);
+
+  // Event launched when the window is ready
+  applicationWindow.once('ready-to-show', () => {
+    // Show Window
+    applicationWindow.show();
+    if (splash) {
+      splash.close();
+    }
+  });
+
+  // Envent launched when the window is closed
+  applicationWindow.on('closed', () => {
+    console.log('Application window closed !');
+    applicationWindow = null;
+  });
+
+  console.log('Application window created !');
 }
 
-// Call the function when electron has finished initialization
-app.on('ready', createWindow);
+function createSplashScreen() {
+  console.log('Creating splash screen...');
 
-// Close app when all windows are closed
+  // Create splash screen
+  splash = new BrowserWindow({
+    title: applicationTitle,
+    width: 200,
+    height: 400,
+    minimizable: false,
+    maximizable: false,
+    frame: false,
+    show: false,
+  });
+
+  splash.loadURL(splashScreenURL);
+
+  // Event launched when the window is ready
+  splash.once('ready-to-show', () => {
+    // Show Window
+    splash.show();
+  });
+
+  // Event launched when the window is showed
+  splash.on('show', () => {
+    console.log('Splash screen shown !');
+    
+    // Loading operations
+    setTimeout(() => {
+      console.log('Timer !');
+      createApplicationWindow();
+    }, 5000);
+  });
+
+  // Envent launched when the window is closed
+  splash.on('closed', () => {
+    console.log('Splash screen closed !');
+    splash = null;
+  });
+
+  console.log('Splash screen created !');
+}
+
+// Setting first window to be showed by app
+app.on('ready', createSplashScreen);
+
+// Quit when all windows are closed
 app.on('window-all-closed', () => {
-  // macOS specific code
+  // OS X specific code
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
+// Start application
 app.on('activate', () => {
-  // macOS specific code
-  if (win === null) {
-    createWindow();
+  // OS X specific code
+  if (process.platform !== 'darwin') {
+    if (splash === null && applicationWindow === null) {
+      createSplashScreen();
+    }
   }
 });
