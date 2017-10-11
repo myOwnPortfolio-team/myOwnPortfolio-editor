@@ -1,5 +1,4 @@
-const path = require('path');
-var webpack = require('webpack');
+const webpack = require('webpack');
 
 module.exports = {
   entry: ['webpack/hot/only-dev-server', './app/index.jsx'],
@@ -8,26 +7,26 @@ module.exports = {
   },
   module: {
     loaders: [
-      { 
-        test: /\.js$|\.jsx$/, 
-        loader: ['babel-loader'], 
-        exclude: /node_modules/ 
-      },
-      { 
-        test: /\.json$/, 
-        loader: ['json-loader']
-      },
-      { 
-        test: /\.css$/, 
-        loader: ['style-loader', 'css-loader'] 
+      {
+        test: /\.js$|\.jsx$/,
+        loader: ['babel-loader'],
+        exclude: /node_modules/,
       },
       {
-        test: /\.scss$/, 
-        loader: ['style-loader', 'css-loader', 'sass-loader']
-      }
-    ]
+        test: /\.json$/,
+        loader: ['json-loader'],
+      },
+      {
+        test: /\.css$/,
+        loader: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.scss$/,
+        loader: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ]
-}
+    new webpack.HotModuleReplacementPlugin(),
+  ],
+};
