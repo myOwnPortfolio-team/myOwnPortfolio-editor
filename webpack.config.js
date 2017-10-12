@@ -1,9 +1,11 @@
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
   entry: ['webpack/hot/only-dev-server', './app/index.jsx'],
   output: {
-    filename: 'dist/script/bundle.js',
+    path: path.resolve('./dist/app/js'),
+    filename: 'bundle.js',
   },
   module: {
     loaders: [

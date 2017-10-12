@@ -25,8 +25,6 @@ let splash;
 let applicationWindow;
 
 function createApplicationWindow() {
-  console.log('Creating application window...');
-
   // Create splash screen
   applicationWindow = new BrowserWindow({
     title: applicationTitle,
