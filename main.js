@@ -12,12 +12,12 @@ const applicationTitle = 'My Own Portfolio';
 const splashScreenURL = url.format({
   protocol: 'file',
   slashes: true,
-  pathname: path.join(__dirname, 'public/splash.html'),
+  pathname: path.join(__dirname, 'app/splash.html'),
 });
 const applicationURL = url.format({
   protocol: 'file',
   slashes: true,
-  pathname: path.join(__dirname, 'public/index.html'),
+  pathname: path.join(__dirname, 'app/index.html'),
 });
 
 // Window variables

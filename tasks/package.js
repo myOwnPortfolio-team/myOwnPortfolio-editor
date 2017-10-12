@@ -5,14 +5,14 @@ const distPath = './dist';
 
 gulp.task('package:json', () => gulp
   .src('package.json')
-  .pipe(gulp.dest(`${distPath}/app/`)));
+  .pipe(gulp.dest(`${distPath}/package/`)));
 
 gulp.task('package:main', () => gulp
   .src('main.js')
-  .pipe(gulp.dest(`${distPath}/app/`)));
+  .pipe(gulp.dest(`${distPath}/package/`)));
 
 gulp.task('package:html', () => gulp
   .src(`${appPath}/**/*.html`)
-  .pipe(gulp.dest(`${distPath}/app/`)));
+  .pipe(gulp.dest(`${distPath}/package/app/`)));
 
 gulp.task('package', ['package:json', 'package:main', 'package:html']);

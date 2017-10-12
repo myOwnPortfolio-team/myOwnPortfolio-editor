@@ -20,12 +20,16 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react-app": "^3.0.3",
     "css-loader": "^0.28.7",
+    "electron": "^1.7.9",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^16.0.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.4.0",
     "gulp": "^3.9.1",
+    "gulp-atom-electron": "^1.14.0",
+    "gulp-electron": "^0.1.3",
+    "gulp-symdest": "^1.1.0",
     "json-loader": "^0.5.7",
     "node-sass": "^4.5.3",
     "react-hot-loader": "^3.0.0-beta.7",
@@ -33,8 +37,7 @@
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1",
-    "electron": "^1.7.8"
+    "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
     "react": "^16.0.0",
@@ -46,6 +49,8 @@
     "webpack": "./node_modules/.bin/webpack --config webpack.config.js",
     "package:deps": "./node_modules/.bin/gulp package",
     "package:js": "npm run webpack",
-    "package": "npm run package:deps && npm run package:js"
+    "package": "npm run package:deps && npm run package:js",
+    "build": "./node_modules/.bin/gulp build",
+    "complete-build": "npm run package && npm run build"
   }
 }
