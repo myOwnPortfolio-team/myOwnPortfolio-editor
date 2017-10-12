@@ -26,7 +26,7 @@ Les étapes à suivre pour le lancement de l'application dans ce mode sont les s
 
 ```sh
 $ npm install
-$ npm run-script watch
+$ npm run watch
 ```
 
 Dans un second terminal :
@@ -37,5 +37,26 @@ $ npm start
 
 ### Création d'un exécutable
 
-TODO
+Il est possible de créer des exécutables pour toutes les plateformes simplement (OSX, Linux et Windows). Pour celà il faut lancer les commandes suivantes :
 
+```sh
+$ npm install
+$ npm run complete-build
+```
+
+Il est possible de compiler pour une plateforme en particulier. Il faut dans ce cas s'assurer qu'un _package_ de l'application a été effectué :
+
+```
+$ npm run package
+```
+
+Il suffit ensuite d'effectuer la commande suivante pour obtenir l'application pour une plateforme particulière :
+
+```
+$ gulp build:<plateforme>
+```
+
+Avec ```<plateforme>``` à remplacer par l'une des options suivantes :
+* ```osx``` : MacOS
+* ```linux``` : Linux
+* ```win32``` : Windows
