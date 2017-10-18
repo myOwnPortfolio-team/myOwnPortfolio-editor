@@ -7,7 +7,6 @@ import { Header } from 'semantic-ui-react';
 import SideBar from './classes/Sidebar.jsx';
 
 import data from './config/app_properties.json';
-import modules from './config/modules.json';
 
 import './style/index.scss';
 
@@ -15,7 +14,7 @@ function App(props) {
   return (
     <div className="app">
       <Header as="h1">{props.data.title}</Header>
-      <SideBar modules={props.modules.modules} />
+      <SideBar />
     </div>
   );
 }
@@ -49,6 +48,6 @@ db.person.add({
 });
 
 ReactDOM.render(
-  <App data={data} modules={modules} />,
+  <App data={data} />,
   document.getElementById('root'),
 );

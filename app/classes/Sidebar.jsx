@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sidebar, Segment, Menu, Icon } from 'semantic-ui-react';
+import axios from 'axios';
 
 function Editor() {
   return (
@@ -14,15 +15,15 @@ function createModule(name) {
 }
 
 function generateModules(modules) {
-  return modules.map((module, key) => (
+  return modules.map(module => (
     <Menu.Item
-      key={module.concat(key)}
+      key={module.name}
       name="address book outline"
       onClick={() => createModule(module)}
       link
     >
       <Icon name="address book outline" />
-      {module}
+      {module.name}
     </Menu.Item>
   ));
 }
@@ -32,7 +33,15 @@ class SideBar extends React.Component {
     super(props);
     this.state = {
       visible: true,
+      posts: [],
     };
+  }
+
+  componentDidMount() {
+    axios.get('https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules')
+      .then((res) => {
+        this.setState({ posts: res.data });
+      });
   }
 
   render() {
@@ -48,7 +57,7 @@ class SideBar extends React.Component {
             vertical
             inverted
           >
-            {generateModules(this.props.modules)}
+            {generateModules(this.state.posts)}
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
