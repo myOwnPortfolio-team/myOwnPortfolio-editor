@@ -1,9 +1,14 @@
-$font-stack: Helvetica, sans-serif;
-$primary-color: rgb(189, 180, 178);
-$secondary-color: #3b4349;
+@import './variables';
+@import './mixins';
 
+html,
 body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
   font: 100% $font-stack;
-  color: $primary-color;
-  background-color: $secondary-color;
+  // color: $primary-color;
+  // background-color: $secondary-color;
 }
+
