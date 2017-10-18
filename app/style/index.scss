@@ -12,3 +12,17 @@ body {
   // background-color: $secondary-color;
 }
 
+#root,
+.app,
+.editor {
+  height: 100%;
+  width: 100%;
+}
+
+.app,
+.editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+}

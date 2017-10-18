@@ -3,48 +3,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Dexie from 'dexie';
+import SideBar from './classes/Sidebar.jsx';
 
-// import hello from './config/hello.json';
+import data from './config/modules.json';
 
 import './style/index.scss';
 
-// function HelloWorld(props) {
-//   let message;
-//   if (props.message && props.message['hello-message']) message = props.message['hello-message'];
-//   else message = 'Error';
-
-//   return (
-//     <h1>{message}</h1>
-//   );
-// }
-
-class DBPerson extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      database: props.database,
-      persons: [],
-    };
-  }
-
-  componentDidMount() {
-    this.state.database.person.toArray()
-      .then(persons => this.setState({ persons }));
-  }
-
-  render() {
-    const rows = [];
-    this.state.persons.forEach(person =>
-      rows.push(<li key={person.firstName}>{person.firstName} {person.lastName}</li>));
-
-    return (
-      <ul>
-        {rows}
-      </ul>
-    );
-  }
+function App(props) {
+  return (
+    <div className="app">
+      <SideBar modules={props.data.modules} />
+    </div>
+  );
 }
 
 // ========================================
@@ -76,7 +46,6 @@ db.person.add({
 });
 
 ReactDOM.render(
-  <DBPerson database={db} />,
-  // <HelloWorld message={hello} />,
+  <App data={data} />,
   document.getElementById('root'),
 );
