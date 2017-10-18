@@ -62,10 +62,10 @@ $ npm run package
 Then you can build the application with the following command :
 
 ```
-$ gulp build:<plateforme>
+$ gulp build:<plateform>
 ```
 
-Replace ```<plateforme>``` with one of the following options :
+Replace ```<plateform>``` with one of the following options :
 * ```osx``` : MacOS
 * ```linux``` : Linux
 * ```win32``` : Windows
