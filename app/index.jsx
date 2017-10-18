@@ -2,17 +2,20 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Header } from 'semantic-ui-react';
 
 import SideBar from './classes/Sidebar.jsx';
 
-import data from './config/modules.json';
+import data from './config/app_properties.json';
+import modules from './config/modules.json';
 
 import './style/index.scss';
 
 function App(props) {
   return (
     <div className="app">
-      <SideBar modules={props.data.modules} />
+      <Header as="h1">{props.data.title}</Header>
+      <SideBar modules={props.modules.modules} />
     </div>
   );
 }
@@ -46,6 +49,6 @@ db.person.add({
 });
 
 ReactDOM.render(
-  <App data={data} />,
+  <App data={data} modules={modules} />,
   document.getElementById('root'),
 );
