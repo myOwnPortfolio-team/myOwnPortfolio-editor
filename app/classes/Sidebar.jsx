@@ -1,6 +1,14 @@
 import React from 'react';
 import { Sidebar, Segment, Button, Menu, Icon } from 'semantic-ui-react';
 
+function Editor() {
+  return (
+    <div>
+      Editor
+    </div>
+  );
+}
+
 function generateModules(modules) {
   return modules.map((module, key) =>
     (
@@ -41,8 +49,7 @@ class SideBar extends React.Component {
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
-              <div >editor
-              </div>
+              <Editor />
             </Segment>
           </Sidebar.Pusher>
         </Sidebar.Pushable>
