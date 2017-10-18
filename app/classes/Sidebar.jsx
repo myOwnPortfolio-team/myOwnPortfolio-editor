@@ -23,18 +23,13 @@ class SideBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
+      visible: true,
     };
-  }
-
-  toggleVisibility() {
-    this.setState({ visible: !this.state.visible });
   }
 
   render() {
     return (
       <div className="editor">
-        <Button onClick={() => { this.toggleVisibility(); }}>Toggle Visibility</Button>
         <Sidebar.Pushable as={Segment}>
           <Sidebar
             as={Menu}
