@@ -5,6 +5,10 @@ __Auteurs__ :
 * [Florian MARTIN](https://github.com/Nistof/)
 * [Thibault THEOLOGIEN](https://github.com/MacBootglass/)
 
+__Langues__ : [FR](./README.md) - [EN](./README_EN.md)
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/57f5ea01a90d4a228747fe587d05184c)](https://www.codacy.com/app/MacBootglass/myOwnPortfolio-editor?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=myOwnPortfolio-team/myOwnPortfolio-editor&amp;utm_campaign=Badge_Grade)
+
 ## Description du projet
 
 MyOwnPortfolio-Editor est une application proposant une interface simple afin de créer rapidement un portfolio personnalisé et multilingue.
@@ -22,20 +26,26 @@ MyOwnPortfolio-Editor est une application proposant une interface simple afin de
 Il est possible de compiler l'application en mode développement. Ce mode permet de voir en temps réel les modifications effectuées sur l'application mais
 nécessite d'avoir un serveur **webpack** en cours d'exécution. Ce mode ne produit pas d'exécutable utilisable ultérieurement.
 
-Les étapes à suivre pour le lancement de l'application dans ce mode sont les suivantes :
+L'étape minimale nécessaire pour lancer l'application de bureau ou l'application web est la suivante :
 
 ```sh
 $ npm install
 $ npm run watch
 ```
 
-Dans un second terminal :
+#### Application de bureau
+
+Afin de démarrer l'application de bureau en mode développement, il suffit d'effectuer la commande suivante :
 
 ```sh
 $ npm start
 ```
 
-### Création d'un exécutable
+#### Application Web
+
+Il est possible d'accéder à l'application en mode web. Pour celà il faut se connecter à l'adresse : http://localhost:8080/app
+
+### Création d'un exécutable (Distribution)
 
 Il est possible de créer des exécutables pour toutes les plateformes simplement (OSX, Linux et Windows). Pour celà il faut lancer les commandes suivantes :
 
