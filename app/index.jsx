@@ -2,22 +2,12 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Header } from 'semantic-ui-react';
 
-import SideBar from './classes/Sidebar.jsx';
+import App from './classes/App.jsx';
 
 import data from './config/app_properties.json';
 
 import './style/index.scss';
-
-function App(props) {
-  return (
-    <div className="app">
-      <Header as="h1">{props.data.title}</Header>
-      <SideBar />
-    </div>
-  );
-}
 
 // ========================================
 
