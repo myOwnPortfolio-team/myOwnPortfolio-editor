@@ -33,20 +33,20 @@ class SideBar extends React.Component {
     super(props);
     this.state = {
       visible: true,
-      posts: [],
+      modules: [],
     };
   }
 
   componentDidMount() {
     axios.get('https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules')
       .then((res) => {
-        this.setState({ posts: res.data });
+        this.setState({ modules: res.data });
       });
   }
 
   render() {
     return (
-      <div className="editor">
+      <div className="app">
         <Sidebar.Pushable as={Segment}>
           <Sidebar
             as={Menu}
@@ -57,7 +57,7 @@ class SideBar extends React.Component {
             vertical
             inverted
           >
-            {generateModules(this.state.posts)}
+            {generateModules(this.state.modules)}
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
