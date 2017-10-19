@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const electron = require('gulp-atom-electron');
 const symdest = require('gulp-symdest');
-const clean = require('gulp-clean')
+const clean = require('gulp-clean');
 
 const distPath = './dist';
 
