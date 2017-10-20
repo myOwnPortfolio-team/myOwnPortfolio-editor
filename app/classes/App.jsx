@@ -16,7 +16,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <Header as="h1">{this.props.data.title}</Header>
+        <Header as="h1" className="navbar">{this.props.data.title}</Header>
         <SideBar />
       </div>
     );

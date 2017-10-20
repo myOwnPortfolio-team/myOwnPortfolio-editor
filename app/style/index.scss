@@ -26,3 +26,10 @@ body {
   flex: 1;
   overflow-y: auto;
 }
+
+.navbar {
+  margin: 0 !important;
+  background-color: $primary-color;
+  color: $secondary-color !important;
+  text-align: center;
+}
