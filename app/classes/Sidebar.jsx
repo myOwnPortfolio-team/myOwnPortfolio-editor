@@ -2,13 +2,7 @@ import React from 'react';
 import { Sidebar, Segment, Menu, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
-function Editor() {
-  return (
-    <div>
-      Editor
-    </div>
-  );
-}
+import Editor from './Editor.jsx';
 
 function createModule(name) {
   console.log(name);
