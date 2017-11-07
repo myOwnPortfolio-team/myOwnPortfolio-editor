@@ -4,8 +4,8 @@ import axios from 'axios';
 
 import Editor from './Editor.jsx';
 
-function createModule(name) {
-  console.log(name);
+function createModule(module) {
+  console.log(module);
 }
 
 const generateModules = modules => modules.map(module => (
