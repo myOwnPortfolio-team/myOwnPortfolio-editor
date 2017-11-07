@@ -45,6 +45,7 @@
     "dexie": "^2.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "semantic-ui": "^2.2.13",
     "semantic-ui-react": "^0.75.1"
   },
   "scripts": {
