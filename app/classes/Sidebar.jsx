@@ -8,19 +8,18 @@ function createModule(name) {
   console.log(name);
 }
 
-function generateModules(modules) {
-  return modules.map(module => (
-    <Menu.Item
-      key={module.name}
-      name="address book outline"
-      onClick={() => createModule(module)}
-      link
-    >
-      <Icon name="address book outline" />
-      {module.name}
-    </Menu.Item>
-  ));
-}
+const generateModules = modules => modules.map(module => (
+  <Menu.Item
+    key={module.name}
+    name="address book outline"
+    onClick={() => createModule(module)}
+    link
+  >
+    <Icon name="address book outline" />
+    {module.name}
+  </Menu.Item>
+));
+
 
 class SideBar extends React.Component {
   constructor(props) {
