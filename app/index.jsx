@@ -8,6 +8,7 @@ import App from './classes/App.jsx';
 import data from './config/app_properties.json';
 
 import './style/index.scss';
+import './index.html';
 
 // ========================================
 

@@ -4,8 +4,8 @@ const path = require('path');
 module.exports = {
   entry: ['webpack/hot/only-dev-server', './app/index.jsx'],
   output: {
-    path: path.resolve('./dist/package/'),
-    filename: 'app/js/bundle.js',
+    path: path.resolve('./dist/package/app'),
+    filename: 'js/bundle.js',
   },
   module: {
     loaders: [
@@ -27,10 +27,24 @@ module.exports = {
         loader: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(ttf|eot|woff|woff2|svg|png)$/,
+        test: /\.(ttf|eot|woff|woff2)$/,
         loader: 'file-loader',
         options: {
           name: 'fonts/[name].[ext]',
+        },
+      },
+      {
+        test: /\.(html)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+        },
+      },
+      {
+        test: /\.(svg|png)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'images/[name].[ext]',
         },
       },
     ],
@@ -38,4 +52,9 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
+  devServer: {
+    contentBase: path.join(__dirname, '/dist/package/app'),
+    compress: true,
+    port: 9000,
+  },
 };
