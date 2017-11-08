@@ -17,7 +17,7 @@ const splashScreenURL = url.format({
 const applicationURL = url.format({
   protocol: 'file',
   slashes: true,
-  pathname: path.join(__dirname, 'app/index.html'),
+  pathname: path.join(__dirname, 'dist/app/index.html'),
 });
 
 // Window variables

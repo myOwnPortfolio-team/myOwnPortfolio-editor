@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
   entry: ['webpack/hot/only-dev-server', './app/index.jsx'],
   output: {
-    path: path.resolve('./dist/package/app'),
+    path: path.resolve('./dist/app'),
     filename: 'js/bundle.js',
   },
   module: {
@@ -53,7 +53,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
-    contentBase: path.join(__dirname, '/dist/package/app'),
+    contentBase: path.join(__dirname, '/dist/app'),
     compress: true,
     port: 9000,
   },
