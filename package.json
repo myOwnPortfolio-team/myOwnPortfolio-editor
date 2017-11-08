@@ -52,13 +52,14 @@
     "semantic-ui-sass": "^2.2.11"
   },
   "scripts": {
-    "start": "./node_modules/.bin/electron .",
-    "watch": "./node_modules/.bin/webpack-dev-server",
+    "start": "npm run start:electron",
+    "clean:app": "rm -rf ./dist",
+    "clean:modules": "rm -rf ./node_modules",
+    "clean": "npm run clean:app && npm run clean:modules",
+    "start:web": "npm run webpack && ./node_modules/.bin/webpack-dev-server",
+    "start:electron": "npm run webpack && ./node_modules/.bin/electron .",
     "webpack": "./node_modules/.bin/webpack --config webpack.config.js",
-    "package:deps": "./node_modules/.bin/gulp package",
-    "package:js": "npm run webpack",
-    "package": "npm run package:deps && npm run package:js",
-    "build": "./node_modules/.bin/gulp build",
-    "complete-build": "npm run package && npm run build"
+    "package:electron": "npm run webpack && ./node_modules/.bin/gulp package",
+    "build:electron": "npm run package:electron && ./node_modules/.bin/gulp build"
   }
 }

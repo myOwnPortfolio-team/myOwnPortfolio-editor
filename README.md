@@ -1,6 +1,6 @@
 # MyOwnPortfolio-Editor (WORK IN PROGRESS)
 
-__Auteurs__ : 
+__Auteurs__ :
 * [Morgane LEGROS](https://github.com/morgane1806/)
 * [Florian MARTIN](https://github.com/Nistof/)
 * [Thibault THEOLOGIEN](https://github.com/MacBootglass/)
@@ -30,18 +30,11 @@ L'étape minimale nécessaire pour lancer l'application de bureau ou l'applicati
 
 ```sh
 $ npm install
-$ npm run watch
+$ npm run start:web #lancement dans navigateur
+$ npm run start:electron #lancement application native
 ```
 
-#### Application de bureau
-
-Afin de démarrer l'application de bureau en mode développement, il suffit d'effectuer la commande suivante :
-
-```sh
-$ npm start
-```
-
-#### Application Web
+### Création d'un exécutable
 
 Il est possible d'accéder à l'application en mode web. Pour celà il faut se connecter à l'adresse : http://localhost:8080/app
 
@@ -51,7 +44,7 @@ Il est possible de créer des exécutables pour toutes les plateformes simplemen
 
 ```sh
 $ npm install
-$ npm run complete-build
+$ npm run build:electron
 ```
 
 Il est possible de compiler pour une plateforme en particulier. Il faut dans ce cas s'assurer qu'un _package_ de l'application a été effectué :
