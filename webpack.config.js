@@ -26,6 +26,13 @@ module.exports = {
         test: /\.scss$/,
         loader: ['style-loader', 'css-loader', 'sass-loader'],
       },
+      {
+        test: /\.(ttf|eot|woff|woff2|svg|png)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]',
+        },
+      },
     ],
   },
   plugins: [

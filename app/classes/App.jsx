@@ -1,7 +1,6 @@
 import React from 'react';
 import { Header } from 'semantic-ui-react';
 import axios from 'axios';
-
 import SideBar from './Sidebar.jsx';
 
 class App extends React.Component {
