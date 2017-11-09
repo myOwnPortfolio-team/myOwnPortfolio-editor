@@ -1,6 +1,6 @@
 import React from 'react';
-import { Header } from 'semantic-ui-react';
 
+import Header from './Header.jsx';
 import SideBar from './Sidebar.jsx';
 import Editor from './Editor.jsx';
 
@@ -34,7 +34,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <Header as="h1" className="navbar">{this.props.data.title}</Header>
+        <Header />
         <SideBar modules={this.state.modules}>
           <Editor />
         </SideBar>
