@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import App from './classes/App.jsx';
 
 import data from './config/app_properties.json';
+import { database, checkModules } from './database';
 
 import './import.js';
 
@@ -36,6 +37,6 @@ db.person.add({
 });
 
 ReactDOM.render(
-  <App data={data} />,
+  <App data={data} database={database} checkModules={checkModules} />,
   document.getElementById('root'),
 );

@@ -37,8 +37,9 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "file-loader": "^1.1.5",
+    "dexie": "^2.0.1",
     "electron": "^1.8.1",
+    "file-loader": "^1.1.5",
     "gulp": "^3.9.1",
     "gulp-atom-electron": "^1.14.1",
     "gulp-delete-lines": "^0.0.7",
