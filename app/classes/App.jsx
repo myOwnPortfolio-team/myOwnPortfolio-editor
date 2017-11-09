@@ -33,7 +33,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="app">
+      <div className="container">
         <Header as="h1" className="navbar">{this.props.data.title}</Header>
         <SideBar modules={this.state.modules}>
           <Editor />

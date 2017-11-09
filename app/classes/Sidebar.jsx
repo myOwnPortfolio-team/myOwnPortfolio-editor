@@ -20,7 +20,7 @@ const moduleList = modules => modules.map(module => (
 ));
 
 const SideBar = props => (
-  <div className="app">
+  <div className="container">
     <Sidebar.Pushable as={Segment}>
       <Sidebar
         as={Menu}

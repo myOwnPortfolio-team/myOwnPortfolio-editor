@@ -23,7 +23,7 @@ class Editor extends React.Component {
 
   render() {
     return (
-      <div className="editor" />
+      <div className="container editor" />
     );
   }
 }

@@ -1,37 +1,17 @@
 $icons-font-path: '~semantic-ui-sass/icons';
 @import '~semantic-ui-sass/semantic-ui';
-@import './variables';
+@import './properties';
 @import './mixins';
+@import './components/app';
+@import './components/editor';
+@import './components/sidebar';
 
 html,
-body {
+body,
+.container {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
   font: 100% $font-stack;
-  // color: $primary-color;
-  // background-color: $secondary-color;
-}
-
-#root,
-.app,
-.editor {
-  height: 100%;
-  width: 100%;
-}
-
-.app,
-.editor {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow-y: auto;
-}
-
-.navbar {
-  margin: 0 !important;
-  background-color: $primary-color;
-  color: $secondary-color !important;
-  text-align: center;
 }
