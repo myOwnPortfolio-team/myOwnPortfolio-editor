@@ -1,7 +1,8 @@
 import React from 'react';
+import { Grid } from 'semantic-ui-react';
 
 import Header from './Header.jsx';
-import SideBar from './Sidebar.jsx';
+import Navbar from './Navbar.jsx';
 import Editor from './Editor.jsx';
 
 class App extends React.Component {
@@ -35,9 +36,15 @@ class App extends React.Component {
     return (
       <div className="container">
         <Header />
-        <SideBar modules={this.state.modules}>
-          <Editor />
-        </SideBar>
+        <Grid>
+          <Grid.Column width={4}>
+            <Navbar modules={this.state.modules} activeItem="bio" />
+          </Grid.Column>
+
+          <Grid.Column stretched width={12}>
+            <Editor />
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }
