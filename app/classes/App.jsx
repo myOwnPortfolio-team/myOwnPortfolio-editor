@@ -34,7 +34,7 @@ class App extends React.Component {
     return (
       <div className="app">
         <Header as="h1" className="navbar">{this.props.data.title}</Header>
-        <SideBar />
+        <SideBar modules={this.state.modules} />
       </div>
     );
   }

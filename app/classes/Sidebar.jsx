@@ -1,12 +1,13 @@
+/* eslint no-console: off */
+
 import React from 'react';
 import { Sidebar, Segment, Menu, Icon } from 'semantic-ui-react';
-import axios from 'axios';
 
 import Editor from './Editor.jsx';
 
-function createModule(module) {
+const createModule = (module) => {
   console.log(module);
-}
+};
 
 const generateModules = modules => modules.map(module => (
   <Menu.Item
@@ -26,15 +27,7 @@ class SideBar extends React.Component {
     super(props);
     this.state = {
       visible: true,
-      modules: [],
     };
-  }
-
-  componentDidMount() {
-    axios.get('https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules')
-      .then((res) => {
-        this.setState({ modules: res.data });
-      });
   }
 
   render() {
@@ -50,7 +43,7 @@ class SideBar extends React.Component {
             vertical
             inverted
           >
-            {generateModules(this.state.modules)}
+            {generateModules(this.props.modules)}
           </Sidebar>
           <Sidebar.Pusher>
             <Segment basic>
