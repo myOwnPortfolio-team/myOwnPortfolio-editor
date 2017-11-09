@@ -3,13 +3,11 @@
 import React from 'react';
 import { Sidebar, Segment, Menu, Icon } from 'semantic-ui-react';
 
-import Editor from './Editor.jsx';
-
 const createModule = (module) => {
   console.log(module);
 };
 
-const generateModules = modules => modules.map(module => (
+const moduleList = modules => modules.map(module => (
   <Menu.Item
     key={module.name}
     name="address book outline"
@@ -21,39 +19,27 @@ const generateModules = modules => modules.map(module => (
   </Menu.Item>
 ));
 
-
-class SideBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: true,
-    };
-  }
-
-  render() {
-    return (
-      <div className="app">
-        <Sidebar.Pushable as={Segment}>
-          <Sidebar
-            as={Menu}
-            animation="push"
-            width="thin"
-            visible={this.state.visible}
-            icon="labeled"
-            vertical
-            inverted
-          >
-            {generateModules(this.props.modules)}
-          </Sidebar>
-          <Sidebar.Pusher>
-            <Segment basic>
-              <Editor />
-            </Segment>
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
-      </div>
-    );
-  }
-}
+const SideBar = props => (
+  <div className="app">
+    <Sidebar.Pushable as={Segment}>
+      <Sidebar
+        as={Menu}
+        animation="push"
+        width="thin"
+        visible
+        icon="labeled"
+        vertical
+        inverted
+      >
+        {moduleList(props.modules)}
+      </Sidebar>
+      <Sidebar.Pusher>
+        <Segment basic>
+          {props.children}
+        </Segment>
+      </Sidebar.Pusher>
+    </Sidebar.Pushable>
+  </div>
+);
 
 module.exports = SideBar;

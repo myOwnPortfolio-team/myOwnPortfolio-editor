@@ -2,6 +2,7 @@ import React from 'react';
 import { Header } from 'semantic-ui-react';
 
 import SideBar from './Sidebar.jsx';
+import Editor from './Editor.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -34,7 +35,9 @@ class App extends React.Component {
     return (
       <div className="app">
         <Header as="h1" className="navbar">{this.props.data.title}</Header>
-        <SideBar modules={this.state.modules} />
+        <SideBar modules={this.state.modules}>
+          <Editor />
+        </SideBar>
       </div>
     );
   }
