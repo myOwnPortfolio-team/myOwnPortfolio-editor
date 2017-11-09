@@ -1,13 +1,15 @@
 import Dexie from 'dexie';
 import axios from 'axios';
 
-const db = new Dexie('MyOwnPortfolioDB');
-db.version(1).stores({
+const PROPERTIES = require('./config/app_properties');
+
+const DB = new Dexie('MyOwnPortfolioDB');
+DB.version(1).stores({
   modules: 'name, sha, content, properties, style',
 });
 
 const addModule = (name) => {
-  db.table('modules')
+  DB.table('modules')
     .put({
       name,
       sha: null,
@@ -34,19 +36,19 @@ const updateModule = (updateCallback, dbModule, name, sha) => {
 
     axios.all([
       axios.get(
-        `https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules/${name}/json_schema/content.json`,
+        `${PROPERTIES.repositoryURL}/${PROPERTIES.filesPaths[0].replace('$moduleName', name)}`,
         headers,
       ),
       axios.get(
-        `https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules/${name}/json_schema/properties.json`,
+        `${PROPERTIES.repositoryURL}/${PROPERTIES.filesPaths[1].replace('$moduleName', name)}`,
         headers,
       ),
       axios.get(
-        `https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules/${name}/json_schema/style.json`,
+        `${PROPERTIES.repositoryURL}/${PROPERTIES.filesPaths[2].replace('$moduleName', name)}`,
         headers,
       ),
     ]).then(axios.spread((content, properties, style) =>
-      db.table('modules')
+      DB.table('modules')
         .update(
           { name },
           {
@@ -62,10 +64,10 @@ const updateModule = (updateCallback, dbModule, name, sha) => {
 
 const checkModules = (updateCallback) => {
   // Query to the GitHub API to get the list of modules
-  axios.get('https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules')
+  axios.get(`${PROPERTIES.repositoryURL}/${PROPERTIES.modulesPath}`)
     .then((res) => {
       res.data.forEach((module) => {
-        db.modules
+        DB.modules
           .get({ name: module.name }, (dbModule) => {
             const { name } = module;
             const { sha } = module;
@@ -76,6 +78,6 @@ const checkModules = (updateCallback) => {
 };
 
 module.exports = {
-  database: db,
+  database: DB,
   checkModules,
 };
