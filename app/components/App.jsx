@@ -53,7 +53,7 @@ class App extends React.Component {
           </Grid.Column>
 
           <Grid.Column stretched width={13}>
-            <Editor />
+            <Editor module={this.state.activeModule} />
           </Grid.Column>
         </Grid>
       </div>
