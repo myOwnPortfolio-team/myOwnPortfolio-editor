@@ -6,7 +6,7 @@ db.version(1).stores({
   modules: 'name, sha, content, properties, style',
 });
 
-function addModule(name) {
+const addModule = (name) => {
   db.table('modules')
     .put({
       name,
@@ -15,9 +15,9 @@ function addModule(name) {
       properties: null,
       style: null,
     });
-}
+};
 
-function updateModule(updateCallback, dbModule, name, sha) {
+const updateModule = (updateCallback, dbModule, name, sha) => {
   let needUpdate = false;
   let headers;
 
@@ -58,9 +58,9 @@ function updateModule(updateCallback, dbModule, name, sha) {
         )))
       .then(() => updateCallback());
   }
-}
+};
 
-function checkModules(updateCallback) {
+const checkModules = (updateCallback) => {
   // Query to the GitHub API to get the list of modules
   axios.get('https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core/contents/app/modules')
     .then((res) => {
@@ -73,7 +73,7 @@ function checkModules(updateCallback) {
           });
       });
     });
-}
+};
 
 module.exports = {
   database: db,
