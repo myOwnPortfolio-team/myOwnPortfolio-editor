@@ -6,7 +6,7 @@ const Navbar = (props) => {
     <Menu.Item
       key={module.name}
       name={module.name}
-      onClick={props.handleClick}
+      onClick={() => props.handleClick(module)}
       active={props.activeItem === module.name}
       link
     >

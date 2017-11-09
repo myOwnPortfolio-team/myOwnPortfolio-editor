@@ -1,3 +1,5 @@
+/* eslint react/jsx-no-bind: off */
+
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 
@@ -12,6 +14,7 @@ class App extends React.Component {
     this.state = {
       database: props.database,
       modules: [],
+      activeModule: { name: '' },
     };
 
     this.checkModules = props.checkModules;
@@ -32,13 +35,21 @@ class App extends React.Component {
       .then(modules => this.setState({ modules }));
   }
 
+  switchActiveModule(module) {
+    this.setState({ activeModule: module });
+  }
+
   render() {
     return (
       <div className="container app">
         <Header />
         <Grid>
           <Grid.Column width={3}>
-            <Navbar modules={this.state.modules} activeItem="bio" />
+            <Navbar
+              modules={this.state.modules}
+              activeItem={this.state.activeModule.name}
+              handleClick={this.switchActiveModule.bind(this)}
+            />
           </Grid.Column>
 
           <Grid.Column stretched width={13}>
