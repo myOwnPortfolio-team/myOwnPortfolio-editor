@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './classes/App.jsx';
+import App from './components/App.jsx';
 
 import data from './config/app_properties.json';
 import { database, checkModules } from './database';
