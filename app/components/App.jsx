@@ -34,14 +34,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container app">
         <Header />
         <Grid>
-          <Grid.Column width={4}>
+          <Grid.Column width={3}>
             <Navbar modules={this.state.modules} activeItem="bio" />
           </Grid.Column>
 
-          <Grid.Column stretched width={12}>
+          <Grid.Column stretched width={13}>
             <Editor />
           </Grid.Column>
         </Grid>

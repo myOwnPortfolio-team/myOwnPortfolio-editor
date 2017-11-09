@@ -1,13 +1,25 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Icon } from 'semantic-ui-react';
 
-const Navbar = props => (
-  <Menu fluid vertical tabular>
-    <Menu.Item name="bio" active={props.activeItem === 'bio'} onClick={props.handleItemClick} />
-    <Menu.Item name="pics" active={props.activeItem === 'pics'} onClick={props.handleItemClick} />
-    <Menu.Item name="companies" active={props.activeItem === 'companies'} onClick={props.handleItemClick} />
-    <Menu.Item name="links" active={props.activeItem === 'links'} onClick={props.handleItemClick} />
-  </Menu>
-);
+const Navbar = (props) => {
+  const moduleList = props.modules.map(module => (
+    <Menu.Item
+      key={module.name}
+      name={module.name}
+      onClick={props.handleClick}
+      active={props.activeItem === module.name}
+      link
+    >
+      <Icon name="address book outline" />
+      {module.name}
+    </Menu.Item>
+  ));
+
+  return (
+    <Menu fluid vertical tabular className="container">
+      {moduleList}
+    </Menu>
+  );
+};
 
 module.exports = Navbar;
