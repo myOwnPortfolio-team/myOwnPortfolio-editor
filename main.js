@@ -19,6 +19,7 @@ const applicationURL = url.format({
   slashes: true,
   pathname: path.join(__dirname, 'dist/app/index.html'),
 });
+const iconURL = path.join(__dirname, 'app/assets/icons/favicon-96.png');
 
 // Window variables
 let splash;
@@ -34,6 +35,7 @@ function createApplicationWindow() {
     maximizable: true,
     frame: true,
     show: false,
+    icon: iconURL,
   });
 
   applicationWindow.loadURL(applicationURL);
@@ -63,6 +65,7 @@ function createSplashScreen() {
     maximizable: false,
     frame: false,
     show: false,
+    icon: iconURL,
   });
 
   splash.loadURL(splashScreenURL);
