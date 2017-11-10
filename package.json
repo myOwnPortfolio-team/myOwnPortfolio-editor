@@ -58,10 +58,11 @@
     "clean:app": "rm -rf ./dist",
     "clean:modules": "rm -rf ./node_modules",
     "clean": "npm run clean:app && npm run clean:modules",
-    "start:web": "npm run webpack && ./node_modules/.bin/webpack-dev-server",
-    "start:electron": "npm run webpack && ./node_modules/.bin/electron .",
-    "webpack": "./node_modules/.bin/webpack --config webpack.config.js",
-    "package:electron": "npm run webpack && ./node_modules/.bin/gulp package",
-    "build:electron": "npm run package:electron && ./node_modules/.bin/gulp build"
+    "start:web": "npm run webpack && webpack-dev-server",
+    "start:electron": "npm run webpack && electron .",
+    "webpack": "webpack --config webpack.config.js",
+    "package:electron": "npm run webpack && npm run build:icons && gulp package",
+    "build:electron": "npm run package:electron && gulp build",
+    "build:icons": "icon-gen -i ./app/images/logo.svg -o ./app/assets/icons -m all -r"
   }
 }

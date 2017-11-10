@@ -12,3 +12,6 @@ semantic/
 #######################
 package-lock.json
 .DS_Store
+*.png
+*.ico
+*.icns
