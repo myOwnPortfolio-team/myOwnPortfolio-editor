@@ -10,9 +10,9 @@ gulp.task('build:osx', ['build:clean:osx'], () => gulp
   .pipe(electron({
     version: '1.7.9',
     platform: 'darwin',
-    darwinIcon: `${distPath}/assets/icons/app.icns`,
+    darwinIcon: `${distPath}/app/assets/icons/app.icns`,
   }))
-  .pipe(symdest(`${distPath}/app/platform/osx`)));
+  .pipe(symdest(`${distPath}/platform/osx`)));
 
 gulp.task('build:win32', ['build:clean:win32'], () => gulp
   .src(`${distPath}/package/**`)
