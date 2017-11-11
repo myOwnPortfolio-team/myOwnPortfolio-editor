@@ -1,5 +1,4 @@
-<img src="./app/assets/icons/logo.svg" width="24" display="inline"/>
-<h1 style="display: inline;"> MyOwnPortfolio-Editor (WORK IN PROGRESS)</h1>
+<h1 style="display: inline;"> MyOwnPortfolio-Editor (WORK IN PROGRESS)<img src="./app/assets/icons/logo.svg" width="24" display="inline"/></h1>
 
 __Auteurs__ :
 * [Morgane LEGROS](https://github.com/morgane1806/)
