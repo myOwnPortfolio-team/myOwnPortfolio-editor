@@ -5,7 +5,10 @@ import ReactDOM from 'react-dom';
 
 import Loading from './components/Loading.jsx';
 import { database, checkModules } from './database';
-import './import.js';
+
+import './splash.html';
+import './style/splash.scss';
+import './assets/icons/logo.svg';
 
 ReactDOM.render(
   <Loading database={database} checkModules={checkModules} />,

@@ -1,0 +1,14 @@
+$icons-font-path: '~semantic-ui-sass/icons';
+@import '~semantic-ui-sass/semantic-ui';
+@import './properties';
+@import './mixins';
+
+html,
+body,
+.container {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font: 100% $font-stack;
+}

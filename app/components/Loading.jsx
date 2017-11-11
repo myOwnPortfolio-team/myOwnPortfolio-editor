@@ -1,6 +1,7 @@
 /* eslint react/jsx-no-bind: off, react/no-unused-state: off */
 
 import React from 'react';
+import { Loader } from 'semantic-ui-react';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="container app">
-        <img src="./assets/icons/logo.svg" alt="My own Portfolio" />
+        <img src="./assets/icons/logo.svg" alt="My own Portfolio" className="logo" />
+        <Loader />
       </div>
     );
   }
