@@ -41,7 +41,7 @@ It is possible to create an executable for every platform (OSX, Linux and Window
 
 ```sh
 $ npm install
-$ npm run complete-build
+$ npm run build:electron
 ```
 
 To build the application for a specific platform, a package has to be created :
