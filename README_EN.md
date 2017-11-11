@@ -29,18 +29,9 @@ The minimal step necessary to launch the desktop application or the web applicat
 
 ```sh
 $ npm install
-$ npm run watch
+$ npm run start:web #launch in a web browser
+$ npm run start:electron #launch in a desktop application
 ```
-
-#### Desktop application
-
-To launch the desktop application in develop mode, run the following command :
-
-```sh
-$ npm start
-```
-
-#### Web application
 
 It is possible to access to the web application by going to this address : http://localhost:8080/app
 

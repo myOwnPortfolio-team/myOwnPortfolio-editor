@@ -30,13 +30,11 @@ L'étape minimale nécessaire pour lancer l'application de bureau ou l'applicati
 
 ```sh
 $ npm install
-$ npm run start:web #lancement dans navigateur
-$ npm run start:electron #lancement application native
+$ npm run start:web #lancement dans un navigateur
+$ npm run start:electron #lancement dans une application de bureau
 ```
 
-### Création d'un exécutable
-
-Il est possible d'accéder à l'application en mode web. Pour celà il faut se connecter à l'adresse : http://localhost:8080/app
+Il est possible d'accéder à l'application en mode web en se connectant à l'adresse : http://localhost:8080/app
 
 ### Création d'un exécutable (Distribution)
 
