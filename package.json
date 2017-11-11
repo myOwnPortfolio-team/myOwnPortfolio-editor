@@ -47,7 +47,6 @@
     "dexie": "^2.0.1",
     "electron": "^1.8.1",
     "lodash": "^4.17.4",
-    "dexie": "^2.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "semantic-ui-react": "^0.75.1",
