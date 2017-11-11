@@ -1,6 +1,6 @@
 # MyOwnPortfolio-Editor (WORK IN PROGRESS)
 
-__Authors__ : 
+__Authors__ :
 * [Morgane LEGROS](https://github.com/morgane1806/)
 * [Florian MARTIN](https://github.com/Nistof/)
 * [Thibault THEOLOGIEN](https://github.com/MacBootglass/)
@@ -29,18 +29,10 @@ The minimal step necessary to launch the desktop application or the web applicat
 
 ```sh
 $ npm install
-$ npm run watch
+$ npm run build:icons
+$ npm run start:web #launch in a web browser
+$ npm run start:electron #launch in a desktop application
 ```
-
-#### Desktop application
-
-To launch the desktop application in develop mode, run the following command :
-
-```sh
-$ npm start
-```
-
-#### Web application
 
 It is possible to access to the web application by going to this address : http://localhost:8080/app
 
@@ -50,7 +42,7 @@ It is possible to create an executable for every platform (OSX, Linux and Window
 
 ```sh
 $ npm install
-$ npm run complete-build
+$ npm run build:electron
 ```
 
 To build the application for a specific platform, a package has to be created :

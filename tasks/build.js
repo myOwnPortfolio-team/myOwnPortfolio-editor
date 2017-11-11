@@ -7,12 +7,20 @@ const distPath = './dist';
 
 gulp.task('build:osx', ['build:clean:osx'], () => gulp
   .src(`${distPath}/package/**`)
-  .pipe(electron({ version: '1.7.9', platform: 'darwin' }))
+  .pipe(electron({
+    version: '1.7.9',
+    platform: 'darwin',
+    darwinIcon: `${distPath}/app/assets/icons/app.icns`,
+  }))
   .pipe(symdest(`${distPath}/platform/osx`)));
 
 gulp.task('build:win32', ['build:clean:win32'], () => gulp
   .src(`${distPath}/package/**`)
-  .pipe(electron({ version: '1.7.9', platform: 'win32' }))
+  .pipe(electron({
+    version: '1.7.9',
+    platform: 'win32',
+    winIcon: `${distPath}/app/assets/icons/app.ico`,
+  }))
   .pipe(symdest(`${distPath}/platform/win32`)));
 
 gulp.task('build:linux', ['build:clean:linux'], () => gulp

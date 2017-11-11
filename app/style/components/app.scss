@@ -1,0 +1,12 @@
+.app {
+  display: flex;
+  flex-direction: column;
+
+  .grid {
+    flex: 1;
+  }
+
+  .ui {
+    margin-bottom: 0;
+  }
+}

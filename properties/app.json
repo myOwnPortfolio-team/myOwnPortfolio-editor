@@ -1,0 +1,10 @@
+{
+  "title": "My Own Portfolio Editor",
+  "repositoryURL": "https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core",
+  "modulesPath": "contents/app/modules/",
+  "filesPaths": [
+    "contents/app/modules/$moduleName/json_schema/content.json",
+    "contents/app/modules/$moduleName/json_schema/properties.json",
+    "contents/app/modules/$moduleName/json_schema/style.json"
+  ]
+}

@@ -5,8 +5,13 @@ node_modules/
 dist/
 cache/
 .vs/
+semantic/
 
 #######################
 #    Ignored files    #
 #######################
 package-lock.json
+.DS_Store
+*.png
+*.ico
+*.icns

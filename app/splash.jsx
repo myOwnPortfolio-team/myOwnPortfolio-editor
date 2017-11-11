@@ -3,14 +3,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/App.jsx';
+import Loading from './components/Loading.jsx';
 import { database, checkModules } from './database';
 
-import './index.html';
-import './style/index.scss';
+import './splash.html';
+import './style/splash.scss';
 import './assets/icons/logo.svg';
 
 ReactDOM.render(
-  <App database={database} checkModules={checkModules} />,
+  <Loading database={database} checkModules={checkModules} />,
   document.getElementById('root'),
 );
