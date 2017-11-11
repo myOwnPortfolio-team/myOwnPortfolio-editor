@@ -60,8 +60,8 @@ function createSplashScreen() {
   // Create splash screen
   splash = new BrowserWindow({
     title: applicationTitle,
-    width: 200,
-    height: 400,
+    width: 325,
+    height: 600,
     minimizable: false,
     maximizable: false,
     frame: false,

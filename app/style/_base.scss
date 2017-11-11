@@ -1,0 +1,16 @@
+$icons-font-path: '~semantic-ui-sass/icons';
+$primary-color: #fff;
+@import '~semantic-ui-sass/semantic-ui';
+@import '~loaders.css/src/animations/ball-scale-ripple';
+@import './properties';
+@import './mixins';
+
+html,
+body,
+.container {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font: $font-stack;
+}
