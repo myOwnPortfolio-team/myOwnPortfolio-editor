@@ -6,6 +6,7 @@ import { Grid } from 'semantic-ui-react';
 import Header from './Header.jsx';
 import Navbar from './Navbar.jsx';
 import Editor from './Editor.jsx';
+import Render from './Render.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class App extends React.Component {
       database: props.database,
       modules: [],
       activeModule: { name: '' },
+      activePage: 'editor',
     };
 
     this.checkModules = props.checkModules;
@@ -39,6 +41,27 @@ class App extends React.Component {
     this.setState({ activeModule: module });
   }
 
+  switchPage(page) {
+    this.setState({ activePage: page });
+  }
+
+  page() {
+    let page;
+
+    switch (this.state.activePage) {
+      case 'editor':
+        page = (<Editor module={this.state.activeModule} handleCompilation={() => this.switchPage('render')} />);
+        break;
+      case 'render':
+        page = (<Render url="http://thibault.theologien.fr" />);
+        break;
+      default:
+        page = (<h1>My Own Portfolio</h1>);
+    }
+
+    return page;
+  }
+
   render() {
     return (
       <div className="container app">
@@ -53,7 +76,7 @@ class App extends React.Component {
           </Grid.Column>
 
           <Grid.Column stretched width={13}>
-            <Editor module={this.state.activeModule} />
+            {this.page()}
           </Grid.Column>
         </Grid>
       </div>
