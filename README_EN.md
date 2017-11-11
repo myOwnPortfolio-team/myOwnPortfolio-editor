@@ -1,6 +1,6 @@
 # MyOwnPortfolio-Editor (WORK IN PROGRESS)
 
-__Authors__ : 
+__Authors__ :
 * [Morgane LEGROS](https://github.com/morgane1806/)
 * [Florian MARTIN](https://github.com/Nistof/)
 * [Thibault THEOLOGIEN](https://github.com/MacBootglass/)
@@ -29,6 +29,7 @@ The minimal step necessary to launch the desktop application or the web applicat
 
 ```sh
 $ npm install
+$ npm run build:icons
 $ npm run start:web #launch in a web browser
 $ npm run start:electron #launch in a desktop application
 ```

@@ -2,6 +2,7 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
+const properties = require('./properties/electron.json');
 
 // Electron
 const { app } = electron;
@@ -12,14 +13,14 @@ const applicationTitle = 'My Own Portfolio';
 const splashScreenURL = url.format({
   protocol: 'file',
   slashes: true,
-  pathname: path.join(__dirname, 'app/splash.html'),
+  pathname: path.join(__dirname, properties.url.splash),
 });
 const applicationURL = url.format({
   protocol: 'file',
   slashes: true,
-  pathname: path.join(__dirname, 'dist/app/index.html'),
+  pathname: path.join(__dirname, properties.url.index),
 });
-const iconURL = path.join(__dirname, 'app/assets/icons/favicon-96.png');
+const iconURL = path.join(__dirname, properties.url.icon);
 
 // Window variables
 let splash;

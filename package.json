@@ -60,8 +60,8 @@
     "start:web": "npm run webpack && webpack-dev-server",
     "start:electron": "npm run webpack && electron .",
     "webpack": "webpack --config webpack.config.js",
-    "package:electron": "npm run webpack && npm run build:icons && gulp package",
+    "package:electron": "npm run webpack && gulp package",
     "build:electron": "npm run package:electron && gulp build",
-    "build:icons": "icon-gen -i ./app/images/logo.svg -o ./app/assets/icons -m all -r"
+    "build:icons": "icon-gen -i ./app/assets/icons/logo.svg -o ./dist/app/assets/icons -m all -r"
   }
 }

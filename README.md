@@ -30,6 +30,7 @@ L'étape minimale nécessaire pour lancer l'application de bureau ou l'applicati
 
 ```sh
 $ npm install
+$ npm run build:icons
 $ npm run start:web #lancement dans un navigateur
 $ npm run start:electron #lancement dans une application de bureau
 ```

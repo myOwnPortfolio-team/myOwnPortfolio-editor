@@ -30,7 +30,7 @@ module.exports = {
         test: /\.(ttf|eot|woff|woff2)$/,
         loader: 'file-loader',
         options: {
-          name: 'fonts/[name].[ext]',
+          name: 'assets/fonts/[name].[ext]',
         },
       },
       {
@@ -44,7 +44,7 @@ module.exports = {
         test: /\.(svg|png)$/,
         loader: 'file-loader',
         options: {
-          name: 'images/[name].[ext]',
+          name: 'assets/icons/[name].[ext]',
         },
       },
     ],

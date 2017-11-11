@@ -1,7 +1,7 @@
 import Dexie from 'dexie';
 import axios from 'axios';
 
-const PROPERTIES = require('./config/app_properties');
+const PROPERTIES = require('../properties/app');
 
 const DB = new Dexie('MyOwnPortfolioDB');
 DB.version(1).stores({
