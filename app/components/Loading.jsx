@@ -1,12 +1,11 @@
 /* eslint react/jsx-no-bind: off, react/no-unused-state: off */
 
 import React from 'react';
-import { Loader } from 'semantic-ui-react';
+import Loader from 'react-loaders';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       database: props.database,
       modules: [],
@@ -19,9 +18,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container app">
-        <img src="./assets/icons/logo.svg" alt="My own Portfolio" className="logo" />
-        <Loader />
+      <div className="container splash">
+        <div className="image">
+          <img className="logo" src="./assets/icons/logo.svg" alt="My own Portfolio" />
+          <h1 className="title">My Own Portfolio</h1>
+        </div>
+        <div className="loader-container">
+          <Loader type="ball-scale-ripple" />
+        </div>
       </div>
     );
   }
