@@ -4,23 +4,22 @@ const symdest = require('gulp-symdest');
 const clean = require('gulp-clean');
 
 const distPath = './dist';
-const appPath = './app';
 
 gulp.task('build:osx', ['build:clean:osx'], () => gulp
   .src(`${distPath}/package/**`)
   .pipe(electron({
     version: '1.7.9',
     platform: 'darwin',
-    darwinIcon: `${appPath}/assets/icons/app.icns`,
+    darwinIcon: `${distPath}/assets/icons/app.icns`,
   }))
-  .pipe(symdest(`${distPath}/platform/osx`)));
+  .pipe(symdest(`${distPath}/app/platform/osx`)));
 
 gulp.task('build:win32', ['build:clean:win32'], () => gulp
   .src(`${distPath}/package/**`)
   .pipe(electron({
     version: '1.7.9',
     platform: 'win32',
-    winIcon: `${appPath}/assets/icons/app.ico`,
+    winIcon: `${distPath}/app/assets/icons/app.ico`,
   }))
   .pipe(symdest(`${distPath}/platform/win32`)));
 
