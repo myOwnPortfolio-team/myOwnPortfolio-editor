@@ -1,11 +1,8 @@
-/* eslint react/jsx-no-bind: off */
-
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
 
-import Header from './Header.jsx';
-import Navbar from './Navbar.jsx';
-import Editor from './Editor.jsx';
+import EditionPage from '../pages/EditionPage.jsx';
+import RenderPage from '../pages/RenderPage.jsx';
+import HomePage from '../pages/HomePage.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,7 +11,8 @@ class App extends React.Component {
     this.state = {
       database: props.database,
       modules: [],
-      activeModule: { name: '' },
+      activeModule: { name: 'about' }, // need to be changed
+      activePage: 'editor',
     };
 
     this.checkModules = props.checkModules;
@@ -39,25 +37,32 @@ class App extends React.Component {
     this.setState({ activeModule: module });
   }
 
-  render() {
-    return (
-      <div className="container app">
-        <Header />
-        <Grid>
-          <Grid.Column width={3}>
-            <Navbar
-              modules={this.state.modules}
-              activeItem={this.state.activeModule.name}
-              handleClick={this.switchActiveModule.bind(this)}
-            />
-          </Grid.Column>
+  switchPage(page) {
+    this.setState({ activePage: page });
+  }
 
-          <Grid.Column stretched width={13}>
-            <Editor module={this.state.activeModule} />
-          </Grid.Column>
-        </Grid>
-      </div>
+  render() {
+    const editionPage = (
+      <EditionPage
+        modules={this.state.modules}
+        activeModule={this.state.activeModule}
+        switchPage={page => this.switchPage(page)}
+        switchActiveModule={module => this.switchActiveModule(module)}
+      />
     );
+    const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
+    const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
+
+    switch (this.state.activePage) {
+      case 'home':
+        return homePage;
+      case 'edition':
+        return editionPage;
+      case 'render':
+        return renderPage;
+      default:
+        return homePage;
+    }
   }
 }
 

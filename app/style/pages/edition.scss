@@ -1,0 +1,14 @@
+@import '../components/editor';
+
+.edition-page {
+  display: flex;
+  flex-direction: column;
+
+  .grid {
+    flex: 1;
+  }
+
+  .ui {
+    margin-bottom: 0;
+  }
+}
