@@ -2,6 +2,7 @@ import React from 'react';
 
 import EditionPage from '../pages/EditionPage.jsx';
 import RenderPage from '../pages/RenderPage.jsx';
+import HomePage from '../pages/HomePage.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -50,14 +51,17 @@ class App extends React.Component {
       />
     );
     const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
+    const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
 
     switch (this.state.activePage) {
+      case 'home':
+        return homePage;
       case 'edition':
         return editionPage;
       case 'render':
         return renderPage;
       default:
-        return editionPage;
+        return homePage;
     }
   }
 }

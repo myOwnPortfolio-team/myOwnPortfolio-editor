@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
 
 const EditionPage = props => (
-  <div className="container app">
+  <div className="container edition-page">
     <Header switchPage={page => props.switchPage(page)} />
     <Grid>
       <Grid.Column width={3}>
