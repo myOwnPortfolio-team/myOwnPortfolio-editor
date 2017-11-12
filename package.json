@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "babili-webpack-plugin": "^0.1.2",
     "dexie": "^2.0.1",
     "electron": "^1.8.1",
     "gulp": "^3.9.1",
@@ -64,7 +65,8 @@
     "start:web": "npm run webpack && webpack-dev-server",
     "start:electron": "npm run webpack && electron .",
     "webpack": "webpack --config webpack.config.js",
-    "package:electron": "npm run webpack && gulp package",
+    "webpack:prod": "webpack --config webpack.config.js --env.production",
+    "package:electron": "npm run webpack:prod && gulp package",
     "build:electron": "npm run package:electron && gulp build",
     "build:icons": "icon-gen -i ./app/assets/icons/logo.svg -o ./dist/app/assets/icons -m all -r"
   }

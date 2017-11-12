@@ -1,7 +1,8 @@
+const BabiliPlugin = require('babili-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = {
+const config = {
   entry: {
     index: ['webpack/hot/only-dev-server', './app/index.jsx'],
     splash: './app/splash.jsx',
@@ -60,4 +61,19 @@ module.exports = {
     compress: true,
     port: 9000,
   },
+};
+
+
+module.exports = (env) => {
+  if (env && env.production) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"',
+        },
+      }),
+      new BabiliPlugin(),
+    );
+  }
+  return config;
 };
