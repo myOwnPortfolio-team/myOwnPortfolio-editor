@@ -3,7 +3,7 @@ import { Menu, Button } from 'semantic-ui-react';
 
 const renderItems = (items) => {
   if (items) {
-    return items.map(item => <Menu.Item key={item.props.icon}>{item}</Menu.Item>);
+    return items.map(item => <Menu.Item key={item.props.name}>{item}</Menu.Item>);
   }
   return null;
 };

@@ -5,9 +5,9 @@ import Header from '../components/Header.jsx';
 import Render from '../components/Render.jsx';
 
 const headerItems = props => [
-  (<Button circular icon="cancel" onClick={() => props.switchPage('edition')} />),
-  (<Button circular icon="download" />),
-  (<Button circular icon="cloud upload" />),
+  (<Button circular name="back" icon="cancel" onClick={() => props.switchPage('edition')} />),
+  (<Button circular name="download" icon="download" />),
+  (<Button circular name="upload" icon="cloud upload" />),
 ];
 
 const EditionPage = props => (
