@@ -1,13 +1,24 @@
 import React from 'react';
 import { Menu, Button } from 'semantic-ui-react';
 
+const renderItems = (items) => {
+  if (items) {
+    return items.map(item => (
+      <Menu.Item>
+        {item}
+      </Menu.Item>
+    ));
+  }
+  return null;
+};
+
 const Header = props => (
   <Menu>
     <Menu.Item header onClick={() => props.switchPage('home')}>
       <img src="./assets/icons/logo.svg" alt="My own Portfolio" />
     </Menu.Item>
     <Menu.Menu position="right">
-      {props.items}
+      {renderItems(props.items)}
       <Menu.Item>
         <Button positive >Sign In</Button>
       </Menu.Item>
