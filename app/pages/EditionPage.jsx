@@ -1,13 +1,19 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Menu, Button } from 'semantic-ui-react';
 
 import Header from '../components/Header.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
 
+const headerItems = props => (
+  <Menu.Item>
+    <Button primary onClick={() => props.switchPage('render')}>Compile</Button>
+  </Menu.Item>
+);
+
 const EditionPage = props => (
   <div className="container edition-page">
-    <Header switchPage={page => props.switchPage(page)} />
+    <Header switchPage={page => props.switchPage(page)} items={headerItems(props)} />
     <Grid>
       <Grid.Column width={3}>
         <Navbar

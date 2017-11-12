@@ -7,8 +7,9 @@ const Header = props => (
       <img src="./assets/icons/logo.svg" alt="My own Portfolio" />
     </Menu.Item>
     <Menu.Menu position="right">
+      {props.items}
       <Menu.Item>
-        <Button primary onClick={() => props.switchPage('render')}>Compile</Button>
+        <Button positive >Sign In</Button>
       </Menu.Item>
     </Menu.Menu>
   </Menu>
