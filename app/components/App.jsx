@@ -11,7 +11,7 @@ class App extends React.Component {
     this.state = {
       database: props.database,
       modules: [],
-      activeModule: { name: '' },
+      activeModule: { name: 'about' }, // need to be changed
       activePage: 'editor',
     };
 
