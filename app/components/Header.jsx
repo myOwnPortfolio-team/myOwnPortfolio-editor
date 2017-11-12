@@ -3,11 +3,7 @@ import { Menu, Button } from 'semantic-ui-react';
 
 const renderItems = (items) => {
   if (items) {
-    return items.map(item => (
-      <Menu.Item>
-        {item}
-      </Menu.Item>
-    ));
+    return items.map(item => <Menu.Item key={item.props.icon}>{item}</Menu.Item>);
   }
   return null;
 };
@@ -20,7 +16,7 @@ const Header = props => (
     <Menu.Menu position="right">
       {renderItems(props.items)}
       <Menu.Item>
-        <Button positive >Sign In</Button>
+        <Button circular icon="github" />
       </Menu.Item>
     </Menu.Menu>
   </Menu>

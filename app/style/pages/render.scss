@@ -1,0 +1,13 @@
+.render-page {
+  display: flex;
+  flex-direction: column;
+
+  iframe {
+    flex: 1;
+    border-width: 0;
+  }
+
+  .ui {
+    margin-bottom: 0;
+  }
+}
