@@ -1,12 +1,7 @@
-/* eslint react/jsx-no-bind: off */
-
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
 
-import Header from './Header.jsx';
-import Navbar from './Navbar.jsx';
-import Editor from './Editor.jsx';
-import Render from './Render.jsx';
+import EditionPage from '../pages/EditionPage.jsx';
+import RenderPage from '../pages/RenderPage.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -45,41 +40,25 @@ class App extends React.Component {
     this.setState({ activePage: page });
   }
 
-  page() {
-    const controlPage = (
-      <Grid>
-        <Grid.Column width={3}>
-          <Navbar
-            modules={this.state.modules}
-            activeItem={this.state.activeModule.name}
-            handleClick={module => this.switchActiveModule(module)}
-          />
-        </Grid.Column>
-        <Grid.Column stretched width={13}>
-          <Editor module={this.state.activeModule} />
-        </Grid.Column>
-      </Grid>
+  render() {
+    const editionPage = (
+      <EditionPage
+        modules={this.state.modules}
+        activeModule={this.state.activeModule}
+        switchPage={page => this.switchPage(page)}
+        switchActiveModule={module => this.switchActiveModule(module)}
+      />
     );
-
-    const renderPage = <Render url="http://thibault.theologien.fr" />;
+    const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
 
     switch (this.state.activePage) {
-      case 'editor':
-        return controlPage;
+      case 'edition':
+        return editionPage;
       case 'render':
         return renderPage;
       default:
-        return controlPage;
+        return editionPage;
     }
-  }
-
-  render() {
-    return (
-      <div className="container app">
-        <Header switchPage={page => this.switchPage(page)} />
-        {this.page()}
-      </div>
-    );
   }
 }
 
