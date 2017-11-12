@@ -42,43 +42,43 @@ class App extends React.Component {
   }
 
   switchPage(page) {
+    console.log("ici");
     this.setState({ activePage: page });
   }
 
   page() {
-    let page;
+    const controlPage = (
+      <Grid>
+        <Grid.Column width={3}>
+          <Navbar
+            modules={this.state.modules}
+            activeItem={this.state.activeModule.name}
+            handleClick={this.switchActiveModule.bind(this)}
+          />
+        </Grid.Column>
+        <Grid.Column stretched width={13}>
+          <Editor module={this.state.activeModule} />
+        </Grid.Column>
+      </Grid>
+    );
+
+    const renderPage = <Render url="http://thibault.theologien.fr" />;
 
     switch (this.state.activePage) {
       case 'editor':
-        page = (<Editor module={this.state.activeModule} handleCompilation={() => this.switchPage('render')} />);
-        break;
+        return controlPage;
       case 'render':
-        page = (<Render url="http://thibault.theologien.fr" />);
-        break;
+        return renderPage;
       default:
-        page = (<h1>My Own Portfolio</h1>);
+        return controlPage;
     }
-
-    return page;
   }
 
   render() {
     return (
       <div className="container app">
-        <Header />
-        <Grid>
-          <Grid.Column width={3}>
-            <Navbar
-              modules={this.state.modules}
-              activeItem={this.state.activeModule.name}
-              handleClick={this.switchActiveModule.bind(this)}
-            />
-          </Grid.Column>
-
-          <Grid.Column stretched width={13}>
-            {this.page()}
-          </Grid.Column>
-        </Grid>
+        <Header switchPage={this.switchPage.bind(this)} />
+        {this.page()}
       </div>
     );
   }
