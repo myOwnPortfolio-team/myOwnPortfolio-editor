@@ -42,7 +42,6 @@ class App extends React.Component {
   }
 
   switchPage(page) {
-    console.log("ici");
     this.setState({ activePage: page });
   }
 
@@ -53,7 +52,7 @@ class App extends React.Component {
           <Navbar
             modules={this.state.modules}
             activeItem={this.state.activeModule.name}
-            handleClick={this.switchActiveModule.bind(this)}
+            handleClick={module => this.switchActiveModule(module)}
           />
         </Grid.Column>
         <Grid.Column stretched width={13}>
@@ -77,7 +76,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container app">
-        <Header switchPage={this.switchPage.bind(this)} />
+        <Header switchPage={page => this.switchPage(page)} />
         {this.page()}
       </div>
     );
