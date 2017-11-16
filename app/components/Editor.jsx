@@ -23,16 +23,26 @@ class Editor extends React.Component {
       </Form.Field>
     );
 
+    const textfield = (key, index) => (
+      <Form.Field key={index}>
+        <Form.TextArea id={index} label={key} placeholder={properties[key].description} />
+      </Form.Field>
+    );
+
     const fields = Object.keys(properties).map((key, index) => {
       switch (properties[key].type) {
         case 'string':
           switch (properties[key].input) {
-            case 'input-text':
-              return input(key, index, 'text');
             case 'input-number':
               return input(key, index, 'number');
             case 'input-date':
               return input(key, index, 'date');
+            case 'input-text':
+              return input(key, index, 'text');
+            case 'textfield':
+              return textfield(key, index);
+            case 'textfield-markdown':
+              return textfield(key, index); // TODO to implement
             default:
               return input(key, index, 'text');
           }
