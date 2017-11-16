@@ -42,6 +42,18 @@ class Editor extends React.Component {
       />
     );
 
+    const slider = (key, index) => (
+      <Form.Field key={index}>
+        <label htmlFor={index}>{key}</label>
+        <input
+          id={index}
+          type="range"
+          min={properties[key].minimum}
+          max={properties[key].maximum}
+        />
+      </Form.Field>
+    );
+
     const animationOptions = [
       { key: '0', text: '0', value: '0' },
       { key: '1', text: '1', value: '1' },
@@ -49,6 +61,13 @@ class Editor extends React.Component {
 
     const fields = Object.keys(properties).map((key, index) => {
       switch (properties[key].type) {
+        case 'integer':
+          switch (properties[key].input) {
+            case 'slider':
+              return slider(key, index);
+            default:
+              return slider(key, index);
+          }
         case 'string':
           switch (properties[key].input) {
             case 'color-picker':
