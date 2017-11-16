@@ -29,6 +29,20 @@ class Editor extends React.Component {
       </Form.Field>
     );
 
+    const select = (key, index, options) => (
+      <Form.Select
+        key={index}
+        label={key}
+        options={options}
+        placeholder={properties[key].description}
+      />
+    );
+
+    const animationOptions = [
+      { key: '0', text: '0', value: '0' },
+      { key: '1', text: '1', value: '1' },
+    ];
+
     const fields = Object.keys(properties).map((key, index) => {
       switch (properties[key].type) {
         case 'string':
@@ -39,6 +53,8 @@ class Editor extends React.Component {
               return input(key, index, 'date');
             case 'input-text':
               return input(key, index, 'text');
+            case 'select-animation':
+              return select(key, index, animationOptions);
             case 'textfield':
               return textfield(key, index);
             case 'textfield-markdown':
