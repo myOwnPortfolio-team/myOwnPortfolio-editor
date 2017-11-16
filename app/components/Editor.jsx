@@ -51,6 +51,8 @@ class Editor extends React.Component {
       switch (properties[key].type) {
         case 'string':
           switch (properties[key].input) {
+            case 'color-picker':
+              return input(key, index, 'color'); // TODO to implement
             case 'input-number':
               return input(key, index, 'number');
             case 'input-date':
@@ -58,7 +60,7 @@ class Editor extends React.Component {
             case 'input-text':
               return input(key, index, 'text');
             case 'select-animation':
-              return select(key, index, animationOptions);
+              return select(key, index, animationOptions); // TODO to implement
             case 'textfield':
               return textfield(key, index);
             case 'textfield-markdown':
