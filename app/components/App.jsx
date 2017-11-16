@@ -4,6 +4,8 @@ import EditionPage from '../pages/EditionPage.jsx';
 import RenderPage from '../pages/RenderPage.jsx';
 import HomePage from '../pages/HomePage.jsx';
 
+import Module from '../data/objects/module';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -11,31 +13,27 @@ class App extends React.Component {
     this.state = {
       database: props.database,
       modules: [],
-      activeModule: null,
+      activeModule: new Module('default'),
       activePage: 'editor',
     };
-
-    this.checkModules = props.checkModules;
   }
 
   componentDidMount() {
-    // Initial loading
-    this.loadModules();
+    const table = this.state.database.table('modules');
 
-    // Check for updates
-    this.checkModules(this.loadModules);
-  }
+    // Check for updates and load modules
+    table
+      .fill()
+      .then(() => {
+        table
+          .getAll()
+          .then((modules) => {
+            if (!this.state.activeModule && modules.length) {
+              this.setState({ activeModule: modules[0] });
+            }
 
-  loadModules() {
-    // Loading data from database
-    this.state.database.table('modules')
-      .toArray()
-      .then((modules) => {
-        if (!this.state.activeModule && modules.length) {
-          this.setState({ activeModule: modules[0] });
-        }
-
-        this.setState({ modules });
+            this.setState({ modules });
+          });
       });
   }
 
