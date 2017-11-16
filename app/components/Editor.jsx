@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Form, Menu } from 'semantic-ui-react';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -14,6 +14,14 @@ class Editor extends React.Component {
   }
 
   render() {
+    const properties = this.props.module[this.state.activeTab].properties;
+    const inputs = Object.keys(properties).map((key, index) => (
+      <Form.Field key={index}>
+        <label>{key}</label>
+        <input placeholder={properties[key].description} />
+      </Form.Field>
+    ));
+
     return (
       <div className="container editor">
         <Menu attached="top" tabular>
@@ -24,6 +32,9 @@ class Editor extends React.Component {
 
         <div className="form">
           {JSON.stringify(this.props.module[this.state.activeTab])}
+          <Form>
+            {inputs}
+          </Form>
         </div>
       </div>
     );
