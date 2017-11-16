@@ -62,3 +62,12 @@ Avec ```<plateforme>``` à remplacer par l'une des options suivantes :
 * ```osx``` : MacOS
 * ```linux``` : Linux
 * ```win32``` : Windows
+
+## Tests unitaires
+
+Afin de vérifier que l'application est fonctionnelle, un ensemble de test unitaires est fournit.
+Pour exécuter les tests la commande suivante doit être utilisée :
+
+```
+$ npm test
+```

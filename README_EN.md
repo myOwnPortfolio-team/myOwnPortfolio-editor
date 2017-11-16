@@ -61,3 +61,12 @@ Replace ```<plateform>``` with one of the following options :
 * ```osx``` : MacOS
 * ```linux``` : Linux
 * ```win32``` : Windows
+
+## Unit tests
+
+To check if the application is fully functional, a set of unit tests is provided.
+To execute these tests the following command has to be used :
+
+```
+$ npm test
+```
