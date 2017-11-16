@@ -15,12 +15,31 @@ class Editor extends React.Component {
 
   render() {
     const properties = this.props.module[this.state.activeTab].properties;
-    const inputs = Object.keys(properties).map((key, index) => (
+
+    const input = (key, index, type) => (
       <Form.Field key={index}>
-        <label>{key}</label>
-        <input placeholder={properties[key].description} />
+        <label htmlFor={index}>{key}</label>
+        <input id={index} placeholder={properties[key].description} type={type} />
       </Form.Field>
-    ));
+    );
+
+    const fields = Object.keys(properties).map((key, index) => {
+      switch (properties[key].type) {
+        case 'string':
+          switch (properties[key].input) {
+            case 'input-text':
+              return input(key, index, 'text');
+            case 'input-number':
+              return input(key, index, 'number');
+            case 'input-date':
+              return input(key, index, 'date');
+            default:
+              return input(key, index, 'text');
+          }
+        default:
+          return input(key, index, 'text');
+      }
+    });
 
     return (
       <div className="container editor">
@@ -33,7 +52,7 @@ class Editor extends React.Component {
         <div className="form">
           {JSON.stringify(this.props.module[this.state.activeTab])}
           <Form>
-            {inputs}
+            {fields}
           </Form>
         </div>
       </div>
