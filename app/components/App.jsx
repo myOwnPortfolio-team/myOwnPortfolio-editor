@@ -11,7 +11,7 @@ class App extends React.Component {
     this.state = {
       database: props.database,
       modules: [],
-      activeModule: { name: 'about' }, // need to be changed
+      activeModule: null,
       activePage: 'editor',
     };
 
@@ -30,7 +30,13 @@ class App extends React.Component {
     // Loading data from database
     this.state.database.table('modules')
       .toArray()
-      .then(modules => this.setState({ modules }));
+      .then((modules) => {
+        if (!this.state.activeModule && modules.length) {
+          this.setState({ activeModule: modules[0] });
+        }
+
+        this.setState({ modules });
+      });
   }
 
   switchActiveModule(module) {
