@@ -92,8 +92,6 @@ class ModulesTable extends Table {
     // Retrieve JSON schema files
     const headers = { headers: { Accept: 'application/vnd.github.VERSION.raw' } };
 
-    console.log('test0');
-
     let updatePromise = axios.all([
       axios.get(
         `${this.repositoryURL}/${this.filesPaths[0].replace('$moduleName', name)}`,
@@ -109,8 +107,6 @@ class ModulesTable extends Table {
       ),
     ]);
 
-    console.log('test1');
-
     updatePromise = updatePromise
       .then(axios.spread((content, properties, style) =>
         this.table
@@ -123,8 +119,6 @@ class ModulesTable extends Table {
               style: style.data,
             },
           )));
-
-    console.log('test2');
 
     return updatePromise;
   }
