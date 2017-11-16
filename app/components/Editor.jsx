@@ -16,6 +16,10 @@ class Editor extends React.Component {
   render() {
     const properties = this.props.module[this.state.activeTab].properties;
 
+    const checkbox = (key, index, type) => (
+      <Form.Checkbox key={index} placeholder={properties[key].description} />
+    );
+
     const input = (key, index, type) => (
       <Form.Field key={index}>
         <label htmlFor={index}>{key}</label>
@@ -61,6 +65,13 @@ class Editor extends React.Component {
               return textfield(key, index); // TODO to implement
             default:
               return input(key, index, 'text');
+          }
+        case 'boolean':
+          switch (properties[key].input) {
+            case 'checkbox':
+              return checkbox(key, index);
+            default:
+              return checkbox(key, index);
           }
         default:
           return input(key, index, 'text');
