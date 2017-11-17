@@ -67,6 +67,13 @@ class Editor extends React.Component {
             default:
               return slider(properties, key, index);
           }
+        case 'number':
+          switch (properties[key].input) {
+            case 'slider':
+              return slider(properties, key, index);
+            default:
+              return slider(properties, key, index);
+          }
         case 'string':
           switch (properties[key].input) {
             case 'color-picker':
