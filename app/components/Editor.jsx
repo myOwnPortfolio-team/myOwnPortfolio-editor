@@ -93,6 +93,13 @@ class Editor extends React.Component {
             default:
               return checkbox(properties, key, index);
           }
+        case 'object':
+          return (
+            <div>
+              <h2>{key}</h2>
+              <div>{fields(properties[key].properties)}</div>
+            </div>
+          );
         default:
           return input(properties, key, index, 'text');
       }
