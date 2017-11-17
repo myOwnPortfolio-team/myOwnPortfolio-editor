@@ -3,6 +3,11 @@ import axios from 'axios';
 import Table from './table';
 import Module from '../objects/module';
 
+// Private methods
+const addEmpty = Symbol('Add an empty module into the database');
+const check = Symbol('Check if a database module needs to be updated');
+const update = Symbol('Update a module');
+
 class ModulesTable extends Table {
   constructor(database, properties) {
     super(database, 'modules', 'name, sha, content, properties, style');
@@ -23,10 +28,10 @@ class ModulesTable extends Table {
               .get({ name: module.name }, (databaseModule) => {
                 const { name } = module;
                 const { sha } = module;
-                this.check(databaseModule, name, sha)
+                this[check](databaseModule, name, sha)
                   .then((needUpdate) => {
                     if (needUpdate) {
-                      this.update(name, sha)
+                      this[update](name, sha)
                         .then(() => resolve())
                         .catch(error => reject(error));
                     } else {
@@ -61,7 +66,7 @@ class ModulesTable extends Table {
     });
   }
 
-  addEmpty(name) {
+  [addEmpty](name) {
     return this.table
       .put({
         name,
@@ -72,10 +77,10 @@ class ModulesTable extends Table {
       });
   }
 
-  check(databaseModule, name, sha) {
+  [check](databaseModule, name, sha) {
     return new Promise((resolve, reject) => {
       if (typeof databaseModule === 'undefined') {
-        this.addEmpty(name)
+        this[addEmpty](name)
           .then(() => {
             resolve(true);
           })
@@ -88,7 +93,7 @@ class ModulesTable extends Table {
     });
   }
 
-  update(name, sha) {
+  [update](name, sha) {
     // Retrieve JSON schema files
     const headers = { headers: { Accept: 'application/vnd.github.VERSION.raw' } };
 
