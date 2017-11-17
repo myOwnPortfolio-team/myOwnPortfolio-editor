@@ -63,8 +63,8 @@
   },
   "scripts": {
     "start": "npm run start:electron",
-    "clean:app": "rm -rf ./dist",
-    "clean:modules": "rm -rf ./node_modules",
+    "clean:app": "gulp clean:app",
+    "clean:modules": "gulp clean:modules",
     "clean": "npm run clean:app && npm run clean:modules",
     "start:web": "npm run webpack && webpack-dev-server",
     "start:electron": "npm run webpack && electron .",

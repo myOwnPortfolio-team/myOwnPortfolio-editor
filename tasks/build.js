@@ -28,7 +28,6 @@ gulp.task('build:linux', ['build:clean:linux'], () => gulp
   .pipe(electron({ version: '1.7.9', platform: 'linux' }))
   .pipe(symdest(`${distPath}/platform/linux`)));
 
-
 gulp.task('build:clean:osx', () => gulp
   .src(`${distPath}/platform/osx`)
   .pipe(clean()));
