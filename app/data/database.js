@@ -2,6 +2,11 @@ import Dexie from 'dexie';
 
 import ModulesTable from './tables/modules';
 
+const databaseException = (message) => {
+  this.message = message;
+  this.type = 'Database';
+};
+
 class Database {
   constructor(name, properties) {
     this.name = name;
@@ -13,6 +18,10 @@ class Database {
   }
 
   table(name) {
+    if (!(name in this.tables)) {
+      throw databaseException(`No table with name : ${name}`);
+    }
+
     return this.tables[name];
   }
 }

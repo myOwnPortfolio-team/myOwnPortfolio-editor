@@ -2,10 +2,15 @@
 /* global it */
 import { expect } from 'chai';
 import Dexie from 'dexie';
-import { database } from '../../app/database';
+
+import Database from '../../app/data/database';
+
+const PROPERTIES = require('../../properties/app');
 
 describe('Database', () => {
+  const database = new Database('MyOwnPortfolioDB', PROPERTIES);
   let table;
+
   try {
     table = database.table('modules');
   } catch (error) {
@@ -23,10 +28,10 @@ describe('Database', () => {
   });
 
   it('Table "modules" minimal schema correct', () => {
-    expect(table.schema.instanceTemplate).to.have.property('name');
-    expect(table.schema.instanceTemplate).to.have.property('sha');
-    expect(table.schema.instanceTemplate).to.have.property('content');
-    expect(table.schema.instanceTemplate).to.have.property('properties');
-    expect(table.schema.instanceTemplate).to.have.property('style');
+    expect(table.table.schema.instanceTemplate).to.have.property('name');
+    expect(table.table.schema.instanceTemplate).to.have.property('sha');
+    expect(table.table.schema.instanceTemplate).to.have.property('content');
+    expect(table.table.schema.instanceTemplate).to.have.property('properties');
+    expect(table.table.schema.instanceTemplate).to.have.property('style');
   });
 });
