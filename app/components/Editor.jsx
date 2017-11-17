@@ -14,26 +14,25 @@ class Editor extends React.Component {
   }
 
   render() {
-    const properties = this.props.module[this.state.activeTab].properties;
 
-    const checkbox = (key, index, type) => (
+    const checkbox = (properties, key, index, type) => (
       <Form.Checkbox key={index} placeholder={properties[key].description} />
     );
 
-    const input = (key, index, type) => (
+    const input = (properties, key, index, type) => (
       <Form.Field key={index}>
         <label htmlFor={index}>{key}</label>
         <input id={index} placeholder={properties[key].description} type={type} />
       </Form.Field>
     );
 
-    const textfield = (key, index) => (
+    const textfield = (properties, key, index) => (
       <Form.Field key={index}>
         <Form.TextArea id={index} label={key} placeholder={properties[key].description} />
       </Form.Field>
     );
 
-    const select = (key, index, options) => (
+    const select = (properties, key, index, options) => (
       <Form.Select
         key={index}
         label={key}
@@ -42,7 +41,7 @@ class Editor extends React.Component {
       />
     );
 
-    const slider = (key, index) => (
+    const slider = (properties, key, index) => (
       <Form.Field key={index}>
         <label htmlFor={index}>{key}</label>
         <input
@@ -59,43 +58,43 @@ class Editor extends React.Component {
       { key: '1', text: '1', value: '1' },
     ];
 
-    const fields = Object.keys(properties).map((key, index) => {
+    const fields = properties => Object.keys(properties).map((key, index) => {
       switch (properties[key].type) {
         case 'integer':
           switch (properties[key].input) {
             case 'slider':
-              return slider(key, index);
+              return slider(properties, key, index);
             default:
-              return slider(key, index);
+              return slider(properties, key, index);
           }
         case 'string':
           switch (properties[key].input) {
             case 'color-picker':
-              return input(key, index, 'color'); // TODO to implement
+              return input(properties, key, index, 'color'); // TODO to implement
             case 'input-number':
-              return input(key, index, 'number');
+              return input(properties, key, index, 'number');
             case 'input-date':
-              return input(key, index, 'date');
+              return input(properties, key, index, 'date');
             case 'input-text':
-              return input(key, index, 'text');
+              return input(properties, key, index, 'text');
             case 'select-animation':
-              return select(key, index, animationOptions); // TODO to implement
+              return select(properties, key, index, animationOptions); // TODO to implement
             case 'textfield':
-              return textfield(key, index);
+              return textfield(properties, key, index);
             case 'textfield-markdown':
-              return textfield(key, index); // TODO to implement
+              return textfield(properties, key, index); // TODO to implement
             default:
-              return input(key, index, 'text');
+              return input(properties, key, index, 'text');
           }
         case 'boolean':
           switch (properties[key].input) {
             case 'checkbox':
-              return checkbox(key, index);
+              return checkbox(properties, key, index);
             default:
-              return checkbox(key, index);
+              return checkbox(properties, key, index);
           }
         default:
-          return input(key, index, 'text');
+          return input(properties, key, index, 'text');
       }
     });
 
@@ -108,9 +107,8 @@ class Editor extends React.Component {
         </Menu>
 
         <div className="form">
-          {JSON.stringify(this.props.module[this.state.activeTab])}
           <Form>
-            {fields}
+            {fields(this.props.module[this.state.activeTab].properties)}
           </Form>
         </div>
       </div>
