@@ -14,9 +14,11 @@ class Editor extends React.Component {
   }
 
   render() {
-
-    const checkbox = (properties, key, index, type) => (
-      <Form.Checkbox key={index} placeholder={properties[key].description} />
+    const checkbox = (properties, key, index) => (
+      <div>
+        <div>{key}</div>
+        <Form.Checkbox key={index} label={properties[key].description} />
+      </div>
     );
 
     const input = (properties, key, index, type) => (
@@ -44,6 +46,7 @@ class Editor extends React.Component {
     const slider = (properties, key, index) => (
       <Form.Field key={index}>
         <label htmlFor={index}>{key}</label>
+        <div>{properties[key].description}</div>
         <input
           id={index}
           type="range"
