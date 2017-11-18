@@ -10,7 +10,7 @@ gulp.task('build:osx', ['build:clean:osx'], () => gulp
   .pipe(electron({
     version: '1.7.9',
     platform: 'darwin',
-    darwinIcon: `${distPath}/app/assets/icons/app.icns`,
+    darwinIcon: `${distPath}/app/assets/icons/icon.icns`,
   }))
   .pipe(symdest(`${distPath}/platform/osx`)));
 
@@ -19,7 +19,7 @@ gulp.task('build:win32', ['build:clean:win32'], () => gulp
   .pipe(electron({
     version: '1.7.9',
     platform: 'win32',
-    winIcon: `${distPath}/app/assets/icons/app.ico`,
+    winIcon: `${distPath}/app/assets/icons/icon.ico`,
   }))
   .pipe(symdest(`${distPath}/platform/win32`)));
 
