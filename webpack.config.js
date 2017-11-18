@@ -11,6 +11,9 @@ const config = {
     path: path.join(__dirname, './dist/app'),
     filename: 'js/[name].bundle.js',
   },
+  node: {
+    fs: 'empty',
+  },
   module: {
     loaders: [
       {
