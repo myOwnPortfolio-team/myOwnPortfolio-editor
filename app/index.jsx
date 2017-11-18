@@ -8,6 +8,7 @@ import { database, checkModules } from './database';
 
 import './index.html';
 import './style/index.scss';
+import './style/splash.scss';
 import './assets/icons/logo.svg';
 
 ReactDOM.render(

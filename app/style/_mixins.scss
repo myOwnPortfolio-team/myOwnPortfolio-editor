@@ -1,0 +1,4 @@
+@mixin shadow-box($color) {
+  box-shadow: 2px 2px 10 0 $color;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=$color, Direction=134, Strength=10);
+}

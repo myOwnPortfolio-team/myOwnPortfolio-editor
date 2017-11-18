@@ -3,7 +3,7 @@
 import React from 'react';
 import Loader from 'react-loaders';
 
-class App extends React.Component {
+class Loading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,4 +31,4 @@ class App extends React.Component {
   }
 }
 
-module.exports = App;
+module.exports = Loading;
