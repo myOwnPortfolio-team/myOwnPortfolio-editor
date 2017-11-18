@@ -6,6 +6,8 @@ import HomePage from '../pages/HomePage.jsx';
 
 import Module from '../data/objects/module';
 
+import platform from '../utils/platform';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -22,19 +24,30 @@ class App extends React.Component {
     const table = this.state.database.table('modules');
 
     // Check for updates and load modules
-    table
-      .fill()
-      .then(() => {
-        table
-          .getAll()
-          .then((modules) => {
-            if (!this.state.activeModule && modules.length) {
-              this.setState({ activeModule: modules[0] });
-            }
-
-            this.setState({ modules });
-          });
+    if (platform.isElectron) {
+      const electron = platform.getPlatformModule(platform.getPlatform());
+      electron.ipcRenderer.on('loadedModules', (event, modules) => {
+        console.log('electron ok');
+        if (!this.state.activeModule && modules.length) {
+          this.setState({ activeModule: modules[0] });
+        }
+        this.setState({ modules });
       });
+    } else {
+      table
+        .fill()
+        .then(() => {
+          table
+            .getAll()
+            .then((modules) => {
+              if (!this.state.activeModule && modules.length) {
+                this.setState({ activeModule: modules[0] });
+              }
+
+              this.setState({ modules });
+            });
+        });
+    }
   }
 
   switchActiveModule(module) {

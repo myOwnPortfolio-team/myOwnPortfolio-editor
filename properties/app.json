@@ -1,5 +1,6 @@
 {
   "title": "My Own Portfolio Editor",
+  "version": "Abondance (v1.00)",
   "repositoryURL": "https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core",
   "modulesPath": "contents/app/modules/",
   "filesPaths": [
