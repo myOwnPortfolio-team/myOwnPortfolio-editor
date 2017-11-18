@@ -57,7 +57,7 @@ class App extends React.Component {
               {this.state.message}
             </div>
             <div className="version">
-              {this.state.version}
+              {`${this.state.version.name} (v${this.state.version.id})`}
             </div>
           </div>
           <Loader type="ball-scale-ripple" />
