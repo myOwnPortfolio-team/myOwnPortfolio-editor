@@ -1,3 +1,5 @@
+@import '../components/splash-screen';
+
 .splash-page {
   position: absolute;
   top: 0;
@@ -7,7 +9,7 @@
   display: flex;
   background-color: rgba(0, 0, 0, .75);
 
-  .splash-screen {
+  .splash {
     background-color: $white;
     margin: auto;
     height: 600px;

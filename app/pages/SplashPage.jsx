@@ -1,11 +1,9 @@
 import React from 'react';
-import Loading from '../components/Loading.jsx';
+import SplashScreen from '../components/SplashScreen.jsx';
 
 const LoadingPage = () => (
   <div className="splash-page">
-    <div className="splash-screen">
-      <Loading />
-    </div>
+    <SplashScreen />
   </div>
 );
 
