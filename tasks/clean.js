@@ -10,3 +10,7 @@ gulp.task('clean:app', () => gulp
 gulp.task('clean:modules', () => gulp
   .src('./node_modules')
   .pipe(clean()));
+
+gulp.task('clean:icons', () => gulp
+  .src(`${distPath}/app/assets/icons`)
+  .pipe(clean()));
