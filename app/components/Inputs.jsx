@@ -32,8 +32,7 @@ const select = (properties, key, index, options) => (
 
 const slider = (properties, key, index, step) => (
   <Form.Field key={index}>
-    <label htmlFor={index}>{key}</label>
-    <div>{properties[key].description}</div>
+    <label htmlFor={index} title={properties[key].description}>{key}</label>
     <input
       id={index}
       type="range"
