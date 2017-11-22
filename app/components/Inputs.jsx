@@ -30,7 +30,7 @@ const select = (properties, key, index, options) => (
   />
 );
 
-const slider = (properties, key, index) => (
+const slider = (properties, key, index, step) => (
   <Form.Field key={index}>
     <label htmlFor={index}>{key}</label>
     <div>{properties[key].description}</div>
@@ -39,6 +39,7 @@ const slider = (properties, key, index) => (
       type="range"
       min={properties[key].minimum}
       max={properties[key].maximum}
+      step={step}
     />
   </Form.Field>
 );

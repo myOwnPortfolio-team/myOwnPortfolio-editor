@@ -18,16 +18,16 @@ const fields = properties => Object.keys(properties).map((key, index) => {
     case 'integer':
       switch (properties[key].input) {
         case 'slider':
-          return slider(properties, key, index);
+          return slider(properties, key, index, '1');
         default:
-          return slider(properties, key, index);
+          return slider(properties, key, index, '1');
       }
     case 'number':
       switch (properties[key].input) {
         case 'slider':
-          return slider(properties, key, index);
+          return slider(properties, key, index, 'any');
         default:
-          return slider(properties, key, index);
+          return slider(properties, key, index, 'any');
       }
     case 'string':
       switch (properties[key].input) {
