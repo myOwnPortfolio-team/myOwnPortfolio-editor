@@ -4,69 +4,124 @@ import Table from './table';
 import Module from '../objects/module';
 
 // Private methods
-const addEmpty = Symbol('Add an empty module into the database');
-const check = Symbol('Check if a database module needs to be updated');
-const update = Symbol('Update a module');
+const getRepositoryModules = Symbol('Get modules from repository');
+const getDatabaseModules = Symbol('Get modules from database');
+const addEmptyModule = Symbol('Add an empty module into the database');
+const updateDatabaseModule = Symbol('Update a module');
+const updateDatabaseModules = Symbol('Update modules');
+const addModulesInDatabase = Symbol('Add in the database every missing modules');
+const clearDatabase = Symbol('Remove outdated modules.');
 
 class ModulesTable extends Table {
   constructor(database, properties) {
     super(database, 'modules', 'name, sha, content, properties, style');
 
+    this.githubToken = properties.githubToken;
     this.repositoryURL = properties.repositoryURL;
     this.modulesPath = properties.modulesPath;
     this.filesPaths = properties.filesPaths;
   }
 
   fill() {
-    // Query to the GitHub API to get the list of modules
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`${this.repositoryURL}/${this.modulesPath}`)
-        .then((res) => {
-          res.data.forEach((module) => {
-            this.table
-              .get({ name: module.name }, (databaseModule) => {
-                const { name } = module;
-                const { sha } = module;
-                this[check](databaseModule, name, sha)
-                  .then((needUpdate) => {
-                    if (needUpdate) {
-                      this[update](name, sha)
-                        .then(() => resolve())
-                        .catch(error => reject(error));
-                    } else {
-                      resolve();
-                    }
-                  })
-                  .catch(error => reject(error));
-              });
-          });
-        })
-        .catch(error => reject(error));
-    });
+    // Remove modules that are no longer used
+    const clearDatabasePromise = this[clearDatabase](
+      this[getRepositoryModules](),
+      this[getDatabaseModules](),
+    );
+
+    const addModulesInDatabasePromise = this[addModulesInDatabase](
+      this[getRepositoryModules](),
+      this[getDatabaseModules](),
+    );
+
+    const updateDatabaseModulesPromise = this[updateDatabaseModules](
+      addModulesInDatabasePromise,
+      this[getRepositoryModules](),
+      this[getDatabaseModules](),
+    );
+
+    return Promise.all([
+      clearDatabasePromise,
+      updateDatabaseModulesPromise,
+    ]);
   }
 
   getAll() {
-    return new Promise((resolve, reject) => {
-      this.table
-        .toArray()
-        .then((databaseModules) => {
-          const modules = databaseModules.map(module =>
+    return this.table
+      .toArray()
+      .then(databaseModules =>
+        databaseModules
+          .map(databaseModule =>
             new Module(
-              module.name,
-              module.sha,
-              module.content,
-              module.properties,
-              module.style,
-            ));
-
-          resolve(modules);
-        })
-        .catch(error => reject(error));
-    });
+              databaseModule.name,
+              databaseModule.sha,
+              databaseModule.content,
+              databaseModule.properties,
+              databaseModule.style,
+            )));
   }
 
-  [addEmpty](name) {
+  [getRepositoryModules]() {
+    const headers = {
+      headers: {
+        Authorization: `token ${this.githubToken}`,
+      },
+    };
+
+    return axios
+      .get(`${this.repositoryURL}/${this.modulesPath}`, headers)
+      .then(res => res.data);
+  }
+
+  [getDatabaseModules]() {
+    return this.table.toArray();
+  }
+
+  [clearDatabase](repositoryModulesPromise, databaseModulesPromise) {
+    return Promise
+      .all([
+        repositoryModulesPromise,
+        databaseModulesPromise,
+      ]).then((res) => {
+        const repositoryModules = res[0];
+        const databaseModules = res[1];
+
+        return Promise.all(databaseModules
+          .map((databaseModule) => {
+            if (!(databaseModule.name in
+              repositoryModules.map(repositoryModule => repositoryModule.name))) {
+              return this.table.delete(databaseModule.name);
+            }
+
+            return null;
+          }));
+      });
+  }
+
+  [addModulesInDatabase](repositoryModulesPromise, databaseModulesPromise) {
+    return Promise
+      .all([
+        repositoryModulesPromise,
+        databaseModulesPromise,
+      ]).then((res) => {
+        const repositoryModules = res[0];
+        const databaseModules = res[1];
+
+        return Promise.all(repositoryModules
+          .map((repositoryModule) => {
+            let moduleInDatabase;
+            if (!(repositoryModule.name in
+              databaseModules.map(databaseModule => databaseModule.name))) {
+              moduleInDatabase = this[addEmptyModule](repositoryModule.name);
+            } else {
+              moduleInDatabase = null;
+            }
+            return moduleInDatabase;
+          }));
+      });
+  }
+
+  [addEmptyModule](name) {
     return this.table
       .put({
         name,
@@ -77,25 +132,44 @@ class ModulesTable extends Table {
       });
   }
 
-  [check](databaseModule, name, sha) {
-    return new Promise((resolve, reject) => {
-      if (typeof databaseModule === 'undefined') {
-        this[addEmpty](name)
-          .then(() => {
-            resolve(true);
-          })
-          .catch(error => reject(error));
-      } else if (databaseModule.sha !== sha) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    });
+  [updateDatabaseModules](promise, repositoryModulesPromise, databaseModulesPromise) {
+    return promise
+      .then(() =>
+        Promise.all([
+          repositoryModulesPromise,
+          databaseModulesPromise,
+        ]))
+      .then((res) => {
+        const repositoryModules = res[0];
+        const databaseModules = res[1];
+        const databaseModulesSha = [];
+        databaseModules
+          .map((databaseModule) => {
+            databaseModulesSha[databaseModule.name] = databaseModule.sha;
+            return databaseModule.name;
+          });
+
+        return Promise.all(repositoryModules.map(((repositoryModule) => {
+          let updatePromise;
+          if (repositoryModule.sha !== databaseModulesSha[repositoryModule.name]) {
+            updatePromise = this[updateDatabaseModule](repositoryModule.name, repositoryModule.sha);
+          } else {
+            updatePromise = null;
+          }
+
+          return updatePromise;
+        })));
+      });
   }
 
-  [update](name, sha) {
+  [updateDatabaseModule](name, sha) {
     // Retrieve JSON schema files
-    const headers = { headers: { Accept: 'application/vnd.github.VERSION.raw' } };
+    const headers = {
+      headers: {
+        Authorization: `token ${this.githubToken}`,
+        Accept: 'application/vnd.github.VERSION.raw',
+      },
+    };
 
     let updatePromise = axios.all([
       axios.get(
