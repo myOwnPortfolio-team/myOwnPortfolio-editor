@@ -16,7 +16,7 @@ class ModulesTable extends Table {
   constructor(database, properties) {
     super(database, 'modules', 'name, sha, content, properties, style');
 
-    this.githubToken = properties.githubToken;
+    /* this.githubToken = properties.githubToken; */
     this.repositoryURL = properties.repositoryURL;
     this.modulesPath = properties.modulesPath;
     this.filesPaths = properties.filesPaths;
@@ -62,14 +62,14 @@ class ModulesTable extends Table {
   }
 
   [getRepositoryModules]() {
-    const headers = {
+    /* const headers = {
       headers: {
-        Authorization: `token ${this.githubToken}`,
+        Authorization: 'token GITHUB_TOKEN',
       },
-    };
+    }; */
 
     return axios
-      .get(`${this.repositoryURL}/${this.modulesPath}`, headers)
+      .get(`${this.repositoryURL}/${this.modulesPath}`/* , headers */)
       .then(res => res.data);
   }
 
@@ -88,8 +88,8 @@ class ModulesTable extends Table {
 
         return Promise.all(databaseModules
           .map((databaseModule) => {
-            if (!(databaseModule.name in
-              repositoryModules.map(repositoryModule => repositoryModule.name))) {
+            if (repositoryModules.map(repositoryModule => repositoryModule.name)
+              .indexOf(databaseModule.name) < 0) {
               return this.table.delete(databaseModule.name);
             }
 
@@ -110,8 +110,8 @@ class ModulesTable extends Table {
         return Promise.all(repositoryModules
           .map((repositoryModule) => {
             let moduleInDatabase;
-            if (!(repositoryModule.name in
-              databaseModules.map(databaseModule => databaseModule.name))) {
+            if (databaseModules.map(databaseModule => databaseModule.name)
+              .indexOf(repositoryModule.name) < 0) {
               moduleInDatabase = this[addEmptyModule](repositoryModule.name);
             } else {
               moduleInDatabase = null;
@@ -166,7 +166,7 @@ class ModulesTable extends Table {
     // Retrieve JSON schema files
     const headers = {
       headers: {
-        Authorization: `token ${this.githubToken}`,
+        /* Authorization: 'token GITHUB_TOKEN', */
         Accept: 'application/vnd.github.VERSION.raw',
       },
     };

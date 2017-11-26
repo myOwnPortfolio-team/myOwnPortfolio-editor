@@ -4,7 +4,6 @@
     "name": "Abondance",
     "id": "1.00"
   },
-  "githubToken": "a2581c773eaa52be24f7b81947ef81ff4d6208ef",
   "repositoryURL": "https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core",
   "modulesPath": "contents/app/modules/",
   "filesPaths": [
