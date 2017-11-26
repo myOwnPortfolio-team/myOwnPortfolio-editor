@@ -25,7 +25,7 @@ class Editor extends React.Component {
 
         <div className="form">
           <Form>
-            {fields(this.props.module[this.state.activeTab].properties)}
+            {fields(this.props.module[this.state.activeTab].properties, this.props.module[this.state.activeTab].required)}
           </Form>
         </div>
       </div>
