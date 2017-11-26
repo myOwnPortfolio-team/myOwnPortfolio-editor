@@ -43,7 +43,7 @@ class ModulesTable extends Table {
     return Promise.all([
       clearDatabasePromise,
       updateDatabaseModulesPromise,
-    ]);
+    ]).catch(() => null);
   }
 
   getAll() {
