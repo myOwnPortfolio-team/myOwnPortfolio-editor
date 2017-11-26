@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Form, Menu } from 'semantic-ui-react';
+import fields from './Fields.jsx';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -23,7 +24,9 @@ class Editor extends React.Component {
         </Menu>
 
         <div className="form">
-          {JSON.stringify(this.props.module[this.state.activeTab])}
+          <Form>
+            {fields(this.props.module[this.state.activeTab].properties, this.props.module[this.state.activeTab].required)}
+          </Form>
         </div>
       </div>
     );
