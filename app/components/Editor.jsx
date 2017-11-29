@@ -15,6 +15,14 @@ class Editor extends React.Component {
   }
 
   render() {
+    const editorContent = () => {
+      const activeSchema = this.props.module.schema[this.state.activeTab];
+      if (activeSchema === null) {
+        return (<div class="editor-empty-content">Create your own porfolio</div>);
+      }
+      return fields(activeSchema.properties, activeSchema.required);
+    };
+
     return (
       <div className="container editor">
         <Menu attached="top" tabular>
@@ -23,9 +31,9 @@ class Editor extends React.Component {
           <Menu.Item name="Style" active={this.state.activeTab === 'style'} onClick={(e, { name }) => this.handleTabClick(name)} />
         </Menu>
 
-        <div className="form">
-          <Form>
-            {fields(this.props.module[this.state.activeTab].properties, this.props.module[this.state.activeTab].required)}
+        <div className="form editor-content">
+          <Form className="form editor-content">
+            {editorContent()}
           </Form>
         </div>
       </div>
