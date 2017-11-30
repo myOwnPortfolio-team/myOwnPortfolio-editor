@@ -16,6 +16,6 @@ const PROPERTIES = require('../properties/app');
 const database = new Database('MyOwnPortfolioDB', PROPERTIES);
 
 ReactDOM.render(
-  <App database={database} />,
+  <App database={database} version={PROPERTIES.version} />,
   document.getElementById('root'),
 );

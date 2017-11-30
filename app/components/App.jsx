@@ -17,7 +17,7 @@ class App extends React.Component {
       database: props.database,
       modules: [],
       activeModule: new Module('default'),
-      activePage: 'editor',
+      activePage: 'home',
     };
   }
 
@@ -33,7 +33,6 @@ class App extends React.Component {
       });
     } else {
       const table = this.state.database.table('modules');
-
       table
         .fill()
         .then(() => {
@@ -43,7 +42,6 @@ class App extends React.Component {
               if (!this.state.activeModule && modules.length) {
                 this.setState({ activeModule: modules[0] });
               }
-
               this.setState({ modules });
             });
         });
@@ -69,7 +67,7 @@ class App extends React.Component {
     );
     const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
     const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
-    const splashPage = <SplashPage />;
+    const splashPage = <SplashPage database={this.state.database} version={this.props.version} />;
     switch (this.state.activePage) {
       case 'splash':
         return splashPage;

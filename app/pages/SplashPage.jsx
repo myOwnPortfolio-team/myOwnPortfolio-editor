@@ -1,9 +1,9 @@
 import React from 'react';
 import SplashScreen from '../components/SplashScreen.jsx';
 
-const LoadingPage = () => (
+const LoadingPage = props => (
   <div className="splash-page">
-    <SplashScreen />
+    <SplashScreen database={props.database} version={props.version} />
   </div>
 );
 

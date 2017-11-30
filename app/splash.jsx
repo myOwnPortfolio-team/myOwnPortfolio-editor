@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import SplashScreen from './components/SplashScreen.jsx';
-import { database, checkModules } from './database';
 import Database from './data/database';
 
 import './splash.html';
@@ -16,6 +15,6 @@ const PROPERTIES = require('../properties/app');
 const database = new Database('MyOwnPortfolioDB', PROPERTIES);
 
 ReactDOM.render(
-  <SplashScreen database={database} checkModules={checkModules} />,
+  <SplashScreen database={database} version={PROPERTIES.version} />,
   document.getElementById('root'),
 );

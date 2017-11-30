@@ -27,9 +27,26 @@
 
   .loader-container {
     background-image: -webkit-linear-gradient(135deg, $primary-color 40%, $white 0%);
+    display: flex;
+    flex-direction: row;
+
+    .infos-container {
+      display: flex;
+      flex-direction: column;
+      margin-top: auto;
+
+      .progress-text {
+        color: $secondary-color;
+      }
+
+      .version {
+        color: $primary-color;
+        font-weight: bold;
+      }
+    }
 
     .loader {
-      display: flex;
+      margin-left: auto;
       padding: $space;
 
       .loader-hidden {
@@ -38,7 +55,6 @@
 
       .loader-inner {
         display: block;
-        margin-left: auto;
       }
     }
   }
