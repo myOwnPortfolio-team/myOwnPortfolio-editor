@@ -15,6 +15,7 @@ class App extends React.Component {
     this.state = {
       database: props.database,
       modules: [],
+      myOwnPortfolio: [],
       activeModule: new Module('default'),
       activePage: 'editor',
     };
@@ -49,6 +50,11 @@ class App extends React.Component {
     }
   }
 
+  addModule(module) {
+    this.state.myOwnPortfolio.push(module);
+    this.switchActiveModule(module);
+  }
+
   switchActiveModule(module) {
     this.setState({ activeModule: module });
   }
@@ -61,7 +67,9 @@ class App extends React.Component {
     const editionPage = (
       <EditionPage
         modules={this.state.modules}
+        myOwnPortfolio={this.state.myOwnPortfolio}
         activeModule={this.state.activeModule}
+        addModule={module => this.addModule(module)}
         switchPage={page => this.switchPage(page)}
         switchActiveModule={module => this.switchActiveModule(module)}
       />
