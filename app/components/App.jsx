@@ -3,6 +3,7 @@ import React from 'react';
 import EditionPage from '../pages/EditionPage.jsx';
 import RenderPage from '../pages/RenderPage.jsx';
 import HomePage from '../pages/HomePage.jsx';
+import SplashPage from '../pages/SplashPage.jsx';
 
 import Module from '../data/objects/module';
 
@@ -68,8 +69,10 @@ class App extends React.Component {
     );
     const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
     const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
-
+    const splashPage = <SplashPage />;
     switch (this.state.activePage) {
+      case 'splash':
+        return splashPage;
       case 'home':
         return homePage;
       case 'edition':
