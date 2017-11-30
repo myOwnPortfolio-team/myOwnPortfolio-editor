@@ -10,7 +10,6 @@ class SplashScreen extends React.Component {
     super(props);
     this.state = {
       database: props.database,
-      modules: [],
       message: 'Loading...',
       version: props.version,
     };
@@ -34,7 +33,8 @@ class SplashScreen extends React.Component {
               const electron = platform.getPlatformModule(platform.getPlatform());
               electron.ipcRenderer.send('closeSplashScreen', modules);
             } else {
-              this.setState({ modules });
+              this.props.setModuleList(modules);
+              this.props.switchPage('home');
             }
           });
       });

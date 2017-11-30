@@ -5,19 +5,18 @@ import RenderPage from '../pages/RenderPage.jsx';
 import HomePage from '../pages/HomePage.jsx';
 import SplashPage from '../pages/SplashPage.jsx';
 
-import Module from '../data/objects/module';
-
 import platform from '../utils/platform';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
+    const page = platform.isElectron() ? 'home' : 'splash';
     this.state = {
       database: props.database,
       modules: [],
-      activeModule: new Module('default'),
-      activePage: 'home',
+      activeModule: null,
+      activePage: page,
     };
   }
 
@@ -31,21 +30,14 @@ class App extends React.Component {
         }
         this.setState({ modules });
       });
-    } else {
-      const table = this.state.database.table('modules');
-      table
-        .fill()
-        .then(() => {
-          table
-            .getAll()
-            .then((modules) => {
-              if (!this.state.activeModule && modules.length) {
-                this.setState({ activeModule: modules[0] });
-              }
-              this.setState({ modules });
-            });
-        });
     }
+  }
+
+  setModuleList(modules) {
+    if (!this.state.activeModule && modules.length) {
+      this.setState({ activeModule: modules[0] });
+    }
+    this.setState({ modules });
   }
 
   switchActiveModule(module) {
@@ -67,7 +59,13 @@ class App extends React.Component {
     );
     const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
     const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
-    const splashPage = <SplashPage database={this.state.database} version={this.props.version} />;
+    const splashPage = (
+      <SplashPage
+        database={this.state.database}
+        version={this.props.version}
+        switchPage={page => this.switchPage(page)}
+        setModuleList={modules => this.setModuleList(modules)}
+      />);
     switch (this.state.activePage) {
       case 'splash':
         return splashPage;
