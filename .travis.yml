@@ -1,0 +1,17 @@
+sudo: required
+
+language: bash
+
+services:
+  - docker
+
+branches:
+  only:
+    - master
+    - develop
+
+install:
+  - docker build . -t myownportfolio-editor
+
+script:
+  - docker run --name build --volume web:/root/dist/app --volume electron:/root/dist/package myownportfolio-editor
