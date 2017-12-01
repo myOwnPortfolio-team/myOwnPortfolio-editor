@@ -18,7 +18,7 @@ class Editor extends React.Component {
     const editorContent = () => {
       const activeSchema = this.props.module.schema[this.state.activeTab];
       if (activeSchema === null) {
-        return (<div class="editor-empty-content">Create your own porfolio</div>);
+        return (<div className="editor-empty-content">Create your own porfolio</div>);
       }
       return fields(activeSchema.properties, activeSchema.required);
     };
