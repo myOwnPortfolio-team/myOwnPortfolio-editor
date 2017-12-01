@@ -4,6 +4,7 @@ import EditionPage from '../pages/EditionPage.jsx';
 import RenderPage from '../pages/RenderPage.jsx';
 import HomePage from '../pages/HomePage.jsx';
 import SplashPage from '../pages/SplashPage.jsx';
+import Module from '../data/objects/module.js';
 
 import platform from '../utils/platform';
 
