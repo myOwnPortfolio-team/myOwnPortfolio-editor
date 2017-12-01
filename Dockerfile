@@ -6,6 +6,6 @@ VOLUME /root/dist/plateform
 
 COPY . /root/
 RUN npm install
-RUN npm run build:icons
+# RUN npm run build:icons -> does not work at this stage
 
 CMD echo 'Exec something ...'
