@@ -15,13 +15,13 @@ class Editor extends React.Component {
   }
 
   render() {
-    let fields = null;
-    if (this.props.module.schema[this.state.activeTab]) {
-      fields = Fields(
-        this.props.module.schema[this.state.activeTab].properties,
-        this.props.module.schema[this.state.activeTab].required,
-      );
-    }
+    const editorContent = () => {
+      const activeSchema = this.props.module.schema[this.state.activeTab];
+      if (activeSchema === null) {
+        return (<div className="editor-empty-content">Create your own porfolio</div>);
+      }
+      return fields(activeSchema.properties, activeSchema.required);
+    };
 
     return (
       <div className="container editor">
@@ -43,9 +43,9 @@ class Editor extends React.Component {
           />
         </Menu>
 
-        <div className="form">
-          <Form>
-            {fields}
+        <div className="form editor-content">
+          <Form className="form editor-content">
+            {editorContent()}
           </Form>
         </div>
       </div>
