@@ -26,9 +26,6 @@ class App extends React.Component {
     if (platform.isElectron()) {
       const electron = platform.getPlatformModule(platform.getPlatform());
       electron.ipcRenderer.on('loadedModules', (event, modules) => {
-        if (!this.state.activeModule && modules.length) {
-          this.setState({ activeModule: modules[0] });
-        }
         this.setState({ modules });
       });
     } else {
@@ -40,10 +37,6 @@ class App extends React.Component {
           table
             .getAll()
             .then((modules) => {
-              if (!this.state.activeModule && modules.length) {
-                this.setState({ activeModule: modules[0] });
-              }
-
               this.setState({ modules });
             });
         });
