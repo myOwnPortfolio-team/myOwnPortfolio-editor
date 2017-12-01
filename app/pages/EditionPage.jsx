@@ -43,25 +43,33 @@ class EditionPage extends React.Component {
       switch (activeSideBar) {
         case 'toolsBar':
           return (
-            <div>
-              <Button circular icon="arrow left" onClick={() => this.switchSideBar('myOwnPortfolio')} />
-              <Navbar
-                modules={this.props.modules}
-                handleClick={(module) => {
-                  this.props.addModule(module);
-                  this.switchSideBar('myOwnPortfolio');
-                }}
-              />
+            <div className="side-bar">
+              <div className="side-bar-group-button">
+                <Button circular icon="arrow left" onClick={() => this.switchSideBar('myOwnPortfolio')} />
+              </div>
+              <div className="side-bar-content">
+                <Navbar
+                  modules={this.props.modules}
+                  handleClick={(module) => {
+                    this.props.addModule(module);
+                    this.switchSideBar('myOwnPortfolio');
+                  }}
+                />
+              </div>
             </div>
           );
         case 'myOwnPortfolio':
           return (
-            <div>
-              <Button circular icon="plus" onClick={() => this.switchSideBar('toolsBar')} />
-              <Button circular icon="chevron down" onClick={() => this.switchModules('down')} />
-              <Button circular icon="chevron up" onClick={() => this.switchModules('up')} />
-              <Button circular icon="trash outline" onClick={() => this.deleteModule('up')} />
-              <div>
+            <div className="side-bar">
+              <div className="side-bar-group-button">
+                <Button circular icon="plus" onClick={() => this.switchSideBar('toolsBar')} />
+              </div>
+              <div className="side-bar-group-button">
+                <Button circular icon="chevron down" onClick={() => this.switchModules('down')} />
+                <Button circular icon="chevron up" onClick={() => this.switchModules('up')} />
+                <Button circular icon="trash outline" onClick={() => this.deleteModule('up')} />
+              </div>
+              <div className="side-bar-content">
                 <Navbar
                   modules={this.props.myOwnPortfolio}
                   activeItem={this.props.activeModule.name}
