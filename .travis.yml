@@ -21,3 +21,4 @@ deploy:
   provider: surge
   project: ./web
   domain: editor.myownportfolio.surge.sh
+  on: develop
