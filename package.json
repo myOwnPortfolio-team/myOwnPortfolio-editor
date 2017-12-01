@@ -77,6 +77,7 @@
     "webpack:electron:prod": "webpack --config webpack.config.js --target=electron --env.production",
     "package:electron": "npm run webpack:electron:prod && gulp package",
     "build:electron": "npm run package:electron && gulp build",
+    "build:web": "npm run webpack:web:prod",
     "build:icons:create-dir": "mkdirp ./dist/app/assets/icons/",
     "build:icons:png": "npm run build:icons:png96 && npm run build:icons:png1024",
     "build:icons:png96": "svg2png ./app/assets/icons/logo.svg -o ./dist/app/assets/icons/icon96.png -w 96 -h 96",

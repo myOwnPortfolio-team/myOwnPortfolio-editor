@@ -14,4 +14,10 @@ install:
   - docker build . -t myownportfolio-editor
 
 script:
-  - docker run --name build --volume web:/root/dist/app --volume electron:/root/dist/package myownportfolio-editor
+  - docker run --name build_web --volume web:/root/dist/app myownportfolio-editor npm run build:web
+  - docker run --name build_electron --volume electron:/root/dist/package myownportfolio-editor npm run build:electron
+
+deploy:
+  provider: surge
+  project: ./web
+  domain: editor.myownportfolio.surge.sh
