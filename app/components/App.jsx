@@ -16,7 +16,7 @@ class App extends React.Component {
     this.state = {
       database: props.database,
       modules: [],
-      myOwnPortfolio: [],
+      myOwnModules: [],
       activeModule: new Module('default'),
       activeModuleIndex: -1,
       activePage: page,
@@ -41,7 +41,7 @@ class App extends React.Component {
   }
 
   addModule(module) {
-    const index = this.state.myOwnPortfolio.push(module) - 1;
+    const index = this.state.myOwnModules.push(module) - 1;
     this.switchActiveModule(index, module);
   }
 
@@ -53,19 +53,19 @@ class App extends React.Component {
   switchModules(order) {
     let index = this.state.activeModuleIndex;
     if (order === 'up' && (index > 0)) {
-      this.state.myOwnPortfolio.splice(
+      this.state.myOwnModules.splice(
         index - 1,
         2,
-        this.state.myOwnPortfolio[index],
-        this.state.myOwnPortfolio[index - 1],
+        this.state.myOwnModules[index],
+        this.state.myOwnModules[index - 1],
       );
       index -= 1;
-    } else if (order === 'down' && (index < this.state.myOwnPortfolio.length - 1)) {
-      this.state.myOwnPortfolio.splice(
+    } else if (order === 'down' && (index < this.state.myOwnModules.length - 1)) {
+      this.state.myOwnModules.splice(
         index,
         2,
-        this.state.myOwnPortfolio[index + 1],
-        this.state.myOwnPortfolio[index],
+        this.state.myOwnModules[index + 1],
+        this.state.myOwnModules[index],
       );
       index += 1;
     }
@@ -76,10 +76,10 @@ class App extends React.Component {
   deleteModule() {
     let index = this.state.activeModuleIndex;
     if (index !== -1) {
-      this.state.myOwnPortfolio.splice(index, 1);
+      this.state.myOwnModules.splice(index, 1);
       if (index > 0) {
         index -= 1;
-      } else if (this.state.myOwnPortfolio.length < 1) {
+      } else if (this.state.myOwnModules.length < 1) {
         index = -1;
       }
     }
@@ -94,7 +94,7 @@ class App extends React.Component {
     const editionPage = (
       <EditionPage
         modules={this.state.modules}
-        myOwnPortfolio={this.state.myOwnPortfolio}
+        myOwnModules={this.state.myOwnModules}
         activeModule={this.state.activeModule}
         activeModuleIndex={this.state.activeModuleIndex}
         addModule={module => this.addModule(module)}

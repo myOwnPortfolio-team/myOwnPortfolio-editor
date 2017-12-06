@@ -12,7 +12,7 @@ class EditionPage extends React.Component {
     super(props);
 
     this.state = {
-      activeSideBar: 'myOwnPortfolio',
+      activeSideBar: 'myOwnModules',
     };
   }
 
@@ -27,20 +27,20 @@ class EditionPage extends React.Component {
           return (
             <div className="side-bar">
               <div className="side-bar-group-button">
-                <Button circular icon="arrow left" onClick={() => this.switchSideBar('myOwnPortfolio')} />
+                <Button circular icon="arrow left" onClick={() => this.switchSideBar('myOwnModules')} />
               </div>
               <div className="side-bar-content">
                 <Navbar
                   modules={this.props.modules}
                   handleClick={(index, module) => {
                     this.props.addModule(module);
-                    this.switchSideBar('myOwnPortfolio');
+                    this.switchSideBar('myOwnModules');
                   }}
                 />
               </div>
             </div>
           );
-        case 'myOwnPortfolio':
+        case 'myOwnModules':
           return (
             <div className="side-bar">
               <div className="side-bar-group-button">
@@ -53,7 +53,7 @@ class EditionPage extends React.Component {
               </div>
               <div className="side-bar-content">
                 <Navbar
-                  modules={this.props.myOwnPortfolio}
+                  modules={this.props.myOwnModules}
                   activeItem={this.props.activeModuleIndex}
                   handleClick={(index, module) => this.props.switchActiveModule(index, module)}
                 />
