@@ -37,7 +37,7 @@ class App extends React.Component {
     if (!this.state.activeModule && modules.length) {
       this.setState({ activeModule: modules[0] });
     }
-    this.setState({ modules });
+    this.setState({ modules,
   }
 
   addModule(module) {
