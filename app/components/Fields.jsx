@@ -13,7 +13,7 @@ const animationOptions = [
   { key: '1', text: '1', value: '1' },
 ];
 
-const fields = (properties, required) => Object.keys(properties).map((key, index) => {
+const fields = (properties, required, content) => Object.keys(properties).map((key, index) => {
   const isRequired = required.indexOf(key) !== -1;
   switch (properties[key].type) {
     case 'integer':
@@ -33,21 +33,21 @@ const fields = (properties, required) => Object.keys(properties).map((key, index
     case 'string':
       switch (properties[key].input) {
         case 'color-picker':
-          return input(properties, key, index, 'color', isRequired);
+          return input(properties, key, index, content[key], 'color', isRequired);
         case 'input-number':
-          return input(properties, key, index, 'number', isRequired);
+          return input(properties, key, index, content[key], 'number', isRequired);
         case 'input-date':
-          return input(properties, key, index, 'date', isRequired);
+          return input(properties, key, index, content[key], 'date', isRequired);
         case 'input-text':
-          return input(properties, key, index, 'text', isRequired);
+          return input(properties, key, index, content[key], 'text', isRequired);
         case 'select-animation':
           return select(properties, key, index, animationOptions, isRequired); // TODO to implement
         case 'textfield':
-          return textfield(properties, key, index, isRequired);
+          return textfield(properties, key, index, content[key], isRequired);
         case 'textfield-markdown':
-          return textfield(properties, key, index, isRequired); // TODO to implement
+          return textfield(properties, key, index, content[key], isRequired); // TODO to implement
         default:
-          return input(properties, key, index, 'text', isRequired);
+          return input(properties, key, index, content[key], 'text', isRequired);
       }
     case 'boolean':
       switch (properties[key].input) {
@@ -64,7 +64,7 @@ const fields = (properties, required) => Object.keys(properties).map((key, index
         </div>
       );
     default:
-      return input(properties, key, index, 'text', isRequired);
+      return input(properties, key, index, content[key], 'text', isRequired);
   }
 });
 

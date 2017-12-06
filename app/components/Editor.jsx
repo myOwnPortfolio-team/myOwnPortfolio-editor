@@ -20,7 +20,7 @@ class Editor extends React.Component {
       if (activeSchema === null) {
         return (<div className="editor-empty-content">Create your own porfolio</div>);
       }
-      return fields(activeSchema.properties, activeSchema.required);
+      return fields(activeSchema.properties, activeSchema.required, this.props.myOwnContent[this.state.activeTab]);
     };
 
     return (

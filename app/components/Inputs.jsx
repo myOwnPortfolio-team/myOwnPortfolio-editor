@@ -13,23 +13,25 @@ const checkbox = (properties, key, index, isRequired) => (
   </div>
 );
 
-const input = (properties, key, index, type, isRequired) => (
+const input = (properties, key, index, value, type, isRequired) => (
   <Form.Field
     control={Input}
     key={index}
     label={key}
     placeholder={properties[key].description}
     type={type}
+    value={value}
     required={isRequired}
   />
 );
 
-const textfield = (properties, key, index, isRequired) => (
+const textfield = (properties, key, index, value, isRequired) => (
   <Form.Field
     control={TextArea}
     key={index}
     label={key}
     placeholder={properties[key].description}
+    value={value}
     required={isRequired}
   />
 );
