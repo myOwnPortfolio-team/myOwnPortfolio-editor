@@ -41,7 +41,7 @@ const fields = (properties, required, content, updateContent) => Object.keys(pro
         case 'input-text':
           return input(properties, key, index, content[key], 'text', updateContent, isRequired);
         case 'select-animation':
-          return select(properties, key, index, animationOptions, isRequired); // TODO to implement
+          return select(properties, key, index, content[key], animationOptions, updateContent, isRequired); // TODO to implement
         case 'textfield':
           return textfield(properties, key, index, content[key], isRequired);
         case 'textfield-markdown':

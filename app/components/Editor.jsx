@@ -10,9 +10,8 @@ class Editor extends React.Component {
     };
   }
 
-  updateContent(e, { properties, key }) {
-    this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab][key]
-      = e.target.value;
+  updateContent(value, key) {
+    this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab][key] = value;
     this.setState({ myOwnContent: this.props.myOwnContent });
   }
 
@@ -26,7 +25,7 @@ class Editor extends React.Component {
       if (activeSchema === null) {
         return (<div className="editor-empty-content">Create your own porfolio</div>);
       }
-      return fields(activeSchema.properties, activeSchema.required, this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab], (e, { properties, key }) => this.updateContent(e, { properties, key }));
+      return fields(activeSchema.properties, activeSchema.required, this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab], (value, key) => this.updateContent(value, key));
     };
 
     return (

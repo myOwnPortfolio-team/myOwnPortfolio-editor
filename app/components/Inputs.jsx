@@ -21,7 +21,7 @@ const input = (properties, key, index, value, type, updateContent, isRequired) =
     placeholder={properties[key].description}
     type={type}
     value={value}
-    onChange={e => updateContent(e, { properties, key })}
+    onChange={e => updateContent(e.target.value, key)}
     required={isRequired}
   />
 );
@@ -37,13 +37,15 @@ const textfield = (properties, key, index, value, isRequired) => (
   />
 );
 
-const select = (properties, key, index, options, isRequired) => (
+const select = (properties, key, index, value, options, updateContent, isRequired) => (
   <Form.Field
     control={Select}
     key={index}
     label={key}
     placeholder={properties[key].description}
     options={options}
+    value={value}
+    onChange={(e, data) => updateContent(data.value, key)}
     required={isRequired}
   />
 );
