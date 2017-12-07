@@ -10,5 +10,7 @@
     "contents/app/modules/$moduleName/json_schema/content.json",
     "contents/app/modules/$moduleName/json_schema/properties.json",
     "contents/app/modules/$moduleName/json_schema/style.json"
-  ]
+  ],
+  "serverHost": "localhost",
+  "serverPort": 1337
 }

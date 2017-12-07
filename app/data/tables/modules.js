@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import Table from './table';
 import Module from '../objects/module';
+import WebSocketClient from '../../auth/websocket';
 
 // Private methods
 const getRepositoryModules = Symbol('Get modules from repository');
@@ -20,23 +21,45 @@ class ModulesTable extends Table {
     this.repositoryURL = properties.repositoryURL;
     this.modulesPath = properties.modulesPath;
     this.filesPaths = properties.filesPaths;
+
+    this.serverHost = properties.serverHost;
+    this.serverPort = properties.serverPort;
   }
 
   fill() {
+    // Get Github Token
+    const accessTokenPromise = new Promise((resolve, reject) => {
+      const socket = new WebSocketClient(this.serverHost, this.serverPort);
+      socket
+        .getAuthLink()
+        .then((link) => {
+          console.log(link);
+        })
+        .catch(error => reject(error));
+
+      socket
+        .getAccessToken()
+        .then((token) => {
+          process.env.MOP_ACCESS_TOKEN = token;
+          resolve(token);
+        })
+        .catch(error => reject(error));
+    });
+
     // Remove modules that are no longer used
     const clearDatabasePromise = this[clearDatabase](
-      this[getRepositoryModules](),
+      this[getRepositoryModules](accessTokenPromise),
       this[getDatabaseModules](),
     );
 
     const addModulesInDatabasePromise = this[addModulesInDatabase](
-      this[getRepositoryModules](),
+      this[getRepositoryModules](accessTokenPromise),
       this[getDatabaseModules](),
     );
 
     const updateDatabaseModulesPromise = this[updateDatabaseModules](
       addModulesInDatabasePromise,
-      this[getRepositoryModules](),
+      this[getRepositoryModules](accessTokenPromise),
       this[getDatabaseModules](),
     );
 
@@ -61,16 +84,29 @@ class ModulesTable extends Table {
             )));
   }
 
-  [getRepositoryModules]() {
-    /* const headers = {
-      headers: {
-        Authorization: 'token GITHUB_TOKEN',
-      },
-    }; */
+  [getRepositoryModules](accessTokenPromise) {
+    return new Promise((resolve, reject) => {
+      accessTokenPromise
+        .then((token) => {
+          const headers = {
+            headers: {
+              Authorization: `token ${token}`,
+            },
+          };
 
-    return axios
-      .get(`${this.repositoryURL}/${this.modulesPath}`/* , headers */)
-      .then(res => res.data);
+          axios
+            .get(`${this.repositoryURL}/${this.modulesPath}`, headers)
+            .then(res => resolve(res.data))
+            .catch(error => reject(error));
+        })
+        .catch(() => {
+          // Try to get without token
+          axios
+            .get(`${this.repositoryURL}/${this.modulesPath}`)
+            .then(res => resolve(res.data))
+            .catch(error => reject(error));
+        });
+    });
   }
 
   [getDatabaseModules]() {
