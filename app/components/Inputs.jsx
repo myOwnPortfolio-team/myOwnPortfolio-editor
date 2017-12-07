@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Form, Input, Select, TextArea } from 'semantic-ui-react'
+import { Checkbox, Form, Input, Select, TextArea } from 'semantic-ui-react';
 
 const checkbox = (properties, key, index, isRequired) => (
   <div>
@@ -13,7 +13,7 @@ const checkbox = (properties, key, index, isRequired) => (
   </div>
 );
 
-const input = (properties, key, index, value, type, updateContent, isRequired) => (
+const input = (properties, key, index, value, type, updateField, isRequired) => (
   <Form.Field
     control={Input}
     key={index}
@@ -21,7 +21,7 @@ const input = (properties, key, index, value, type, updateContent, isRequired) =
     placeholder={properties[key].description}
     type={type}
     value={value}
-    onChange={e => updateContent(e.target.value, key)}
+    onChange={e => updateField(e.target.value, key)}
     required={isRequired}
   />
 );
@@ -37,7 +37,7 @@ const textfield = (properties, key, index, value, isRequired) => (
   />
 );
 
-const select = (properties, key, index, value, options, updateContent, isRequired) => (
+const select = (properties, key, index, value, options, updateField, isRequired) => (
   <Form.Field
     control={Select}
     key={index}
@@ -45,23 +45,28 @@ const select = (properties, key, index, value, options, updateContent, isRequire
     placeholder={properties[key].description}
     options={options}
     value={value}
-    onChange={(e, data) => updateContent(data.value, key)}
+    onChange={(e, data) => updateField(data.value, key)}
     required={isRequired}
   />
 );
 
-const slider = (properties, key, index, step, isRequired) => (
-  <Form.Field
-    control={Input}
-    key={index}
-    label={key}
-    placeholder={properties[key].description}
-    type="range"
-    min={properties[key].minimum}
-    max={properties[key].maximum}
-    step={step}
-    required={isRequired}
-  />
+const slider = (properties, key, index, value, step, updateField, isRequired) => (
+  <div>
+    <Form.Field
+      control={Input}
+      key={index}
+      label={key}
+      placeholder={properties[key].description}
+      type="range"
+      min={properties[key].minimum}
+      max={properties[key].maximum}
+      step={step}
+      value={value}
+      onChange={e => updateField(e.target.value, key)}
+      required={isRequired}
+    />
+    <p>{value}</p>
+  </div>
 );
 
 
