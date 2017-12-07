@@ -10,6 +10,12 @@ class Editor extends React.Component {
     };
   }
 
+  updateContent(e, { properties, key }) {
+    this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab][key]
+      = e.target.value;
+    this.setState({ myOwnContent: this.props.myOwnContent });
+  }
+
   handleTabClick(tab) {
     this.setState({ activeTab: tab.toLowerCase() });
   }
@@ -20,7 +26,7 @@ class Editor extends React.Component {
       if (activeSchema === null) {
         return (<div className="editor-empty-content">Create your own porfolio</div>);
       }
-      return fields(activeSchema.properties, activeSchema.required, this.props.myOwnContent[this.state.activeTab]);
+      return fields(activeSchema.properties, activeSchema.required, this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab], (e, { properties, key }) => this.updateContent(e, { properties, key }));
     };
 
     return (

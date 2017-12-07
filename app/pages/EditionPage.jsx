@@ -75,7 +75,11 @@ class EditionPage extends React.Component {
             {sideBar(this.state.activeSideBar)}
           </Grid.Column>
           <Grid.Column stretched width={13}>
-            <Editor module={this.props.activeModule} myOwnContent={this.props.myOwnContent[this.props.activeModuleIndex]} />
+            <Editor
+              activeModuleIndex={this.props.activeModuleIndex}
+              module={this.props.activeModule}
+              myOwnContent={this.props.myOwnContent}
+            />
           </Grid.Column>
         </Grid>
       </div>

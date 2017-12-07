@@ -13,7 +13,7 @@ const checkbox = (properties, key, index, isRequired) => (
   </div>
 );
 
-const input = (properties, key, index, value, type, isRequired) => (
+const input = (properties, key, index, value, type, updateContent, isRequired) => (
   <Form.Field
     control={Input}
     key={index}
@@ -21,6 +21,7 @@ const input = (properties, key, index, value, type, isRequired) => (
     placeholder={properties[key].description}
     type={type}
     value={value}
+    onChange={e => updateContent(e, { properties, key })}
     required={isRequired}
   />
 );
