@@ -67,9 +67,9 @@ const fields = (properties, required, content, updateContent) =>
       case 'boolean':
         switch (properties[key].input) {
           case 'checkbox':
-            return checkbox(properties, key, index, isRequired);
+            return checkbox(properties, key, index, content[key], updateField, isRequired);
           default:
-            return checkbox(properties, key, index, isRequired);
+            return checkbox(properties, key, index, content[key], updateField, isRequired);
         }
       case 'object':
         return (

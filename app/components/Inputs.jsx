@@ -1,13 +1,15 @@
 import React from 'react';
 import { Checkbox, Form, Input, Select, TextArea } from 'semantic-ui-react';
 
-const checkbox = (properties, key, index, isRequired) => (
+const checkbox = (properties, key, index, value, updateField, isRequired) => (
   <div>
     <div>{key}</div>
     <Form.Field
       control={Checkbox}
       key={index}
       label={properties[key].description}
+      checked={value}
+      onChange={(e, data) => updateField(data.value, key)}
       required={isRequired}
     />
   </div>
