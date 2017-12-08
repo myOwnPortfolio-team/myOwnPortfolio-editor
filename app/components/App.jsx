@@ -43,6 +43,15 @@ class App extends React.Component {
 
   addModule(module) {
     const index = this.state.myOwnModules.push(module) - 1;
+    this.state.myOwnContent.modules.push({
+      name: module.name,
+      type: module.name,
+      referenced: true,
+      content: {},
+      properties: {},
+      style: {},
+    });
+    this.setState({ myOwnContent: this.state.myOwnContent });
     this.switchActiveModule(index, module);
   }
 
@@ -78,6 +87,7 @@ class App extends React.Component {
     let index = this.state.activeModuleIndex;
     if (index !== -1) {
       this.state.myOwnModules.splice(index, 1);
+      this.state.myOwnContent.modules.splice(index, 1);
       if (index > 0) {
         index -= 1;
       } else if (this.state.myOwnModules.length < 1) {

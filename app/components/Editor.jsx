@@ -11,7 +11,7 @@ class Editor extends React.Component {
   }
 
   updateContent(contentTab) {
-    this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
+    this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
     this.setState({ myOwnContent: this.props.myOwnContent });
   }
 
@@ -29,7 +29,7 @@ class Editor extends React.Component {
       return fields(
         activeSchema.properties,
         activeSchema.required,
-        this.props.myOwnContent[this.props.activeModuleIndex][this.state.activeTab],
+        this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab],
         contentTab => this.updateContent(contentTab),
       );
     };
