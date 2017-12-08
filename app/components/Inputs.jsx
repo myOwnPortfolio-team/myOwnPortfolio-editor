@@ -28,13 +28,14 @@ const input = (properties, key, index, value, type, updateField, isRequired) => 
   />
 );
 
-const textfield = (properties, key, index, value, isRequired) => (
+const textfield = (properties, key, index, value, updateField, isRequired) => (
   <Form.Field
     control={TextArea}
     key={index}
     label={key}
     placeholder={properties[key].description}
     value={value}
+    onChange={e => updateField(e.target.value, key)}
     required={isRequired}
   />
 );

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 import {
   checkbox,
@@ -58,9 +59,14 @@ const fields = (properties, required, content, updateContent) =>
               isRequired,
             ); // TODO to implement
           case 'textfield':
-            return textfield(properties, key, index, content[key], isRequired);
+            return textfield(properties, key, index, content[key], updateField, isRequired);
           case 'textfield-markdown':
-            return textfield(properties, key, index, content[key], isRequired); // TODO to implement
+            return (
+              <div>
+                {textfield(properties, key, index, content[key], updateField, isRequired)}
+                <ReactMarkdown source={content[key]} />
+              </div>
+            );
           default:
             return input(properties, key, index, content[key], 'text', updateField, isRequired);
         }
