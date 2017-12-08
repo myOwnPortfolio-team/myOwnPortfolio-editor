@@ -32,13 +32,20 @@ class App extends React.Component {
         this.setState({ modules });
       });
     }
+    this.setState({
+      myOwnContent: {
+        name: '',
+        app_properties: {},
+        modules: [],
+      },
+    });
   }
 
   setModuleList(modules) {
     if (!this.state.activeModule && modules.length) {
       this.setState({ activeModule: modules[0] });
     }
-    this.setState({ modules,
+    this.setState({ modules });
   }
 
   addModule(module) {
