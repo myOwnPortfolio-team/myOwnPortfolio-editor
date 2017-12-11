@@ -44,6 +44,21 @@ const initializeFields = (properties, required, cont) => {
             ),
           };
           break;
+        case 'array':
+          if (properties[key].minItems > 0) {
+            if (properties[key].items.properties !== undefined) {
+              content[key] = {
+                key: initializeFields(
+                  properties[key].items.properties,
+                  properties[key].items.required,
+                  {},
+                ),
+              };
+            }
+          } else {
+            content[key] = [];
+          }
+          break;
         default:
           content[key] = '';
       }
