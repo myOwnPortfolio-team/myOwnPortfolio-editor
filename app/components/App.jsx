@@ -169,6 +169,7 @@ class App extends React.Component {
         index -= 1;
       } else if (this.state.myOwnModules.length < 1) {
         index = -1;
+        this.setState({ activeModule: new Module('default') });
       }
     }
     this.setState({ activeModuleIndex: index });
