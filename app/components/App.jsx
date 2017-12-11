@@ -8,6 +8,50 @@ import Module from '../data/objects/module.js';
 
 import platform from '../utils/platform';
 
+const initializeFields = (properties, required, cont) => {
+  const content = cont;
+  Object.keys(properties).map((key) => {
+    const isRequired = required.indexOf(key) !== -1;
+
+    if (isRequired) {
+      switch (properties[key].type) {
+        case 'integer':
+        case 'number':
+          switch (properties[key].input) {
+            case 'slider':
+              if (properties[key].minimum === undefined) {
+                content[key] = 0;
+              } else {
+                content[key] = properties[key].minimum;
+              }
+              break;
+            default:
+              content[key] = 0;
+          }
+          break;
+        case 'string':
+          content[key] = '';
+          break;
+        case 'boolean':
+          content[key] = false;
+          break;
+        case 'object':
+          content[key] = {
+            key: initializeFields(
+              properties[key].properties,
+              properties[key].required,
+              {},
+            ),
+          };
+          break;
+        default:
+          content[key] = '';
+      }
+    }
+  });
+  return content;
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -54,11 +98,22 @@ class App extends React.Component {
       name: module.name,
       type: module.name,
       referenced: true,
-      content: {},
-      properties: {},
-      style: {},
+      content: initializeFields(
+        module.schema.content.properties,
+        module.schema.content.required,
+        {},
+      ),
+      properties: initializeFields(
+        module.schema.properties.properties,
+        module.schema.properties.required,
+        {},
+      ),
+      style: initializeFields(
+        module.schema.style.properties,
+        module.schema.style.required,
+        {},
+      ),
     });
-    this.setState({ myOwnContent: this.state.myOwnContent });
     this.switchActiveModule(index, module);
   }
 
