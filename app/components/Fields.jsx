@@ -14,8 +14,10 @@ const animationOptions = [
   { key: '1', text: '1', value: '1' },
 ];
 
-const fields = (properties, required, content, updateContent) =>
+const fields = (properties, required, cont, updateContent) =>
   Object.keys(properties).map((key, index) => {
+    const content = cont;
+
     const updateField = (value, k) => {
       content[k] = value;
       updateContent(content);
@@ -96,4 +98,82 @@ const fields = (properties, required, content, updateContent) =>
     }
   });
 
-module.exports = fields;
+const initializeFields = (properties, required, cont) => {
+  let content = cont;
+  Object.keys(properties).map((key) => {
+    const updateField = (value, k) => {
+      if (required === 'isSimpleArray') {
+        content = value;
+      } else {
+        content[k] = value;
+      }
+    };
+
+    const isRequired = required.indexOf(key) !== -1 || required === 'isSimpleArray';
+
+    if (isRequired) {
+      switch (properties[key].type) {
+        case 'integer':
+        case 'number':
+          switch (properties[key].input) {
+            case 'slider':
+              if (properties[key].minimum === undefined) {
+                updateField(0, key);
+              } else {
+                updateField(properties[key].minimum, key);
+              }
+              break;
+            default:
+              updateField(0, key);
+          }
+          break;
+        case 'string':
+          updateField('', key);
+          break;
+        case 'boolean':
+          updateField(false, key);
+          break;
+        case 'object':
+          updateField(
+            initializeFields(
+              properties[key].properties,
+              properties[key].required,
+              {},
+            ),
+            key,
+          );
+          break;
+        case 'array':
+          if (properties[key].minItems > 0) {
+            if (properties[key].items.properties !== undefined) {
+              updateField(
+                initializeFields(
+                  properties[key].items.properties,
+                  properties[key].items.required,
+                  {},
+                ),
+                key,
+              );
+            } else {
+              updateField(
+                [initializeFields(
+                  [properties[key].items],
+                  'isSimpleArray',
+                  {},
+                )],
+                key,
+              );
+            }
+          } else {
+            updateField([], key);
+          }
+          break;
+        default:
+          updateField('', key);
+      }
+    }
+  });
+  return content;
+};
+
+module.exports = { initializeFields, fields };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Menu } from 'semantic-ui-react';
-import fields from './Fields.jsx';
+import { fields } from './Fields.jsx';
 
 class Editor extends React.Component {
   constructor(props) {
