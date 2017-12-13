@@ -16,27 +16,42 @@ class SplashScreen extends React.Component {
   }
 
   componentDidMount() {
-    const table = this.state.database.table('modules');
+    const tableModules = this.state.database.table('modules');
+    const tableInfos = this.state.database.table('userInfos');
     // Load modules
-    this.updateMessage('Initializing modules');
 
-    table
-      .fill()
+    tableInfos
+      .userExists()
+      .then((exists) => {
+        if (exists) {
+          this.updateMessage('Loading user infos');
+          return tableInfos.getUserInfos();
+        }
+        return undefined;
+      })
+      .then((user) => {
+        this.updateMessage('Initializing modules');
+        let token;
+        if (user !== undefined) {
+          token = user.accessToken;
+        }
+
+        return tableModules.fill(token);
+      })
       .then(() => {
         this.updateMessage('Loading modules');
-        table
-          .getAll()
-          .then((modules) => {
-            this.updateMessage('Loaded');
+        return tableModules.getAll();
+      })
+      .then((modules) => {
+        this.updateMessage('Loaded');
 
-            if (platform.isElectron()) {
-              const electron = platform.getPlatformModule(platform.getPlatform());
-              electron.ipcRenderer.send('closeSplashScreen', modules);
-            } else {
-              this.props.setModuleList(modules);
-              this.props.switchPage('home');
-            }
-          });
+        if (platform.isElectron()) {
+          const electron = platform.getPlatformModule(platform.getPlatform());
+          electron.ipcRenderer.send('closeSplashScreen', modules);
+        } else {
+          this.props.setModuleList(modules);
+          this.props.switchPage('home');
+        }
       });
   }
 
