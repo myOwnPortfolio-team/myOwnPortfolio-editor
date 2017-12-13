@@ -93,14 +93,19 @@ const initializeFields = (properties, required, cont) => {
 };
 
 const fields = (properties, required, cont, updateContent) => {
-  const content = cont;
+  let content = cont;
 
   const updateField = (value, k) => {
     content[k] = value;
     updateContent(content);
   };
 
-  const arrayField = (arrayProperties, arrayContent) => {
+  const updateArrayField = (value, arrayContent, i, updateArray) => {
+    arrayContent[i] = value[0];
+    updateArray(arrayContent);
+  };
+
+  const arrayField = (arrayProperties, arrayContent, updateArray) => {
     if (arrayProperties.items.type === 'object') {
       return Object.keys(arrayContent).map((key) => {
         return (
@@ -115,16 +120,18 @@ const fields = (properties, required, cont, updateContent) => {
         );
       });
     }
-    return (
-      <div>
-        {fields(
-          [arrayProperties.items],
-          'isSimpleArray',
-          arrayContent,
-          updateField,
-        )}
-      </div>
-    );
+    return arrayContent.map((key, index) => {
+      return (
+        <div>
+          {fields(
+            [arrayProperties.items],
+            'isSimpleArray',
+            [key],
+            (value, k) => updateArrayField(value, arrayContent, index, updateArray),
+          )}
+        </div>
+      );
+    });
   };
 
   return Object.keys(properties).map((key, index) => {
@@ -206,19 +213,17 @@ const fields = (properties, required, cont, updateContent) => {
       case 'array':
         return (
           <div>
-            <div>
-              {arrayField(
-                properties[key],
-                content[key],
-              )}
-            </div>
+            {arrayField(
+              properties[key],
+              content[key],
+              updateField,
+            )}
           </div>
         );
       default:
         return input(properties, key, index, content[key], 'text', updateContent, isRequired);
     }
   });
-}
 };
 
 module.exports = { initializeFields, fields };
