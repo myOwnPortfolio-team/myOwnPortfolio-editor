@@ -11,6 +11,7 @@
     "contents/app/modules/$moduleName/json_schema/properties.json",
     "contents/app/modules/$moduleName/json_schema/style.json"
   ],
+  "githubAPI": "https://api.github.com",
   "serverHost": "localhost",
   "serverPort": 1337
 }

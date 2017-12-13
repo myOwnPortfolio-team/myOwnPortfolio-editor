@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import Table from './table';
 import Module from '../objects/module';
-import WebSocketClient from '../../auth/websocket';
 
 // Private methods
 const getRepositoryModules = Symbol('Get modules from repository');
@@ -21,30 +20,11 @@ class ModulesTable extends Table {
     this.repositoryURL = properties.repositoryURL;
     this.modulesPath = properties.modulesPath;
     this.filesPaths = properties.filesPaths;
-
-    this.serverHost = properties.serverHost;
-    this.serverPort = properties.serverPort;
   }
 
   fill() {
     // Get Github Token
-    const accessTokenPromise = new Promise((resolve, reject) => {
-      const socket = new WebSocketClient(this.serverHost, this.serverPort);
-      socket
-        .getAuthLink()
-        .then((link) => {
-          console.log(link);
-        })
-        .catch(error => reject(error));
-
-      socket
-        .getAccessToken()
-        .then((token) => {
-          process.env.MOP_ACCESS_TOKEN = token;
-          resolve(token);
-        })
-        .catch(error => reject(error));
-    });
+    const accessTokenPromise = new Promise(resolve => resolve(undefined)); // TODO Get from DB
 
     // Remove modules that are no longer used
     const clearDatabasePromise = this[clearDatabase](
@@ -88,11 +68,18 @@ class ModulesTable extends Table {
     return new Promise((resolve, reject) => {
       accessTokenPromise
         .then((token) => {
-          const headers = {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          };
+          let headers;
+          if (token !== undefined) {
+            headers = {
+              headers: {
+                Authorization: `token ${token}`,
+              },
+            };
+          } else {
+            headers = {
+              headers: {},
+            };
+          }
 
           axios
             .get(`${this.repositoryURL}/${this.modulesPath}`, headers)
