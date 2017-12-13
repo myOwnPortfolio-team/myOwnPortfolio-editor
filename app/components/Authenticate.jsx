@@ -71,7 +71,6 @@ class Authenticate extends React.Component {
       );
     }
 
-    console.log(this.state.authLink)
     return (
       <div className="container authenticate">
         <div className="image">
