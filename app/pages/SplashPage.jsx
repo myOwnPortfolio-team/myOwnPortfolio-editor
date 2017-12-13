@@ -1,15 +1,57 @@
 import React from 'react';
+
+import Authenticate from '../components/Authenticate.jsx';
 import SplashScreen from '../components/SplashScreen.jsx';
 
-const LoadingPage = props => (
-  <div className="splash-page">
-    <SplashScreen
-      database={props.database}
-      version={props.version}
-      switchPage={props.switchPage}
-      setModuleList={props.setModuleList}
-    />
-  </div>
-);
+class SplashPage extends React.Component {
+  constructor(props) {
+    super(props);
 
-module.exports = LoadingPage;
+    this.state = {
+      activePage: 'authenticate',
+    };
+  }
+
+  switchPage(page) {
+    this.setState({ activePage: page });
+  }
+
+  render() {
+    const authenticationPage = (
+      <Authenticate
+        database={this.props.database}
+        switchPage={page => this.switchPage(page)}
+        serverHost={this.props.serverHost}
+        serverPort={this.props.serverPort}
+      />
+    );
+
+    const splashPage = (
+      <SplashScreen
+        database={this.props.database}
+        version={this.props.version}
+        switchPage={this.props.switchPage}
+        setModuleList={this.props.setModuleList}
+      />
+    );
+
+    let page;
+    switch (this.state.activePage) {
+      case 'authenticate':
+        page = authenticationPage;
+        break;
+      case 'splash':
+      default:
+        page = splashPage;
+        break;
+    }
+
+    return (
+      <div className="splash-page">
+        { page }
+      </div>
+    );
+  }
+}
+
+module.exports = SplashPage;

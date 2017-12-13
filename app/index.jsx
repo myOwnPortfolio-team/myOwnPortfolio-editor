@@ -16,6 +16,11 @@ const PROPERTIES = require('../properties/app');
 const database = new Database('MyOwnPortfolioDB', PROPERTIES);
 
 ReactDOM.render(
-  <App database={database} version={PROPERTIES.version} />,
+  <App
+    database={database}
+    version={PROPERTIES.version}
+    serverHost={PROPERTIES.serverHost}
+    serverPort={PROPERTIES.serverPort}
+  />,
   document.getElementById('root'),
 );
