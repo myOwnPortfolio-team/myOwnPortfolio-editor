@@ -14,16 +14,48 @@ const animationOptions = [
   { key: '1', text: '1', value: '1' },
 ];
 
-const fields = (properties, required, cont, updateContent) =>
-  Object.keys(properties).map((key, index) => {
-    const content = cont;
+const fields = (properties, required, cont, updateContent) => {
+  const content = cont;
 
-    const updateField = (value, k) => {
-      content[k] = value;
-      updateContent(content);
-    };
+  const updateField = (value, k) => {
+    content[k] = value;
+    updateContent(content);
+  };
 
-    const isRequired = required.indexOf(key) !== -1;
+  const arrayField = (arrayProperties, arrayContent) => {
+    if (arrayProperties.items.type === 'object') {
+      return Object.keys(arrayContent).map((key) => {
+        return (
+          <div>
+            {fields(
+              arrayProperties.items.properties,
+              arrayProperties.items.required,
+              arrayContent[key],
+              updateField,
+            )}
+          </div>
+        );
+      });
+    }
+    return (
+      <div>
+        {fields(
+          [arrayProperties.items],
+          'isSimpleArray',
+          arrayContent,
+          updateField,
+        )}
+      </div>
+    );
+  };
+
+  return Object.keys(properties).map((key, index) => {
+    let isRequired = false;
+    if (required === 'isSimpleArray') {
+      isRequired = true;
+    } else {
+      isRequired = required.indexOf(key) !== -1;
+    }
 
     switch (properties[key].type) {
       case 'integer':
@@ -93,10 +125,22 @@ const fields = (properties, required, cont, updateContent) =>
             </div>
           </div>
         );
+      case 'array':
+        return (
+          <div>
+            <div>
+              {arrayField(
+                properties[key],
+                content[key],
+              )}
+            </div>
+          </div>
+        );
       default:
         return input(properties, key, index, content[key], 'text', updateContent, isRequired);
     }
   });
+}
 
 const initializeFields = (properties, required, cont) => {
   let content = cont;
@@ -145,7 +189,7 @@ const initializeFields = (properties, required, cont) => {
           break;
         case 'array':
           if (properties[key].minItems > 0) {
-            if (properties[key].items.properties !== undefined) {
+            if (properties[key].items.type === 'object') {
               updateField(
                 initializeFields(
                   properties[key].items.properties,
