@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import { Button } from 'semantic-ui-react';
 
 import {
   checkbox,
@@ -211,8 +212,20 @@ const fields = (properties, required, cont, updateContent) => {
           </div>
         );
       case 'array':
+        let newArrayContent = "";
+        if (properties[key].items.type === 'object') {
+          newArrayContent = {};
+        }
         return (
           <div>
+            <Button
+              onClick={() => {
+                content[key][content[key].length] = newArrayContent;
+                updateField(content[key], content[key]);
+              }}
+            >
+              Click Here
+            </Button>
             {arrayField(
               properties[key],
               content[key],
