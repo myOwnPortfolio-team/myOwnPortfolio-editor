@@ -128,7 +128,7 @@ const fields = (properties, required, cont, updateContent) => {
             [arrayProperties.items],
             'isSimpleArray',
             [key],
-            (value, k) => updateArrayField(value, arrayContent, index, updateArray),
+            value => updateArrayField(value, arrayContent, index, updateArray),
           )}
         </div>
       );
@@ -138,7 +138,7 @@ const fields = (properties, required, cont, updateContent) => {
   return Object.keys(properties).map((key, index) => {
     let isRequired = false;
     if (required === 'isSimpleArray') {
-      isRequired = true;
+      isRequired = false;
     } else {
       isRequired = required.indexOf(key) !== -1;
     }
@@ -212,20 +212,21 @@ const fields = (properties, required, cont, updateContent) => {
           </div>
         );
       case 'array':
-        let newArrayContent = "";
+        let newArrayContent = '';
         if (properties[key].items.type === 'object') {
           newArrayContent = {};
         }
         return (
           <div>
+            <label>{key}</label>
             <Button
+              circular
+              icon="plus"
               onClick={() => {
                 content[key][content[key].length] = newArrayContent;
                 updateField(content[key], content[key]);
               }}
-            >
-              Click Here
-            </Button>
+            />
             {arrayField(
               properties[key],
               content[key],
