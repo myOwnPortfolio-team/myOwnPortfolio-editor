@@ -64,11 +64,11 @@ const initializeFields = (properties, required, cont) => {
           if (properties[key].minItems > 0) {
             if (properties[key].items.type === 'object') {
               updateField(
-                initializeFields(
+                [initializeFields(
                   properties[key].items.properties,
                   properties[key].items.required,
                   {},
-                ),
+                )],
                 key,
               );
             } else {
@@ -107,32 +107,38 @@ const fields = (properties, required, cont, updateContent) => {
   };
 
   const arrayField = (arrayProperties, arrayContent, updateArray) => {
-    if (arrayProperties.items.type === 'object') {
-      return Object.keys(arrayContent).map((key) => {
+    if (arrayContent !== undefined) {
+      if (arrayProperties.items.type === 'object') {
+        return Object.keys(arrayContent).map((key) => {
+          return (
+            <div>
+              {fields(
+                arrayProperties.items.properties,
+                arrayProperties.items.required,
+                arrayContent[key],
+                updateField,
+              )}
+            </div>
+          );
+        });
+      }
+      return arrayContent.map((key, index) => {
         return (
           <div>
             {fields(
-              arrayProperties.items.properties,
-              arrayProperties.items.required,
-              arrayContent[key],
-              updateField,
+              [arrayProperties.items],
+              'isSimpleArray',
+              [key],
+              value => updateArrayField(value, arrayContent, index, updateArray),
             )}
           </div>
         );
       });
-    }
-    return arrayContent.map((key, index) => {
+    } else {
       return (
-        <div>
-          {fields(
-            [arrayProperties.items],
-            'isSimpleArray',
-            [key],
-            value => updateArrayField(value, arrayContent, index, updateArray),
-          )}
-        </div>
-      );
-    });
+        <div>Create an item</div>
+      )
+    }
   };
 
   return Object.keys(properties).map((key, index) => {
