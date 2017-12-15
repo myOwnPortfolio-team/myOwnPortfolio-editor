@@ -1,6 +1,7 @@
 import Dexie from 'dexie';
 
 import ModulesTable from './tables/modules';
+import UserInfosTable from './tables/user-infos';
 
 const databaseException = (message) => {
   this.message = message;
@@ -14,6 +15,7 @@ class Database {
     this.database = new Dexie(this.name);
     this.tables = {
       modules: new ModulesTable(this.database, properties),
+      userInfos: new UserInfosTable(this.database, properties),
     };
   }
 

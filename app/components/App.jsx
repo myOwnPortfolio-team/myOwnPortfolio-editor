@@ -112,6 +112,8 @@ class App extends React.Component {
         version={this.props.version}
         switchPage={page => this.switchPage(page)}
         setModuleList={modules => this.setModuleList(modules)}
+        serverHost={this.props.serverHost}
+        serverPort={this.props.serverPort}
       />);
     switch (this.state.activePage) {
       case 'splash':

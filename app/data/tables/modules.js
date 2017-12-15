@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import Table from './table';
 import Module from '../objects/module';
-import WebSocketClient from '../../auth/websocket';
 
 // Private methods
 const getRepositoryModules = Symbol('Get modules from repository');
@@ -17,50 +16,28 @@ class ModulesTable extends Table {
   constructor(database, properties) {
     super(database, 'modules', 'name, sha, content, properties, style');
 
-    /* this.githubToken = properties.githubToken; */
     this.repositoryURL = properties.repositoryURL;
     this.modulesPath = properties.modulesPath;
     this.filesPaths = properties.filesPaths;
-
-    this.serverHost = properties.serverHost;
-    this.serverPort = properties.serverPort;
   }
 
-  fill() {
-    // Get Github Token
-    const accessTokenPromise = new Promise((resolve, reject) => {
-      const socket = new WebSocketClient(this.serverHost, this.serverPort);
-      socket
-        .getAuthLink()
-        .then((link) => {
-          console.log(link);
-        })
-        .catch(error => reject(error));
-
-      socket
-        .getAccessToken()
-        .then((token) => {
-          process.env.MOP_ACCESS_TOKEN = token;
-          resolve(token);
-        })
-        .catch(error => reject(error));
-    });
-
+  fill(accessToken = undefined) {
     // Remove modules that are no longer used
     const clearDatabasePromise = this[clearDatabase](
-      this[getRepositoryModules](accessTokenPromise),
+      this[getRepositoryModules](accessToken),
       this[getDatabaseModules](),
     );
 
     const addModulesInDatabasePromise = this[addModulesInDatabase](
-      this[getRepositoryModules](accessTokenPromise),
+      this[getRepositoryModules](accessToken),
       this[getDatabaseModules](),
     );
 
     const updateDatabaseModulesPromise = this[updateDatabaseModules](
       addModulesInDatabasePromise,
-      this[getRepositoryModules](accessTokenPromise),
+      this[getRepositoryModules](accessToken),
       this[getDatabaseModules](),
+      accessToken,
     );
 
     return Promise.all([
@@ -84,28 +61,25 @@ class ModulesTable extends Table {
             )));
   }
 
-  [getRepositoryModules](accessTokenPromise) {
+  [getRepositoryModules](accessToken) {
     return new Promise((resolve, reject) => {
-      accessTokenPromise
-        .then((token) => {
-          const headers = {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          };
+      let headers;
+      if (accessToken !== undefined) {
+        headers = {
+          headers: {
+            Authorization: `token ${accessToken}`,
+          },
+        };
+      } else {
+        headers = {
+          headers: {},
+        };
+      }
 
-          axios
-            .get(`${this.repositoryURL}/${this.modulesPath}`, headers)
-            .then(res => resolve(res.data))
-            .catch(error => reject(error));
-        })
-        .catch(() => {
-          // Try to get without token
-          axios
-            .get(`${this.repositoryURL}/${this.modulesPath}`)
-            .then(res => resolve(res.data))
-            .catch(error => reject(error));
-        });
+      axios
+        .get(`${this.repositoryURL}/${this.modulesPath}`, headers)
+        .then(res => resolve(res.data))
+        .catch(error => reject(error));
     });
   }
 
@@ -168,7 +142,7 @@ class ModulesTable extends Table {
       });
   }
 
-  [updateDatabaseModules](promise, repositoryModulesPromise, databaseModulesPromise) {
+  [updateDatabaseModules](promise, repositoryModulesPromise, databaseModulesPromise, accessToken) {
     return promise
       .then(() =>
         Promise.all([
@@ -188,7 +162,11 @@ class ModulesTable extends Table {
         return Promise.all(repositoryModules.map(((repositoryModule) => {
           let updatePromise;
           if (repositoryModule.sha !== databaseModulesSha[repositoryModule.name]) {
-            updatePromise = this[updateDatabaseModule](repositoryModule.name, repositoryModule.sha);
+            updatePromise = this[updateDatabaseModule](
+              repositoryModule.name,
+              repositoryModule.sha,
+              accessToken,
+            );
           } else {
             updatePromise = null;
           }
@@ -198,14 +176,23 @@ class ModulesTable extends Table {
       });
   }
 
-  [updateDatabaseModule](name, sha) {
+  [updateDatabaseModule](name, sha, accessToken) {
     // Retrieve JSON schema files
-    const headers = {
-      headers: {
-        /* Authorization: 'token GITHUB_TOKEN', */
-        Accept: 'application/vnd.github.VERSION.raw',
-      },
-    };
+    let headers;
+    if (accessToken !== undefined) {
+      headers = {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          Accept: 'application/vnd.github.VERSION.raw',
+        },
+      };
+    } else {
+      headers = {
+        headers: {
+          Accept: 'application/vnd.github.VERSION.raw',
+        },
+      };
+    }
 
     let updatePromise = axios.all([
       axios.get(

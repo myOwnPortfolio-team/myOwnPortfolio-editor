@@ -15,9 +15,6 @@ const Header = props => (
     </Menu.Item>
     <Menu.Menu position="right">
       {renderItems(props.items)}
-      <Menu.Item>
-        <Button circular icon="github" />
-      </Menu.Item>
     </Menu.Menu>
   </Menu>
 );
