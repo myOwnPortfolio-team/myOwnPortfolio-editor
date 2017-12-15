@@ -19,6 +19,7 @@ class App extends React.Component {
       database: props.database,
       modules: [],
       myOwnContent: [],
+      appPropertiesSchema: {},
       moduleListSchema: {},
       myOwnModules: [],
       activeModule: new Module('default'),
@@ -77,8 +78,10 @@ class App extends React.Component {
   }
 
   switchActiveModule(index, module) {
-    this.setState({ activeModule: module });
-    this.setState({ activeModuleIndex: index });
+    this.setState({
+      activeModule: module,
+      activeModuleIndex: index,
+    });
   }
 
   switchModules(order) {
@@ -128,6 +131,7 @@ class App extends React.Component {
       <EditionPage
         modules={this.state.modules}
         myOwnContent={this.state.myOwnContent}
+        appPropertiesSchema={this.state.appPropertiesSchema}
         moduleListSchema={this.state.moduleListSchema}
         myOwnModules={this.state.myOwnModules}
         activeModule={this.state.activeModule}
