@@ -1,8 +1,8 @@
 {
   "title": "My Own Portfolio Editor",
   "version":  {
-    "name": "Abondance",
-    "id": "1.00"
+    "name": "Boursin",
+    "id": "2.00"
   },
   "repositoryURL": "https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core",
   "modulesPath": "contents/app/modules/",
