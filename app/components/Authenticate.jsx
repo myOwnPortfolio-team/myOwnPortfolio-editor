@@ -4,6 +4,16 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 
 import WebSocketClient from '../auth/websocket';
+import platform from '../utils/platform';
+
+const openWindow = (authLink) => {
+  if (platform.isElectron()) {
+    const electron = platform.getPlatformModule(platform.getPlatform());
+    electron.shell.openExternal(authLink);
+  } else {
+    window.open(this.state.authLink);
+  }
+};
 
 class Authenticate extends React.Component {
   constructor(props) {
@@ -57,7 +67,7 @@ class Authenticate extends React.Component {
           icon="github alternate"
           labelPosition="left"
           color="blue"
-          onClick={() => window.open(this.state.authLink)}
+          onClick={() => openWindow(this.state.authLink)}
         />
       );
     } else {
