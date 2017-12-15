@@ -19,6 +19,7 @@ class App extends React.Component {
       database: props.database,
       modules: [],
       myOwnContent: [],
+      moduleListSchema: {},
       myOwnModules: [],
       activeModule: new Module('default'),
       activeModuleIndex: -1,
@@ -127,6 +128,7 @@ class App extends React.Component {
       <EditionPage
         modules={this.state.modules}
         myOwnContent={this.state.myOwnContent}
+        moduleListSchema={this.state.moduleListSchema}
         myOwnModules={this.state.myOwnModules}
         activeModule={this.state.activeModule}
         activeModuleIndex={this.state.activeModuleIndex}

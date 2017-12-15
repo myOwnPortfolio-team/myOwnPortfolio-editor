@@ -11,7 +11,11 @@ class Editor extends React.Component {
   }
 
   updateContent(contentTab) {
-    this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
+    if (this.state.activeTab === 'module') {
+      this.props.myOwnContent.modules[this.props.activeModuleIndex] = contentTab;
+    } else {
+      this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
+    }
     this.setState({ myOwnContent: this.props.myOwnContent });
   }
 
@@ -26,6 +30,14 @@ class Editor extends React.Component {
       if (activeSchema === null) {
         return (<div className="editor-empty-content">Create your own porfolio</div>);
       }
+      if (this.state.activeTab === 'module') {
+        return fields(
+          this.props.moduleListSchema.items.properties,
+          this.props.moduleListSchema.items.required,
+          this.props.myOwnContent.modules[this.props.activeModuleIndex],
+          contentTab => this.updateContent(contentTab),
+        );
+      };
       return fields(
         activeSchema.properties,
         activeSchema.required,
@@ -35,7 +47,7 @@ class Editor extends React.Component {
     };
 
     const menu = () => {
-      if (activeSchema !== null) {
+      if (activeSchema !== null || this.activeSchema === 'module') {
         return (
           <Menu attached="top" tabular>
             <Menu.Item
@@ -51,6 +63,11 @@ class Editor extends React.Component {
             <Menu.Item
               name="Style"
               active={this.state.activeTab === 'style'}
+              onClick={(e, { name }) => this.handleTabClick(name)}
+            />
+            <Menu.Item
+              name="Module"
+              active={this.state.activeTab === 'module'}
               onClick={(e, { name }) => this.handleTabClick(name)}
             />
           </Menu>
