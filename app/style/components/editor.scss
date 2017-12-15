@@ -3,4 +3,20 @@
   flex-direction: column;
   flex: 1;
   overflow-y: auto;
+  padding: $space;
+
+  .editor-content {
+    display: flex;
+    flex: 1;
+    overflow-y: auto;
+
+    .editor-empty-content {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      font-size: 2rem;
+    }
+  }
 }

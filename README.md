@@ -1,4 +1,4 @@
-# MyOwnPortfolio-Editor (WORK IN PROGRESS)
+<h1 style="display: inline;"> MyOwnPortfolio-Editor (WORK IN PROGRESS)<img src="./app/assets/icons/logo.svg" width="24" display="inline"/></h1>
 
 __Auteurs__ :
 * [Morgane LEGROS](https://github.com/morgane1806/)
@@ -62,3 +62,12 @@ Avec ```<plateforme>``` à remplacer par l'une des options suivantes :
 * ```osx``` : MacOS
 * ```linux``` : Linux
 * ```win32``` : Windows
+
+## Tests unitaires
+
+Afin de vérifier que l'application est fonctionnelle, un ensemble de test unitaires est fournit.
+Pour exécuter les tests la commande suivante doit être utilisée :
+
+```
+$ npm test
+```

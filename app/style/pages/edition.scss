@@ -1,0 +1,32 @@
+@import '../components/editor';
+
+.edition-page {
+  display: flex;
+  flex-direction: column;
+
+  .grid {
+    margin: 0;
+    flex: 1;
+
+    .side-bar {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      .side-bar-group-button {
+        padding-bottom: 5px;
+        text-align: center;
+      }
+
+      .side-bar-content {
+        flex: 1;
+        overflow-y: auto;
+      }
+    }
+  }
+
+  .ui {
+    margin-bottom: 0;
+  }
+}

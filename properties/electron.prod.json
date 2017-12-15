@@ -2,6 +2,6 @@
   "url": {
     "index": "app/index.html",
     "splash": "app/splash.html",
-    "icon": "app/assets/icons/favicon-96.png"
+    "icon": "app/assets/icons/icon96.png"
   }
 }

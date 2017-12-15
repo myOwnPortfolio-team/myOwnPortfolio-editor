@@ -5,38 +5,53 @@ import Loader from 'react-loaders';
 
 import platform from '../utils/platform';
 
-class App extends React.Component {
+class SplashScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       database: props.database,
-      modules: [],
       message: 'Loading...',
       version: props.version,
     };
   }
 
   componentDidMount() {
-    const table = this.state.database.table('modules');
+    const tableModules = this.state.database.table('modules');
+    const tableInfos = this.state.database.table('userInfos');
     // Load modules
-    this.updateMessage('Initializing modules');
 
-    table
-      .fill()
+    tableInfos
+      .userExists()
+      .then((exists) => {
+        if (exists) {
+          this.updateMessage('Loading user infos');
+          return tableInfos.getUserInfos();
+        }
+        return undefined;
+      })
+      .then((user) => {
+        this.updateMessage('Initializing modules');
+        let token;
+        if (user !== undefined) {
+          token = user.accessToken;
+        }
+
+        return tableModules.fill(token);
+      })
       .then(() => {
         this.updateMessage('Loading modules');
-        table
-          .getAll()
-          .then((modules) => {
-            this.updateMessage('Loaded');
+        return tableModules.getAll();
+      })
+      .then((modules) => {
+        this.updateMessage('Loaded');
 
-            if (platform.isElectron()) {
-              const electron = platform.getPlatformModule(platform.getPlatform());
-              electron.ipcRenderer.send('closeSplashScreen', modules);
-            } else {
-              this.setState({ modules });
-            }
-          });
+        if (platform.isElectron()) {
+          const electron = platform.getPlatformModule(platform.getPlatform());
+          electron.ipcRenderer.send('closeSplashScreen', modules);
+        } else {
+          this.props.setModuleList(modules);
+          this.props.switchPage('home');
+        }
       });
   }
 
@@ -67,4 +82,4 @@ class App extends React.Component {
   }
 }
 
-module.exports = App;
+module.exports = SplashScreen;

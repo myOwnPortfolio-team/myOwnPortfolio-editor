@@ -1,9 +1,10 @@
-.app {
+.render-page {
   display: flex;
   flex-direction: column;
 
-  .grid {
+  iframe {
     flex: 1;
+    border-width: 0;
   }
 
   .ui {

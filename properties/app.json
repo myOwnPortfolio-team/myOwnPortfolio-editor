@@ -1,10 +1,17 @@
 {
   "title": "My Own Portfolio Editor",
+  "version":  {
+    "name": "Boursin",
+    "id": "2.00"
+  },
   "repositoryURL": "https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core",
   "modulesPath": "contents/app/modules/",
   "filesPaths": [
     "contents/app/modules/$moduleName/json_schema/content.json",
     "contents/app/modules/$moduleName/json_schema/properties.json",
     "contents/app/modules/$moduleName/json_schema/style.json"
-  ]
+  ],
+  "githubAPI": "https://api.github.com",
+  "serverHost": "localhost",
+  "serverPort": 1337
 }

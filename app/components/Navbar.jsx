@@ -2,16 +2,16 @@ import React from 'react';
 import { Menu, Icon } from 'semantic-ui-react';
 
 const Navbar = (props) => {
-  const moduleList = props.modules.map(module => (
+  const moduleList = Object.keys(props.modules).map((key, index) => (
     <Menu.Item
-      key={module.name}
-      name={module.name}
-      onClick={() => props.handleClick(module)}
-      active={props.activeItem === module.name}
+      key={key}
+      name={props.modules[key].name}
+      onClick={() => props.handleClick(index, props.modules[key])}
+      active={props.activeItem === index}
       link
     >
       <Icon name="address book outline" />
-      {module.name}
+      {props.modules[key].name}
     </Menu.Item>
   ));
 

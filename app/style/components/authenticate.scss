@@ -1,0 +1,42 @@
+.authenticate {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  .image {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex: 1;
+    justify-content: center;
+  
+    .logo {
+      width: 80%;
+      height: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    .title {
+      margin: 0;
+      text-align: center;
+      font-size: 3rem;
+      color: $primary-color;
+    }
+  }
+
+  .button-container {
+    display: flex;
+
+    .auth-button {
+      width: 50%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 25px;
+
+      .button {
+        height: 50px;
+      }
+    }
+  }
+}

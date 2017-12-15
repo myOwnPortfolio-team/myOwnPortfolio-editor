@@ -26,7 +26,7 @@ const iconURL = path.join(__dirname, properties.url.icon);
 let splash;
 let applicationWindow;
 
-function createApplicationWindow() {
+const createApplicationWindow = (modules) => {
   // Create splash screen
   applicationWindow = new BrowserWindow({
     title: applicationTitle,
@@ -44,19 +44,23 @@ function createApplicationWindow() {
   // Event launched when the window is ready
   applicationWindow.once('ready-to-show', () => {
     // Show Window
-    applicationWindow.show();
-    if (splash) {
-      splash.close();
-    }
+    applicationWindow.webContents.send('loadedModules', modules);
+
+    setTimeout(() => {
+      applicationWindow.show();
+      if (splash) {
+        splash.close();
+      }
+    }, 2000);
   });
 
   // Envent launched when the window is closed
   applicationWindow.on('closed', () => {
     applicationWindow = null;
   });
-}
+};
 
-function createSplashScreen() {
+const createSplashScreen = () => {
   // Create splash screen
   splash = new BrowserWindow({
     title: applicationTitle,
@@ -77,22 +81,20 @@ function createSplashScreen() {
     splash.show();
   });
 
-  // Event launched when the window is showed
-  splash.on('show', () => {
-    // Loading operations
-    setTimeout(() => {
-      createApplicationWindow();
-    }, 5000);
-  });
-
   // Envent launched when the window is closed
   splash.on('closed', () => {
     splash = null;
   });
-}
+};
 
 // Setting first window to be showed by app
 app.on('ready', createSplashScreen);
+
+// Electron <-> App communication
+const closeSplashScreen = (event, modules) => {
+  createApplicationWindow(modules);
+};
+electron.ipcMain.on('closeSplashScreen', closeSplashScreen);
 
 // Quit when all windows are closed
 app.on('window-all-closed', () => {

@@ -1,15 +1,14 @@
-const BabiliPlugin = require('babili-webpack-plugin');
 const webpack = require('webpack');
+const glob = require('glob');
 const path = require('path');
 
 const config = {
   entry: {
-    index: ['webpack/hot/only-dev-server', './app/index.jsx'],
-    splash: './app/splash.jsx',
+    test: glob.sync('./test/**/test-*.js'),
   },
   output: {
-    path: path.join(__dirname, './dist/app'),
-    filename: 'js/[name].bundle.js',
+    path: path.join(__dirname, './dist/test'),
+    filename: '[name].bundle.js',
   },
   node: {
     fs: 'empty',
@@ -41,13 +40,6 @@ const config = {
         },
       },
       {
-        test: /\.(html)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-        },
-      },
-      {
         test: /\.(svg|png)$/,
         loader: 'file-loader',
         options: {
@@ -56,27 +48,7 @@ const config = {
       },
     ],
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
-  devServer: {
-    contentBase: path.join(__dirname, '/dist/app'),
-    compress: true,
-    port: 9000,
-  },
 };
 
 
-module.exports = (env) => {
-  if (env && env.production) {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: '"production"',
-        },
-      }),
-      new BabiliPlugin(),
-    );
-  }
-  return config;
-};
+module.exports = config;
