@@ -11,7 +11,7 @@ const openWindow = (authLink) => {
     const electron = platform.getPlatformModule(platform.getPlatform());
     electron.shell.openExternal(authLink);
   } else {
-    window.open(this.state.authLink);
+    window.open(authLink);
   }
 };
 
