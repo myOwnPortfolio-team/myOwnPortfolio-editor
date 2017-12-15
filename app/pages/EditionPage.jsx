@@ -5,7 +5,7 @@ import Header from '../components/Header.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
 
-const headerItems = props => [(<Button primary name="compile" onClick={() => props.switchPage('render')}>Compile</Button>)];
+const headerItems = props => [(<Button primary name="compile" onClick={() => props.switchPage('render')}>Generate</Button>)];
 
 class EditionPage extends React.Component {
   constructor(props) {
