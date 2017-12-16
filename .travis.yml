@@ -14,11 +14,15 @@ install:
   - docker build . -t myownportfolio-editor
 
 script:
-  - docker run --name build_web --volume $(pwd)/web:/root/dist/app myownportfolio-editor npm run build:web
-  - docker run --name build_electron --volume $(pwd)/electron:/root/dist/package myownportfolio-editor npm run build:electron
+  # - docker run --name build_web --volume $(pwd)/web:/root/dist/app myownportfolio-editor npm run build:web
+  # - docker run --name build_electron --volume $(pwd)/electron:/root/dist/package myownportfolio-editor npm run build:electron
+  - mkdir web
+  - touch web/index.html
 
 deploy:
-  provider: surge
-  project: ./web/
-  domain: editor.myownportfolio.surge.sh
-  skip_cleanup: true
+  - provider: surge
+    project: ./web/
+    domain: editor.myownportfolio.surge.sh
+    skip_cleanup: true
+  - provider: script
+    script: deploy.sh
