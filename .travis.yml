@@ -13,8 +13,9 @@ install:
   - docker build . -t myownportfolio-editor
 
 script:
-  - docker run --name build_web --volume $(pwd)/web:/root/dist/app myownportfolio-editor npm run build:web
-  - docker run --name build_electron --volume $(pwd)/electron:/root/dist/package myownportfolio-editor npm run build:electron
+  - docker run --rm --volume $(pwd)/web:/root/dist/app myownportfolio-editor npm run test
+  - docker run --rm --volume $(pwd)/web:/root/dist/app myownportfolio-editor npm run build:web
+  - docker run --rm --volume $(pwd)/electron:/root/dist/package myownportfolio-editor npm run build:electron
 
 deploy:
   provider: surge
