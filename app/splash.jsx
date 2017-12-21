@@ -19,7 +19,7 @@ ReactDOM.render(
     database={database}
     version={PROPERTIES.version}
     serverHost={PROPERTIES.serverHost}
-    serverPort={PROPERTIES.serverPort}
+    serverPort={PROPERTIES.serverWSPort}
   />,
   document.getElementById('root'),
 );

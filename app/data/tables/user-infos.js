@@ -6,7 +6,7 @@ class UserInfosTable extends Table {
     super(database, 'userInfos', 'id, username, accessToken, scopes, avatarURL');
 
     this.serverHost = properties.serverHost;
-    this.serverPort = properties.serverPort;
+    this.serverPort = properties.serverWSPort;
     this.githubAPI = properties.githubAPI;
   }
 

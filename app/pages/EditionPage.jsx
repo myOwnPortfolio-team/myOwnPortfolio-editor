@@ -1,12 +1,62 @@
 import React from 'react';
 import { Button, Divider, Grid } from 'semantic-ui-react';
 
+import axios from 'axios';
+
 import Module from '../data/objects/module.js';
 import Header from '../components/Header.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
 
-const headerItems = props => [(<Button primary name="compile" onClick={() => props.switchPage('render')}>Generate</Button>)];
+const userDoesNotExists = () => 'No user authenticated';
+const undefinedAccessToken = () => 'No access token found';
+const serverError = () => 'An error occured with the server';
+const invalidToken = () => 'Invalid access token';
+
+const compilePortfolio = (props, component) => {
+  component.setLoadingState(true);
+
+  const infos = props.database.table('userInfos');
+  infos
+    .userExists()
+    .then((exists) => {
+      if (exists === true) {
+        return infos.getUserInfos();
+      }
+      throw userDoesNotExists();
+    })
+    .then((user) => {
+      if (user.accessToken !== undefined) {
+        return axios.post(
+          `http://${props.serverHost}:${props.serverPort}${props.serverPostURL}?token=${user.accessToken}`,
+          props.myOwnContent,
+          {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+      }
+      throw undefinedAccessToken();
+    })
+    .then((res) => {
+      component.setLoadingState(false);
+      const { data } = res;
+      if (data.status === 200) {
+        props.setRenderedURL(data.message);
+        props.switchPage('render');
+      } else if (data.status === 400) {
+        throw invalidToken();
+      } else {
+        throw serverError();
+      }
+    })
+    .catch((error) => {
+      component.setLoadingState(false);
+      component.setError(error);
+    });
+};
 
 class EditionPage extends React.Component {
   constructor(props) {
@@ -14,7 +64,17 @@ class EditionPage extends React.Component {
 
     this.state = {
       activeSideBar: 'myOwnModules',
+      compileLoading: false,
+      compileError: undefined,
     };
+  }
+
+  setError(error) {
+    this.setState({ compileError: error });
+  }
+
+  setLoadingState(isLoading) {
+    this.setState({ compileLoading: isLoading });
   }
 
   switchSideBar(sideBar) {
@@ -103,15 +163,32 @@ class EditionPage extends React.Component {
       }
     };
 
+    let compile;
+    if (this.state.compileError !== undefined) {
+      compile = <Button disabled color="red" primary name="compile">Generate</Button>;
+    } else if (this.state.compileLoading === true) {
+      compile = <Button loading primary name="compile">Generate</Button>;
+    } else {
+      compile = (
+        <Button
+          primary
+          name="compile"
+          onClick={() => compilePortfolio(this.props, this)}
+        >
+          Generate
+        </Button>);
+    }
+
     return (
       <div className="container edition-page">
-        <Header switchPage={page => this.props.switchPage(page)} items={headerItems(this.props)} />
+        <Header switchPage={page => this.props.switchPage(page)} items={[compile]} />
         <Grid>
           <Grid.Column className="side-bar" width={3}>
             {sideBar(this.state.activeSideBar)}
           </Grid.Column>
           <Grid.Column className="editor" stretched width={13}>
             <Editor
+              switchActiveModule={this.props.switchActiveModule}
               activeModuleIndex={this.props.activeModuleIndex}
               module={this.props.activeModule}
               myOwnContent={this.props.myOwnContent}

@@ -13,7 +13,7 @@ const headerItems = props => [
 const EditionPage = props => (
   <div className="container render-page">
     <Header switchPage={page => props.switchPage(page)} items={headerItems(props)} />
-    <Render url="http://thibault.theologien.fr" />
+    <Render url={props.url} />
   </div>
 );
 

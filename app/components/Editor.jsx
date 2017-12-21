@@ -21,7 +21,6 @@ class Editor extends React.Component {
     } else {
       this.props.myOwnContent.app_properties = contentTab;
     }
-    this.setState({ myOwnContent: this.props.myOwnContent });
   }
 
   handleTabClick(tab) {

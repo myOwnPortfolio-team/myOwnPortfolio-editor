@@ -13,5 +13,8 @@
   ],
   "githubAPI": "https://api.github.com",
   "serverHost": "localhost",
-  "serverPort": 1337
+  "serverWSPort": 1337,
+  "serverPort": 3000,
+  "serverPostURL": "/portfolio",
+  "serverGetURL": "/portfolio"
 }

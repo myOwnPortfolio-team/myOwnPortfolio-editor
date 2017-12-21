@@ -19,6 +19,7 @@ class App extends React.Component {
     const page = platform.isElectron() ? 'home' : 'splash';
     this.state = {
       database: props.database,
+      url: undefined,
       modules: [],
       myOwnContent: [],
       appPropertiesSchema: {},
@@ -30,7 +31,7 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // Check for updates and load modules
     if (platform.isElectron()) {
       const electron = platform.getPlatformModule(platform.getPlatform());
@@ -55,29 +56,27 @@ class App extends React.Component {
     this.setState({ modules });
   }
 
-  addModule(module) {
-    const index = this.state.myOwnModules.push(module) - 1;
-    this.state.myOwnContent.modules.push({
-      name: module.name,
-      type: module.name,
-      referenced: true,
-      content: initializeFields(
-        module.schema.content.properties,
-        module.schema.content.required,
-        {},
-      ),
-      properties: initializeFields(
-        module.schema.properties.properties,
-        module.schema.properties.required,
-        {},
-      ),
-      style: initializeFields(
-        module.schema.style.properties,
-        module.schema.style.required,
-        {},
-      ),
-    });
-    this.switchActiveModule(index, module);
+  setRenderedURL(url) {
+    this.setState({ url });
+  }
+
+  deleteModule() {
+    let index = this.state.activeModuleIndex;
+    if (index !== -1) {
+      this.state.myOwnModules.splice(index, 1);
+      this.state.myOwnContent.modules.splice(index, 1);
+      if (index > 0) {
+        index -= 1;
+      } else if (this.state.myOwnModules.length < 1) {
+        index = -1;
+        this.setState({ activeModule: new Module('default') });
+      }
+    }
+    this.setState({ activeModuleIndex: index });
+  }
+
+  switchPage(page) {
+    this.setState({ activePage: page });
   }
 
   switchActiveModule(index, module) {
@@ -109,30 +108,36 @@ class App extends React.Component {
     this.setState({ activeModuleIndex: index });
   }
 
-  deleteModule() {
-    let index = this.state.activeModuleIndex;
-    let module = new Module('default');
-    if (index !== -1) {
-      this.state.myOwnModules.splice(index, 1);
-      this.state.myOwnContent.modules.splice(index, 1);
-      if (index > 0) {
-        index -= 1;
-        module = this.state.myOwnModules[index];
-      } else if (this.state.myOwnModules.length < 1) {
-        index = -1;
-        this.setState({ activeModule: new Module('default') });
-      }
-    }
+  addModule(module) {
+    const index = this.state.myOwnModules.push(module) - 1;
+    this.state.myOwnContent.modules.push({
+      name: module.name,
+      type: module.name,
+      referenced: true,
+      content: initializeFields(
+        module.schema.content.properties,
+        module.schema.content.required,
+        {},
+      ),
+      properties: initializeFields(
+        module.schema.properties.properties,
+        module.schema.properties.required,
+        {},
+      ),
+      style: initializeFields(
+        module.schema.style.properties,
+        module.schema.style.required,
+        {},
+      ),
+    });
     this.switchActiveModule(index, module);
-  }
-
-  switchPage(page) {
-    this.setState({ activePage: page });
   }
 
   render() {
     const editionPage = (
       <EditionPage
+        database={this.state.database}
+        setRenderedURL={this.setRenderedURL}
         modules={this.state.modules}
         myOwnContent={this.state.myOwnContent}
         appPropertiesSchema={this.state.appPropertiesSchema}
@@ -145,9 +150,18 @@ class App extends React.Component {
         switchModules={order => this.switchModules(order)}
         switchPage={page => this.switchPage(page)}
         switchActiveModule={(index, module) => this.switchActiveModule(index, module)}
+        serverHost={this.props.serverHost}
+        serverPort={this.props.serverPort}
+        serverPostURL={this.props.serverPostURL}
+        serverGetURL={this.props.serverGetURL}
       />
     );
-    const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
+    const renderPage = (
+      <RenderPage
+        database={this.state.database}
+        url={this.state.url}
+        switchPage={page => this.switchPage(page)}
+      />);
     const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
     const splashPage = (
       <SplashPage
@@ -156,7 +170,7 @@ class App extends React.Component {
         switchPage={page => this.switchPage(page)}
         setModuleList={modules => this.setModuleList(modules)}
         serverHost={this.props.serverHost}
-        serverPort={this.props.serverPort}
+        serverPort={this.props.serverWSPort}
       />);
     switch (this.state.activePage) {
       case 'splash':
