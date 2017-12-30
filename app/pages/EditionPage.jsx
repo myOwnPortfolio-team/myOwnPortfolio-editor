@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Button } from 'semantic-ui-react';
 
+import Module from '../data/objects/module.js';
 import Header from '../components/Header.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
@@ -72,6 +73,13 @@ class EditionPage extends React.Component {
         <Header switchPage={page => this.props.switchPage(page)} items={headerItems(this.props)} />
         <Grid>
           <Grid.Column width={3}>
+            <Button
+              onClick={() => {
+                this.props.switchActiveModule(-1, new Module('default'));
+              }}
+            >
+              Edit app properties
+            </Button>
             {sideBar(this.state.activeSideBar)}
           </Grid.Column>
           <Grid.Column stretched width={13}>
@@ -79,6 +87,7 @@ class EditionPage extends React.Component {
               activeModuleIndex={this.props.activeModuleIndex}
               module={this.props.activeModule}
               myOwnContent={this.props.myOwnContent}
+              appPropertiesSchema={this.props.appPropertiesSchema}
               moduleListSchema={this.props.moduleListSchema}
             />
           </Grid.Column>

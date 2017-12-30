@@ -1,7 +1,6 @@
 import React from 'react';
-import { Form, Menu, Button } from 'semantic-ui-react';
+import { Form, Menu } from 'semantic-ui-react';
 import { fields } from './Fields.jsx';
-import Module from '../data/objects/module.js';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -11,24 +10,14 @@ class Editor extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.activeModuleIndex !== this.state.activeModuleIndex) {
-      if (nextProps.activeModuleIndex === -2) {
-        this.setState({ activeTab: 'app_properties' });
-      } else {
-        this.setState({ activeTab: 'content' });
-      }
-    }
-  }
-
   updateContent(contentTab) {
     if (this.state.activeTab === 'module') {
       this.props.myOwnContent.modules[this.props.activeModuleIndex] = contentTab;
     } else {
-      if (this.state.activeTab === 'app_properties') {
-        this.props.myOwnContent.app_properties = contentTab;
-      } else {
+      if (this.props.module.schema[this.state.activeTab] !== null) {
         this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
+      } else {
+        this.props.myOwnContent.app_properties = contentTab;
       }
     }
     this.setState({ myOwnContent: this.props.myOwnContent });
@@ -43,21 +32,18 @@ class Editor extends React.Component {
 
     const editorContent = () => {
       if (activeSchema === null) {
-        return (<div className="editor-empty-content">Create your own porfolio</div>);
+        return fields(
+          this.props.appPropertiesSchema.properties,
+          this.props.appPropertiesSchema.required,
+          this.props.myOwnContent.app_properties,
+          contentTab => this.updateContent(contentTab),
+        );
       }
       if (this.state.activeTab === 'module') {
         return fields(
           this.props.moduleListSchema.items.properties,
           this.props.moduleListSchema.items.required,
           this.props.myOwnContent.modules[this.props.activeModuleIndex],
-          contentTab => this.updateContent(contentTab),
-        );
-      }
-      if (this.state.activeTab === 'app_properties') {
-        return fields(
-          this.props.appPropertiesSchema.properties,
-          this.props.appPropertiesSchema.required,
-          this.props.myOwnContent.app_properties,
           contentTab => this.updateContent(contentTab),
         );
       }
@@ -100,13 +86,6 @@ class Editor extends React.Component {
 
     return (
       <div className="container editor">
-        <Button
-          onClick={() => {
-            this.props.switchActiveModule(-2, new Module('default'));
-          }}
-        >
-          Edit app properties
-        </Button>
         {menu()}
         <div className="form editor-content">
           <Form className="form editor-content">
