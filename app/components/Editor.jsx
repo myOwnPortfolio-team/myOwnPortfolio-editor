@@ -41,8 +41,8 @@ class Editor extends React.Component {
       }
       if (this.state.activeTab === 'module') {
         return fields(
-          this.props.moduleListSchema.items.properties,
-          this.props.moduleListSchema.items.required,
+          this.props.moduleSettingSchema.properties,
+          this.props.moduleSettingSchema.required,
           this.props.myOwnContent.modules[this.props.activeModuleIndex],
           contentTab => this.updateContent(contentTab),
         );

@@ -88,7 +88,7 @@ class EditionPage extends React.Component {
               module={this.props.activeModule}
               myOwnContent={this.props.myOwnContent}
               appPropertiesSchema={this.props.appPropertiesSchema}
-              moduleListSchema={this.props.moduleListSchema}
+              moduleSettingSchema={this.props.moduleSettingSchema}
             />
           </Grid.Column>
         </Grid>

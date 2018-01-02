@@ -20,7 +20,7 @@ class App extends React.Component {
       modules: [],
       myOwnContent: [],
       appPropertiesSchema: {},
-      moduleListSchema: {},
+      moduleSettingSchema: {},
       myOwnModules: [],
       activeModule: new Module('default'),
       activeModuleIndex: -1,
@@ -42,6 +42,7 @@ class App extends React.Component {
         app_properties: {},
         modules: [],
       },
+      moduleSettingSchema: this.props.moduleSettingSchema,
     });
   }
 
@@ -132,7 +133,7 @@ class App extends React.Component {
         modules={this.state.modules}
         myOwnContent={this.state.myOwnContent}
         appPropertiesSchema={this.state.appPropertiesSchema}
-        moduleListSchema={this.state.moduleListSchema}
+        moduleSettingSchema={this.state.moduleSettingSchema}
         myOwnModules={this.state.myOwnModules}
         activeModule={this.state.activeModule}
         activeModuleIndex={this.state.activeModuleIndex}
