@@ -10,10 +10,7 @@ import {
   slider,
 } from './Inputs.jsx';
 
-const animationOptions = [
-  { key: '0', text: '0', value: '0' },
-  { key: '1', text: '1', value: '1' },
-];
+const SELECT_ANIMATION_OPTIONS = require('../../properties/select_animation_options').options;
 
 const initializeFields = (properties, required, cont) => {
   let content = cont;
@@ -180,7 +177,7 @@ const fields = (properties, required, cont, updateContent) => {
               key,
               index,
               content[key],
-              animationOptions,
+              SELECT_ANIMATION_OPTIONS,
               updateField,
               isRequired,
             ); // TODO to implement
