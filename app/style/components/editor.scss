@@ -10,4 +10,10 @@
     flex: 1;
     overflow-y: auto;
   }
+
+  .textfield-markdown {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+  }
 }

@@ -202,9 +202,12 @@ const fields = (properties, required, cont, updateContent) => {
             return textfield(properties, key, content[key], updateField, isRequired);
           case 'textfield-markdown':
             return (
-              <div>
-                <ReactMarkdown source={content[key]} />
+              <div className="textfield-markdown">
                 {textfield(properties, key, content[key], updateField, isRequired)}
+                <div>
+                  <p>Preview</p>
+                  <ReactMarkdown source={content[key]} />
+                </div>
               </div>
             );
           default:
