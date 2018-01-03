@@ -99,7 +99,11 @@ const fields = (properties, required, cont, updateContent) => {
   };
 
   const updateArrayField = (value, arrayContent, i, updateArray) => {
-    arrayContent[i] = value[0];
+    if (value !== undefined) {
+      arrayContent[i] = value[0];
+    } else {
+      arrayContent.splice(i, 1);
+    }
     updateArray(arrayContent);
   };
 
@@ -115,6 +119,13 @@ const fields = (properties, required, cont, updateContent) => {
                 arrayContent[key],
                 updateField,
               )}
+              <Button
+                circular
+                icon="minus"
+                onClick={() => {
+                  updateArrayField(undefined, arrayContent, key, updateArray);
+                }}
+              />
             </div>
           );
         });
@@ -128,6 +139,13 @@ const fields = (properties, required, cont, updateContent) => {
               [key],
               value => updateArrayField(value, arrayContent, index, updateArray),
             )}
+            <Button
+              circular
+              icon="minus"
+              onClick={() => {
+                updateArrayField(undefined, arrayContent, index, updateArray);
+              }}
+            />
           </div>
         );
       });
