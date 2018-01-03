@@ -11,7 +11,7 @@ const Navbar = (props) => {
       link
     >
       <Icon name="address book outline" />
-      <p className="item-title">{props.modules[key].name.replace('_', ' ')}</p>
+      <p className="item-title">{props.modules[key].name.replace(/_/g, ' ')}</p>
     </Menu.Item>
   ));
 

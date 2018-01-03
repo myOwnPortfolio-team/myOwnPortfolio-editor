@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Button } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 
 import {
   checkbox,
@@ -112,7 +112,7 @@ const fields = (properties, required, cont, updateContent) => {
       if (arrayProperties.items.type === 'object') {
         return Object.keys(arrayContent).map((key) => {
           return (
-            <div>
+            <Segment>
               {fields(
                 arrayProperties.items.properties,
                 arrayProperties.items.required,
@@ -120,19 +120,19 @@ const fields = (properties, required, cont, updateContent) => {
                 updateField,
               )}
               <Button
-                circular
-                icon="minus"
                 onClick={() => {
                   updateArrayField(undefined, arrayContent, key, updateArray);
                 }}
-              />
-            </div>
+              >
+              Delete this item
+              </Button>
+            </Segment>
           );
         });
       }
       return arrayContent.map((key, index) => {
         return (
-          <div>
+          <Segment>
             {fields(
               [arrayProperties.items],
               'isSimpleArray',
@@ -140,14 +140,14 @@ const fields = (properties, required, cont, updateContent) => {
               value => updateArrayField(value, arrayContent, index, updateArray),
             )}
             <Button
-              circular
-              icon="minus"
               onClick={() => {
                 updateArrayField(undefined, arrayContent, index, updateArray);
               }}
               disabled={arrayContent.length <= arrayProperties.minItems}
-            />
-          </div>
+            >
+            Delete this item
+            </Button>
+          </Segment>
         );
       });
     }
@@ -220,8 +220,8 @@ const fields = (properties, required, cont, updateContent) => {
         }
       case 'object':
         return (
-          <div>
-            <h2>{key}</h2>
+          <Segment>
+            <h1>Object : {key.replace(/_/g, ' ')}</h1>
             <div>
               {fields(
                 properties[key].properties,
@@ -230,7 +230,7 @@ const fields = (properties, required, cont, updateContent) => {
                 updateField,
               )}
             </div>
-          </div>
+          </Segment>
         );
       case 'array':
         let newArrayContent = '';
@@ -238,11 +238,9 @@ const fields = (properties, required, cont, updateContent) => {
           newArrayContent = {};
         }
         return (
-          <div>
-            <label>{key}</label>
+          <Segment>
+            <div>List of : {key.replace(/_/g, ' ')}</div>
             <Button
-              circular
-              icon="plus"
               onClick={() => {
                 content[key][content[key].length] = newArrayContent;
                 updateField(content[key], key);
@@ -260,13 +258,15 @@ const fields = (properties, required, cont, updateContent) => {
                   );
                 }
               }}
-            />
+            >
+            Add a new item
+            </Button>
             {arrayField(
               properties[key],
               content[key],
               updateField,
             )}
-          </div>
+          </Segment>
         );
       default:
         return input(properties, key, index, content[key], 'text', updateField, isRequired);
