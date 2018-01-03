@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Button } from 'semantic-ui-react';
+import { Button, Divider, Grid } from 'semantic-ui-react';
 
 import Module from '../data/objects/module.js';
 import Header from '../components/Header.jsx';
@@ -23,31 +23,6 @@ class EditionPage extends React.Component {
 
   render() {
     const sideBar = (activeSideBar) => {
-      const toolsModule = () => {
-        if (this.props.activeModuleIndex !== -1) {
-          return (
-            <div className="side-bar-group-button">
-              <Button
-                circular
-                icon="chevron down"
-                onClick={() => this.props.switchModules('down')}
-                disabled={this.props.activeModuleIndex >= this.props.myOwnModules.length - 1}
-              />
-              <Button
-                circular
-                icon="chevron up"
-                onClick={() => this.props.switchModules('up')}
-                disabled={this.props.activeModuleIndex <= 0}
-              />
-              <Button
-                circular
-                icon="trash outline"
-                onClick={() => this.props.deleteModule()}
-              />
-            </div>
-          );
-        }
-      };
       switch (activeSideBar) {
         case 'toolsBar':
           return (
@@ -70,9 +45,48 @@ class EditionPage extends React.Component {
           return (
             <div className="side-bar">
               <div className="side-bar-group-button">
-                <Button circular icon="plus" onClick={() => this.switchSideBar('toolsBar')} />
+                <Button
+                  onClick={() => {
+                    this.props.switchActiveModule(-1, new Module('default'));
+                  }}
+                  primary
+                  fluid
+                >
+                  Edit my app properties
+                </Button>
+                <Divider horizontal>Or</Divider>
+                <Button
+                  onClick={() => this.switchSideBar('toolsBar')}
+                  secondary
+                  fluid
+                >
+                  Add a module
+                </Button>
               </div>
-              {toolsModule()}
+              <Divider />
+              <div className="side-bar-title">My own modules</div>
+              <div className="side-bar-group-button">
+                <Button
+                  circular
+                  icon="chevron down"
+                  onClick={() => this.props.switchModules('down')}
+                  disabled={this.props.activeModuleIndex === -1
+                    || this.props.activeModuleIndex >= this.props.myOwnModules.length - 1}
+                />
+                <Button
+                  circular
+                  icon="chevron up"
+                  onClick={() => this.props.switchModules('up')}
+                  disabled={this.props.activeModuleIndex === -1
+                    || this.props.activeModuleIndex <= 0}
+                />
+                <Button
+                  circular
+                  icon="trash outline"
+                  onClick={() => this.props.deleteModule()}
+                  disabled={this.props.activeModuleIndex === -1}
+                />
+              </div>
               <div className="side-bar-content">
                 <Navbar
                   modules={this.props.myOwnModules}
@@ -93,13 +107,6 @@ class EditionPage extends React.Component {
       <div className="container edition-page">
         <Header switchPage={page => this.props.switchPage(page)} items={headerItems(this.props)} />
         <Grid>
-            <Button
-              onClick={() => {
-                this.props.switchActiveModule(-1, new Module('default'));
-              }}
-            >
-              Edit app properties
-            </Button>
           <Grid.Column className="side-bar" width={3}>
             {sideBar(this.state.activeSideBar)}
           </Grid.Column>
