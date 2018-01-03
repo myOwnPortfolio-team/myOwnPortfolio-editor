@@ -40,7 +40,11 @@
           text-transform: uppercase;
         }
       }
+    }
 
+    .editor {
+      height: 100%;
+      overflow-y: auto;
     }
   }
 

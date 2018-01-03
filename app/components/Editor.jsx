@@ -85,13 +85,11 @@ class Editor extends React.Component {
     };
 
     return (
-      <div className="container editor">
+      <div className="container editor-content">
         {menu()}
-        <div className="form editor-content">
-          <Form className="form editor-content">
-            {editorContent()}
-          </Form>
-        </div>
+        <Form className="form editor-content-under-menu">
+          {editorContent()}
+        </Form>
       </div>
     );
   }
