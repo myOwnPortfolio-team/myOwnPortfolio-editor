@@ -84,7 +84,7 @@ class EditionPage extends React.Component {
           );
         default:
           return (
-            <div>bla</div>
+            <div>Error</div>
           );
       }
     };
@@ -93,7 +93,6 @@ class EditionPage extends React.Component {
       <div className="container edition-page">
         <Header switchPage={page => this.props.switchPage(page)} items={headerItems(this.props)} />
         <Grid>
-          <Grid.Column width={3}>
             <Button
               onClick={() => {
                 this.props.switchActiveModule(-1, new Module('default'));
@@ -101,6 +100,7 @@ class EditionPage extends React.Component {
             >
               Edit app properties
             </Button>
+          <Grid.Column className="side-bar" width={3}>
             {sideBar(this.state.activeSideBar)}
           </Grid.Column>
           <Grid.Column stretched width={13}>
