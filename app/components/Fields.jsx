@@ -145,6 +145,7 @@ const fields = (properties, required, cont, updateContent) => {
               onClick={() => {
                 updateArrayField(undefined, arrayContent, index, updateArray);
               }}
+              disabled={arrayContent.length <= arrayProperties.minItems}
             />
           </div>
         );

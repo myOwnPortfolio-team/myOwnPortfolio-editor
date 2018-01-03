@@ -23,6 +23,31 @@ class EditionPage extends React.Component {
 
   render() {
     const sideBar = (activeSideBar) => {
+      const toolsModule = () => {
+        if (this.props.activeModuleIndex !== -1) {
+          return (
+            <div className="side-bar-group-button">
+              <Button
+                circular
+                icon="chevron down"
+                onClick={() => this.props.switchModules('down')}
+                disabled={this.props.activeModuleIndex >= this.props.myOwnModules.length - 1}
+              />
+              <Button
+                circular
+                icon="chevron up"
+                onClick={() => this.props.switchModules('up')}
+                disabled={this.props.activeModuleIndex <= 0}
+              />
+              <Button
+                circular
+                icon="trash outline"
+                onClick={() => this.props.deleteModule()}
+              />
+            </div>
+          );
+        }
+      };
       switch (activeSideBar) {
         case 'toolsBar':
           return (
@@ -47,11 +72,7 @@ class EditionPage extends React.Component {
               <div className="side-bar-group-button">
                 <Button circular icon="plus" onClick={() => this.switchSideBar('toolsBar')} />
               </div>
-              <div className="side-bar-group-button">
-                <Button circular icon="chevron down" onClick={() => this.props.switchModules('down')} />
-                <Button circular icon="chevron up" onClick={() => this.props.switchModules('up')} />
-                <Button circular icon="trash outline" onClick={() => this.props.deleteModule('up')} />
-              </div>
+              {toolsModule()}
               <div className="side-bar-content">
                 <Navbar
                   modules={this.props.myOwnModules}
