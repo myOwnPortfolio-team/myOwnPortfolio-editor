@@ -11,12 +11,12 @@ const Navbar = (props) => {
       link
     >
       <Icon name="address book outline" />
-      {props.modules[key].name}
+      <p className="item-title">{props.modules[key].name.replace('_', ' ')}</p>
     </Menu.Item>
   ));
 
   return (
-    <Menu fluid vertical tabular className="container">
+    <Menu fluid vertical tabular className="container navbar">
       {moduleList}
     </Menu>
   );

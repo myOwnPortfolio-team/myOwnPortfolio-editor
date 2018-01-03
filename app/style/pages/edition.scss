@@ -1,4 +1,5 @@
 @import '../components/editor';
+@import '../components/navbar';
 
 .edition-page {
   display: flex;
@@ -27,6 +28,13 @@
         flex: 1;
         overflow-y: auto;
       }
+
+      .modules-navbar {
+        .item-title:first-letter {
+          text-transform: uppercase;
+        }
+      }
+
     }
   }
 

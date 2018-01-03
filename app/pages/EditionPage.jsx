@@ -55,7 +55,7 @@ class EditionPage extends React.Component {
               <div className="side-bar-group-button">
                 <Button circular icon="arrow left" onClick={() => this.switchSideBar('myOwnModules')} />
               </div>
-              <div className="side-bar-content">
+              <div className="side-bar-content modules-navbar">
                 <Navbar
                   modules={this.props.modules}
                   handleClick={(index, module) => {
