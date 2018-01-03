@@ -156,7 +156,7 @@ const fields = (properties, required, cont, updateContent) => {
     );
   };
 
-  return Object.keys(properties).map((key, index) => {
+  return Object.keys(properties).map((key) => {
     let isRequired = false;
     if (required === 'isSimpleArray') {
       isRequired = false;
@@ -168,55 +168,54 @@ const fields = (properties, required, cont, updateContent) => {
       case 'integer':
         switch (properties[key].input) {
           case 'slider':
-            return slider(properties, key, index, content[key], '1', updateField, isRequired);
+            return slider(properties, key, content[key], '1', updateField, isRequired);
           default:
-            return slider(properties, key, index, content[key], '1', updateField, isRequired);
+            return slider(properties, key, content[key], '1', updateField, isRequired);
         }
       case 'number':
         switch (properties[key].input) {
           case 'slider':
-            return slider(properties, key, index, content[key], 'any', updateField, isRequired);
+            return slider(properties, key, content[key], 'any', updateField, isRequired);
           default:
-            return slider(properties, key, index, content[key], 'any', updateField, isRequired);
+            return slider(properties, key, content[key], 'any', updateField, isRequired);
         }
       case 'string':
         switch (properties[key].input) {
           case 'color-picker':
-            return input(properties, key, index, content[key], 'color', updateField, isRequired);
+            return input(properties, key, content[key], 'color', updateField, isRequired);
           case 'input-number':
-            return input(properties, key, index, content[key], 'number', updateField, isRequired);
+            return input(properties, key, content[key], 'number', updateField, isRequired);
           case 'input-date':
-            return input(properties, key, index, content[key], 'date', updateField, isRequired);
+            return input(properties, key, content[key], 'date', updateField, isRequired);
           case 'input-text':
-            return input(properties, key, index, content[key], 'text', updateField, isRequired);
+            return input(properties, key, content[key], 'text', updateField, isRequired);
           case 'select-animation':
             return select(
               properties,
               key,
-              index,
               content[key],
               SELECT_ANIMATION_OPTIONS,
               updateField,
               isRequired,
-            ); // TODO to implement
+            );
           case 'textfield':
-            return textfield(properties, key, index, content[key], updateField, isRequired);
+            return textfield(properties, key, content[key], updateField, isRequired);
           case 'textfield-markdown':
             return (
               <div>
-                {textfield(properties, key, index, content[key], updateField, isRequired)}
                 <ReactMarkdown source={content[key]} />
+                {textfield(properties, key, content[key], updateField, isRequired)}
               </div>
             );
           default:
-            return input(properties, key, index, content[key], 'text', updateField, isRequired);
+            return input(properties, key, content[key], 'text', updateField, isRequired);
         }
       case 'boolean':
         switch (properties[key].input) {
           case 'checkbox':
-            return checkbox(properties, key, index, content[key], updateField, isRequired);
+            return checkbox(properties, key, content[key], updateField, isRequired);
           default:
-            return checkbox(properties, key, index, content[key], updateField, isRequired);
+            return checkbox(properties, key, content[key], updateField, isRequired);
         }
       case 'object':
         return (
@@ -269,7 +268,7 @@ const fields = (properties, required, cont, updateContent) => {
           </Segment>
         );
       default:
-        return input(properties, key, index, content[key], 'text', updateField, isRequired);
+        return input(properties, key, content[key], 'text', updateField, isRequired);
     }
   });
 };
