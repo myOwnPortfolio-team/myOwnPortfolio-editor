@@ -149,11 +149,10 @@ const fields = (properties, required, cont, updateContent) => {
           </div>
         );
       });
-    } else {
-      return (
-        <div>Create an item</div>
-      )
     }
+    return (
+      <div>Create an item</div>
+    );
   };
 
   return Object.keys(properties).map((key, index) => {
@@ -245,7 +244,20 @@ const fields = (properties, required, cont, updateContent) => {
               icon="plus"
               onClick={() => {
                 content[key][content[key].length] = newArrayContent;
-                updateField(content[key], content[key]);
+                updateField(content[key], key);
+                if (properties[key].items.type === 'object') {
+                  initializeFields(
+                    properties[key].items.properties,
+                    properties[key].items.required,
+                    content[key][content[key].length - 1],
+                  );
+                } else {
+                  initializeFields(
+                    properties[key].items,
+                    'isSimpleArray',
+                    content[key][content[key].length - 1],
+                  );
+                }
               }}
             />
             {arrayField(
@@ -256,7 +268,7 @@ const fields = (properties, required, cont, updateContent) => {
           </div>
         );
       default:
-        return input(properties, key, index, content[key], 'text', updateContent, isRequired);
+        return input(properties, key, index, content[key], 'text', updateField, isRequired);
     }
   });
 };
