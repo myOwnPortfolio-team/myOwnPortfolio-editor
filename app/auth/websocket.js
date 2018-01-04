@@ -114,7 +114,6 @@ class WebSocketClient {
   }
 
   [processMessage](message) {
-    console.log(message);
     switch (message.action) {
       case 'key':
         this.key = message.key;

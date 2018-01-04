@@ -1,3 +1,5 @@
+/* eslint react/no-unused-state: "off" */
+
 import React from 'react';
 import { Form, Menu } from 'semantic-ui-react';
 import { fields } from './Fields.jsx';
@@ -13,12 +15,11 @@ class Editor extends React.Component {
   updateContent(contentTab) {
     if (this.state.activeTab === 'module') {
       this.props.myOwnContent.modules[this.props.activeModuleIndex] = contentTab;
+    } else if (this.props.module.schema[this.state.activeTab] !== null) {
+      this.props.myOwnContent
+        .modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
     } else {
-      if (this.props.module.schema[this.state.activeTab] !== null) {
-        this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
-      } else {
-        this.props.myOwnContent.app_properties = contentTab;
-      }
+      this.props.myOwnContent.app_properties = contentTab;
     }
     this.setState({ myOwnContent: this.props.myOwnContent });
   }
@@ -82,6 +83,7 @@ class Editor extends React.Component {
           </Menu>
         );
       }
+      return null;
     };
 
     return (

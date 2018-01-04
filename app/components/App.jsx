@@ -1,3 +1,5 @@
+/* eslint react/no-did-mount-set-state: "off" */
+
 import React from 'react';
 
 import EditionPage from '../pages/EditionPage.jsx';

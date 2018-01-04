@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import Table from './table';
 import UserInfos from '../objects/user-infos';
 
@@ -34,7 +32,7 @@ class UserInfosTable extends Table {
     // TODO Revoke access token (Request to My Own Portfolio server)
     return this.userExists()
       .then(() => this.getUserInfos()
-        .then(user =>
+        .then(() =>
           Promise.all([
             this.table.delete(1),
           ])));

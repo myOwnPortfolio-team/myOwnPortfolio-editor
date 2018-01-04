@@ -53,7 +53,7 @@ const slider = (properties, key, value, step, updateField, isRequired) => (
   <div>
     <Form.Field
       control={Input}
-      label={key.replace(/_/g, ' ') + ': ' + value}
+      label={`${key.replace(/_/g, ' ')}: ${value}`}
       placeholder={properties[key].description}
       type="range"
       min={properties[key].minimum}

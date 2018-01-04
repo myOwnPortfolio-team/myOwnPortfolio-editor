@@ -1,3 +1,5 @@
+/* eslint prefer-destructuring: "off", no-param-reassign:"off", no-case-declarations:"off" */
+
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Button, Segment } from 'semantic-ui-react';
@@ -14,7 +16,7 @@ const SELECT_ANIMATION_OPTIONS = require('../../properties/select_animation_opti
 
 const initializeFields = (properties, required, cont) => {
   let content = cont;
-  Object.keys(properties).map((key) => {
+  Object.keys(properties).forEach((key) => {
     const updateField = (value, k) => {
       if (required === 'isSimpleArray') {
         content = value;
@@ -91,7 +93,7 @@ const initializeFields = (properties, required, cont) => {
 };
 
 const fields = (properties, required, cont, updateContent) => {
-  let content = cont;
+  const content = cont;
 
   const updateField = (value, k) => {
     content[k] = value;
@@ -110,46 +112,42 @@ const fields = (properties, required, cont, updateContent) => {
   const arrayField = (arrayProperties, arrayContent, updateArray) => {
     if (arrayContent !== undefined) {
       if (arrayProperties.items.type === 'object') {
-        return Object.keys(arrayContent).map((key) => {
-          return (
-            <Segment>
-              {fields(
-                arrayProperties.items.properties,
-                arrayProperties.items.required,
-                arrayContent[key],
-                updateField,
-              )}
-              <Button
-                onClick={() => {
-                  updateArrayField(undefined, arrayContent, key, updateArray);
-                }}
-              >
-              Delete this item
-              </Button>
-            </Segment>
-          );
-        });
-      }
-      return arrayContent.map((key, index) => {
-        return (
+        return Object.keys(arrayContent).map(key => (
           <Segment>
             {fields(
-              [arrayProperties.items],
-              'isSimpleArray',
-              [key],
-              value => updateArrayField(value, arrayContent, index, updateArray),
+              arrayProperties.items.properties,
+              arrayProperties.items.required,
+              arrayContent[key],
+              updateField,
             )}
             <Button
               onClick={() => {
-                updateArrayField(undefined, arrayContent, index, updateArray);
+                updateArrayField(undefined, arrayContent, key, updateArray);
               }}
-              disabled={arrayContent.length <= arrayProperties.minItems}
             >
             Delete this item
             </Button>
           </Segment>
-        );
-      });
+        ));
+      }
+      return arrayContent.map((key, index) => (
+        <Segment>
+          {fields(
+            [arrayProperties.items],
+            'isSimpleArray',
+            [key],
+            value => updateArrayField(value, arrayContent, index, updateArray),
+          )}
+          <Button
+            onClick={() => {
+              updateArrayField(undefined, arrayContent, index, updateArray);
+            }}
+            disabled={arrayContent.length <= arrayProperties.minItems}
+          >
+          Delete this item
+          </Button>
+        </Segment>
+      ));
     }
     return (
       <div>Create an item</div>
