@@ -12,11 +12,13 @@ import './style/splash.scss';
 import './assets/icons/logo.svg';
 
 const PROPERTIES = require('../properties/app');
+const MODULE_SETTING_SCHEMA = require('../properties/module_setting_schema');
 
 const database = new Database('MyOwnPortfolioDB', PROPERTIES);
 
 ReactDOM.render(
   <App
+    moduleSettingSchema={MODULE_SETTING_SCHEMA}
     database={database}
     version={PROPERTIES.version}
     serverHost={PROPERTIES.serverHost}

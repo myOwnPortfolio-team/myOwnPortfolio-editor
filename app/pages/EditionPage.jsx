@@ -1,6 +1,7 @@
 import React from 'react';
-import { Grid, Button } from 'semantic-ui-react';
+import { Button, Divider, Grid } from 'semantic-ui-react';
 
+import Module from '../data/objects/module.js';
 import Header from '../components/Header.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
@@ -29,7 +30,7 @@ class EditionPage extends React.Component {
               <div className="side-bar-group-button">
                 <Button circular icon="arrow left" onClick={() => this.switchSideBar('myOwnModules')} />
               </div>
-              <div className="side-bar-content">
+              <div className="side-bar-content modules-navbar">
                 <Navbar
                   modules={this.props.modules}
                   handleClick={(index, module) => {
@@ -44,12 +45,47 @@ class EditionPage extends React.Component {
           return (
             <div className="side-bar">
               <div className="side-bar-group-button">
-                <Button circular icon="plus" onClick={() => this.switchSideBar('toolsBar')} />
+                <Button
+                  onClick={() => {
+                    this.props.switchActiveModule(-1, new Module('default'));
+                  }}
+                  primary
+                  fluid
+                >
+                  Edit my app properties
+                </Button>
+                <Divider horizontal>Or</Divider>
+                <Button
+                  onClick={() => this.switchSideBar('toolsBar')}
+                  secondary
+                  fluid
+                >
+                  Add a module
+                </Button>
               </div>
+              <Divider />
+              <div className="side-bar-title">My own modules</div>
               <div className="side-bar-group-button">
-                <Button circular icon="chevron down" onClick={() => this.props.switchModules('down')} />
-                <Button circular icon="chevron up" onClick={() => this.props.switchModules('up')} />
-                <Button circular icon="trash outline" onClick={() => this.props.deleteModule('up')} />
+                <Button
+                  circular
+                  icon="chevron down"
+                  onClick={() => this.props.switchModules('down')}
+                  disabled={this.props.activeModuleIndex === -1
+                    || this.props.activeModuleIndex >= this.props.myOwnModules.length - 1}
+                />
+                <Button
+                  circular
+                  icon="chevron up"
+                  onClick={() => this.props.switchModules('up')}
+                  disabled={this.props.activeModuleIndex === -1
+                    || this.props.activeModuleIndex <= 0}
+                />
+                <Button
+                  circular
+                  icon="trash outline"
+                  onClick={() => this.props.deleteModule()}
+                  disabled={this.props.activeModuleIndex === -1}
+                />
               </div>
               <div className="side-bar-content">
                 <Navbar
@@ -62,7 +98,7 @@ class EditionPage extends React.Component {
           );
         default:
           return (
-            <div>bla</div>
+            <div>Error</div>
           );
       }
     };
@@ -71,15 +107,16 @@ class EditionPage extends React.Component {
       <div className="container edition-page">
         <Header switchPage={page => this.props.switchPage(page)} items={headerItems(this.props)} />
         <Grid>
-          <Grid.Column width={3}>
+          <Grid.Column className="side-bar" width={3}>
             {sideBar(this.state.activeSideBar)}
           </Grid.Column>
-          <Grid.Column stretched width={13}>
+          <Grid.Column className="editor" stretched width={13}>
             <Editor
               activeModuleIndex={this.props.activeModuleIndex}
               module={this.props.activeModule}
               myOwnContent={this.props.myOwnContent}
-              moduleListSchema={this.props.moduleListSchema}
+              appPropertiesSchema={this.props.appPropertiesSchema}
+              moduleSettingSchema={this.props.moduleSettingSchema}
             />
           </Grid.Column>
         </Grid>

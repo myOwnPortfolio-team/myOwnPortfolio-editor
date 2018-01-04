@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Button } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 
 import {
   checkbox,
@@ -10,10 +10,7 @@ import {
   slider,
 } from './Inputs.jsx';
 
-const animationOptions = [
-  { key: '0', text: '0', value: '0' },
-  { key: '1', text: '1', value: '1' },
-];
+const SELECT_ANIMATION_OPTIONS = require('../../properties/select_animation_options').options;
 
 const initializeFields = (properties, required, cont) => {
   let content = cont;
@@ -102,7 +99,11 @@ const fields = (properties, required, cont, updateContent) => {
   };
 
   const updateArrayField = (value, arrayContent, i, updateArray) => {
-    arrayContent[i] = value[0];
+    if (value !== undefined) {
+      arrayContent[i] = value[0];
+    } else {
+      arrayContent.splice(i, 1);
+    }
     updateArray(arrayContent);
   };
 
@@ -111,37 +112,51 @@ const fields = (properties, required, cont, updateContent) => {
       if (arrayProperties.items.type === 'object') {
         return Object.keys(arrayContent).map((key) => {
           return (
-            <div>
+            <Segment>
               {fields(
                 arrayProperties.items.properties,
                 arrayProperties.items.required,
                 arrayContent[key],
                 updateField,
               )}
-            </div>
+              <Button
+                onClick={() => {
+                  updateArrayField(undefined, arrayContent, key, updateArray);
+                }}
+              >
+              Delete this item
+              </Button>
+            </Segment>
           );
         });
       }
       return arrayContent.map((key, index) => {
         return (
-          <div>
+          <Segment>
             {fields(
               [arrayProperties.items],
               'isSimpleArray',
               [key],
               value => updateArrayField(value, arrayContent, index, updateArray),
             )}
-          </div>
+            <Button
+              onClick={() => {
+                updateArrayField(undefined, arrayContent, index, updateArray);
+              }}
+              disabled={arrayContent.length <= arrayProperties.minItems}
+            >
+            Delete this item
+            </Button>
+          </Segment>
         );
       });
-    } else {
-      return (
-        <div>Create an item</div>
-      )
     }
+    return (
+      <div>Create an item</div>
+    );
   };
 
-  return Object.keys(properties).map((key, index) => {
+  return Object.keys(properties).map((key) => {
     let isRequired = false;
     if (required === 'isSimpleArray') {
       isRequired = false;
@@ -153,60 +168,62 @@ const fields = (properties, required, cont, updateContent) => {
       case 'integer':
         switch (properties[key].input) {
           case 'slider':
-            return slider(properties, key, index, content[key], '1', updateField, isRequired);
+            return slider(properties, key, content[key], '1', updateField, isRequired);
           default:
-            return slider(properties, key, index, content[key], '1', updateField, isRequired);
+            return slider(properties, key, content[key], '1', updateField, isRequired);
         }
       case 'number':
         switch (properties[key].input) {
           case 'slider':
-            return slider(properties, key, index, content[key], 'any', updateField, isRequired);
+            return slider(properties, key, content[key], 'any', updateField, isRequired);
           default:
-            return slider(properties, key, index, content[key], 'any', updateField, isRequired);
+            return slider(properties, key, content[key], 'any', updateField, isRequired);
         }
       case 'string':
         switch (properties[key].input) {
           case 'color-picker':
-            return input(properties, key, index, content[key], 'color', updateField, isRequired);
+            return input(properties, key, content[key], 'color', updateField, isRequired);
           case 'input-number':
-            return input(properties, key, index, content[key], 'number', updateField, isRequired);
+            return input(properties, key, content[key], 'number', updateField, isRequired);
           case 'input-date':
-            return input(properties, key, index, content[key], 'date', updateField, isRequired);
+            return input(properties, key, content[key], 'date', updateField, isRequired);
           case 'input-text':
-            return input(properties, key, index, content[key], 'text', updateField, isRequired);
+            return input(properties, key, content[key], 'text', updateField, isRequired);
           case 'select-animation':
             return select(
               properties,
               key,
-              index,
               content[key],
-              animationOptions,
+              SELECT_ANIMATION_OPTIONS,
               updateField,
               isRequired,
-            ); // TODO to implement
+            );
           case 'textfield':
-            return textfield(properties, key, index, content[key], updateField, isRequired);
+            return textfield(properties, key, content[key], updateField, isRequired);
           case 'textfield-markdown':
             return (
-              <div>
-                {textfield(properties, key, index, content[key], updateField, isRequired)}
-                <ReactMarkdown source={content[key]} />
+              <div className="textfield-markdown">
+                {textfield(properties, key, content[key], updateField, isRequired)}
+                <div>
+                  <p>Preview</p>
+                  <ReactMarkdown source={content[key]} />
+                </div>
               </div>
             );
           default:
-            return input(properties, key, index, content[key], 'text', updateField, isRequired);
+            return input(properties, key, content[key], 'text', updateField, isRequired);
         }
       case 'boolean':
         switch (properties[key].input) {
           case 'checkbox':
-            return checkbox(properties, key, index, content[key], updateField, isRequired);
+            return checkbox(properties, key, content[key], updateField, isRequired);
           default:
-            return checkbox(properties, key, index, content[key], updateField, isRequired);
+            return checkbox(properties, key, content[key], updateField, isRequired);
         }
       case 'object':
         return (
-          <div>
-            <h2>{key}</h2>
+          <Segment>
+            <h1>Object : {key.replace(/_/g, ' ')}</h1>
             <div>
               {fields(
                 properties[key].properties,
@@ -215,7 +232,7 @@ const fields = (properties, required, cont, updateContent) => {
                 updateField,
               )}
             </div>
-          </div>
+          </Segment>
         );
       case 'array':
         let newArrayContent = '';
@@ -223,25 +240,38 @@ const fields = (properties, required, cont, updateContent) => {
           newArrayContent = {};
         }
         return (
-          <div>
-            <label>{key}</label>
+          <Segment>
+            <div>List of : {key.replace(/_/g, ' ')}</div>
             <Button
-              circular
-              icon="plus"
               onClick={() => {
                 content[key][content[key].length] = newArrayContent;
-                updateField(content[key], content[key]);
+                updateField(content[key], key);
+                if (properties[key].items.type === 'object') {
+                  initializeFields(
+                    properties[key].items.properties,
+                    properties[key].items.required,
+                    content[key][content[key].length - 1],
+                  );
+                } else {
+                  initializeFields(
+                    properties[key].items,
+                    'isSimpleArray',
+                    content[key][content[key].length - 1],
+                  );
+                }
               }}
-            />
+            >
+            Add a new item
+            </Button>
             {arrayField(
               properties[key],
               content[key],
               updateField,
             )}
-          </div>
+          </Segment>
         );
       default:
-        return input(properties, key, index, content[key], 'text', updateContent, isRequired);
+        return input(properties, key, content[key], 'text', updateField, isRequired);
     }
   });
 };

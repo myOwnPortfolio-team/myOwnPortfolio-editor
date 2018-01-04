@@ -1,0 +1,18 @@
+{
+  "title": "modules_list",
+  "description": "liste des modules de l'application",
+	"type": "object",
+  "properties": {
+    "name": {
+      "description": "nom du module",
+      "type": "string",
+      "input": "input-text"
+    },
+    "referenced": {
+      "description": "reférence ou non le module",
+      "type": "boolean",
+      "input": "checkbox"
+    }
+  },
+  "required": ["name", "referenced"]
+}
