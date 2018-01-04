@@ -8,7 +8,7 @@ const checkbox = (properties, key, value, updateField, isRequired) => (
       control={Checkbox}
       label={properties[key].description}
       checked={value}
-      onChange={(e, data) => updateField(data.value, key)}
+      onChange={(e, data) => updateField(data.checked, key)}
       required={isRequired}
     />
   </div>
