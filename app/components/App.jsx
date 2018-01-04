@@ -104,23 +104,24 @@ class App extends React.Component {
       );
       index += 1;
     }
-
     this.setState({ activeModuleIndex: index });
   }
 
   deleteModule() {
     let index = this.state.activeModuleIndex;
+    let module = new Module('default');
     if (index !== -1) {
       this.state.myOwnModules.splice(index, 1);
       this.state.myOwnContent.modules.splice(index, 1);
       if (index > 0) {
         index -= 1;
+        module = this.state.myOwnModules[index];
       } else if (this.state.myOwnModules.length < 1) {
         index = -1;
         this.setState({ activeModule: new Module('default') });
       }
     }
-    this.setState({ activeModuleIndex: index });
+    this.switchActiveModule(index, module);
   }
 
   switchPage(page) {
