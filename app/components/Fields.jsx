@@ -113,7 +113,7 @@ const fields = (properties, required, cont, updateContent) => {
     if (arrayContent !== undefined) {
       if (arrayProperties.items.type === 'object') {
         return Object.keys(arrayContent).map(key => (
-          <Segment>
+          <Segment key={key}>
             {fields(
               arrayProperties.items.properties,
               arrayProperties.items.required,
@@ -131,7 +131,7 @@ const fields = (properties, required, cont, updateContent) => {
         ));
       }
       return arrayContent.map((key, index) => (
-        <Segment>
+        <Segment key={key}>
           {fields(
             [arrayProperties.items],
             'isSimpleArray',
@@ -220,7 +220,7 @@ const fields = (properties, required, cont, updateContent) => {
         }
       case 'object':
         return (
-          <Segment>
+          <Segment key={key}>
             <h1>Object : {key.replace(/_/g, ' ')}</h1>
             <div>
               {fields(
@@ -238,7 +238,7 @@ const fields = (properties, required, cont, updateContent) => {
           newArrayContent = {};
         }
         return (
-          <Segment>
+          <Segment key={key}>
             <div>List of : {key.replace(/_/g, ' ')}</div>
             <Button
               onClick={() => {

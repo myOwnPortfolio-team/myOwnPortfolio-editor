@@ -5,6 +5,7 @@ const checkbox = (properties, key, value, updateField, isRequired) => (
   <div>
     <div>{key.replace(/_/g, ' ')}</div>
     <Form.Field
+      key={key}
       control={Checkbox}
       label={properties[key].description}
       checked={value}
@@ -16,6 +17,7 @@ const checkbox = (properties, key, value, updateField, isRequired) => (
 
 const input = (properties, key, value, type, updateField, isRequired) => (
   <Form.Field
+    key={key}
     control={Input}
     label={key.replace(/_/g, ' ')}
     placeholder={properties[key].description}
@@ -28,6 +30,7 @@ const input = (properties, key, value, type, updateField, isRequired) => (
 
 const textfield = (properties, key, value, updateField, isRequired) => (
   <Form.Field
+    key={key}
     control={TextArea}
     label={key.replace(/_/g, ' ')}
     placeholder={properties[key].description}
@@ -39,6 +42,7 @@ const textfield = (properties, key, value, updateField, isRequired) => (
 
 const select = (properties, key, value, options, updateField, isRequired) => (
   <Form.Field
+    key={key}
     control={Select}
     label={key.replace(/_/g, ' ')}
     placeholder={properties[key].description}
@@ -52,6 +56,7 @@ const select = (properties, key, value, options, updateField, isRequired) => (
 const slider = (properties, key, value, step, updateField, isRequired) => (
   <div>
     <Form.Field
+      key={key}
       control={Input}
       label={`${key.replace(/_/g, ' ')}: ${value}`}
       placeholder={properties[key].description}
