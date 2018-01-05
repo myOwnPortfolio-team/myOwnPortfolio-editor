@@ -178,20 +178,14 @@ class ModulesTable extends Table {
 
   [updateDatabaseModule](name, sha, accessToken) {
     // Retrieve JSON schema files
-    let headers;
-    if (accessToken !== undefined) {
-      headers = {
-        headers: {
-          Authorization: `token ${accessToken}`,
-          Accept: 'application/vnd.github.VERSION.raw',
-        },
-      };
-    } else {
-      headers = {
-        headers: {
-          Accept: 'application/vnd.github.VERSION.raw',
-        },
-      };
+    const headers = {
+      headers: {
+        Accept: 'application/vnd.github.VERSION.object',
+      },
+    };
+
+    if (accessToken) {
+      headers.headers.Authorization = `token ${accessToken}`;
     }
 
     let updatePromise = axios.all([

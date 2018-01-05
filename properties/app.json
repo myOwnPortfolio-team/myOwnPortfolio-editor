@@ -11,6 +11,7 @@
     "contents/app/modules/$moduleName/json_schema/properties.json",
     "contents/app/modules/$moduleName/json_schema/style.json"
   ],
+  "appPropertiesPath": "contents/app/json_schema/app_properties.json",
   "githubAPI": "https://api.github.com",
   "serverHost": "localhost",
   "serverWSPort": 1337,

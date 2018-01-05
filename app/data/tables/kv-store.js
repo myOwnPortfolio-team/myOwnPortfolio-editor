@@ -1,8 +1,15 @@
+import axios from 'axios';
+
 import Table from './table';
 
+const getAppPropertiesSchema = Symbol('Get app properties from repository');
+
 class KVTable extends Table {
-  constructor(database) {
+  constructor(database, properties) {
     super(database, 'kv-store', 'key, value');
+
+    this.repositoryURL = properties.repositoryURL;
+    this.appPropertiesPath = properties.appPropertiesPath;
   }
 
   set(key, value) {
@@ -18,6 +25,43 @@ class KVTable extends Table {
         }
         return undefined;
       });
+  }
+
+  fill(accessToken = undefined) {
+    return this[getAppPropertiesSchema](accessToken)
+      .then((appPropertiesSchema) => {
+        if (appPropertiesSchema) {
+          this.set('appPropertiesSchema', appPropertiesSchema);
+        }
+      });
+  }
+
+  [getAppPropertiesSchema](accessToken) {
+    return new Promise((resolve, reject) => {
+      const headers = {
+        Accept: 'application/vnd.github.VERSION.object',
+      };
+
+      if (accessToken) {
+        headers.Authorization = `token ${accessToken}`;
+      }
+
+      axios({
+        url: `${this.repositoryURL}/${this.appPropertiesPath}`,
+        method: 'get',
+        headers,
+      })
+        .then((res) => {
+          if (res.data.download_url) {
+            return axios({
+              url: res.data.download_url,
+              method: 'get',
+            });
+          }
+          return res;
+        })
+        .then(res => resolve(res.data));
+    });
   }
 }
 

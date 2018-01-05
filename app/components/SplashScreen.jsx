@@ -18,30 +18,35 @@ class SplashScreen extends React.Component {
   componentDidMount() {
     const tableModules = this.state.database.table('modules');
     const kvStore = this.state.database.table('kvStore');
-    // Load modules
 
+    // Load modules
     this.updateMessage('Loading user infos');
     kvStore
       .get('accessToken')
       .then((accessToken) => {
-        if (accessToken) {
-          this.updateMessage('Downloading modules');
-          return tableModules.fill(accessToken);
-        }
-        return undefined;
+        this.updateMessage('Downloading json schemas');
+
+        return Promise.all([
+          tableModules.fill(accessToken),
+          kvStore.fill(accessToken),
+        ]);
       })
       .then(() => {
-        this.updateMessage('Loading modules');
-        return tableModules.getAll();
+        this.updateMessage('Loading modules and app properties');
+        return Promise.all([
+          tableModules.getAll(),
+          kvStore.get('appPropertiesSchema'),
+        ]);
       })
-      .then((modules) => {
+      .then((data) => {
         this.updateMessage('Loaded');
 
         if (platform.isElectron()) {
           const electron = platform.getPlatformModule(platform.getPlatform());
-          electron.ipcRenderer.send('closeSplashScreen', modules);
+          electron.ipcRenderer.send('closeSplashScreen', data[0], data[1]);
         } else {
-          this.props.setModuleList(modules);
+          this.props.setModuleList(data[0]);
+          this.props.setAppPropertiesSchema(data[1]);
           this.props.switchPage('home');
         }
       });

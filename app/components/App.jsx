@@ -43,7 +43,15 @@ class App extends React.Component {
       electron.ipcRenderer.on('loadedModules', (event, modules) => {
         this.setState({ modules });
       });
+
+      electron.ipcRenderer.on('loadedAppPropertiesSchema', (event, appPropertiesSchema) => {
+        this.setState({ appPropertiesSchema });
+      });
     }
+  }
+
+  setAppPropertiesSchema(appPropertiesSchema) {
+    this.setState({ appPropertiesSchema });
   }
 
   setModuleList(modules) {
@@ -167,6 +175,9 @@ class App extends React.Component {
         serverHost={this.props.serverHost}
         serverPort={this.props.serverWSPort}
         setModuleList={modules => this.setModuleList(modules)}
+        setAppPropertiesSchema={
+          appPropertiesSchema => this.setAppPropertiesSchema(appPropertiesSchema)
+        }
         switchPage={page => this.switchPage(page)}
         version={this.props.version}
       />);

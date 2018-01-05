@@ -26,7 +26,7 @@ const iconURL = path.join(__dirname, properties.url.icon);
 let splash;
 let applicationWindow;
 
-const createApplicationWindow = (modules) => {
+const createApplicationWindow = (modules, appPropertiesSchema) => {
   // Create splash screen
   applicationWindow = new BrowserWindow({
     title: applicationTitle,
@@ -45,6 +45,7 @@ const createApplicationWindow = (modules) => {
   applicationWindow.once('ready-to-show', () => {
     // Show Window
     applicationWindow.webContents.send('loadedModules', modules);
+    applicationWindow.webContents.send('loadedAppPropertiesSchema', appPropertiesSchema);
 
     setTimeout(() => {
       applicationWindow.show();
@@ -91,8 +92,8 @@ const createSplashScreen = () => {
 app.on('ready', createSplashScreen);
 
 // Electron <-> App communication
-const closeSplashScreen = (event, modules) => {
-  createApplicationWindow(modules);
+const closeSplashScreen = (event, modules, appPropertiesSchema) => {
+  createApplicationWindow(modules, appPropertiesSchema);
 };
 electron.ipcMain.on('closeSplashScreen', closeSplashScreen);
 

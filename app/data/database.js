@@ -17,7 +17,7 @@ class Database {
     this.tables = {
       modules: new ModulesTable(this.database, properties),
       userInfos: new UserInfosTable(this.database),
-      kvStore: new KVTable(this.database),
+      kvStore: new KVTable(this.database, properties),
     };
   }
 

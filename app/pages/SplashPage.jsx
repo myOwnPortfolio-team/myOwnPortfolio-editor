@@ -32,6 +32,7 @@ class SplashPage extends React.Component {
         version={this.props.version}
         switchPage={this.props.switchPage}
         setModuleList={this.props.setModuleList}
+        setAppPropertiesSchema={this.props.setAppPropertiesSchema}
       />
     );
 
