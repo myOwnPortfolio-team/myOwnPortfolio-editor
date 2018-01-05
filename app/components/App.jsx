@@ -18,16 +18,21 @@ class App extends React.Component {
 
     const page = platform.isElectron() ? 'home' : 'splash';
     this.state = {
-      database: props.database,
-      url: undefined,
-      modules: [],
-      myOwnContent: [],
-      appPropertiesSchema: {},
-      moduleSettingSchema: {},
-      myOwnModules: [],
       activeModule: new Module('default'),
       activeModuleIndex: -1,
       activePage: page,
+      appPropertiesSchema: {},
+      database: props.database,
+      moduleListSchema: {},
+      moduleSettingSchema: this.props.moduleSettingSchema,
+      modules: [],
+      myOwnContent: {
+        name: '',
+        app_properties: {},
+        modules: [],
+      },
+      myOwnModules: [],
+      url: undefined,
     };
   }
 
@@ -39,14 +44,6 @@ class App extends React.Component {
         this.setState({ modules });
       });
     }
-    this.setState({
-      myOwnContent: {
-        name: '',
-        app_properties: {},
-        modules: [],
-      },
-      moduleSettingSchema: this.props.moduleSettingSchema,
-    });
   }
 
   setModuleList(modules) {
@@ -136,41 +133,42 @@ class App extends React.Component {
   render() {
     const editionPage = (
       <EditionPage
-        database={this.state.database}
-        setRenderedURL={this.setRenderedURL}
-        modules={this.state.modules}
-        myOwnContent={this.state.myOwnContent}
-        appPropertiesSchema={this.state.appPropertiesSchema}
-        moduleSettingSchema={this.state.moduleSettingSchema}
-        myOwnModules={this.state.myOwnModules}
         activeModule={this.state.activeModule}
         activeModuleIndex={this.state.activeModuleIndex}
         addModule={module => this.addModule(module)}
+        appPropertiesSchema={this.state.appPropertiesSchema}
+        database={this.state.database}
         deleteModule={() => this.deleteModule()}
-        switchModules={order => this.switchModules(order)}
-        switchPage={page => this.switchPage(page)}
-        switchActiveModule={(index, module) => this.switchActiveModule(index, module)}
+        moduleListSchema={this.state.moduleListSchema}
+        moduleSettingSchema={this.state.moduleSettingSchema}
+        modules={this.state.modules}
+        myOwnContent={this.state.myOwnContent}
+        myOwnModules={this.state.myOwnModules}
+        serverGetURL={this.props.serverGetURL}
         serverHost={this.props.serverHost}
         serverPort={this.props.serverPort}
         serverPostURL={this.props.serverPostURL}
-        serverGetURL={this.props.serverGetURL}
+        setRenderedURL={this.setRenderedURL}
+        switchActiveModule={(index, module) => this.switchActiveModule(index, module)}
+        switchModules={order => this.switchModules(order)}
+        switchPage={page => this.switchPage(page)}
       />
     );
     const renderPage = (
       <RenderPage
         database={this.state.database}
-        url={this.state.url}
         switchPage={page => this.switchPage(page)}
+        url={this.state.url}
       />);
     const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
     const splashPage = (
       <SplashPage
         database={this.state.database}
-        version={this.props.version}
-        switchPage={page => this.switchPage(page)}
-        setModuleList={modules => this.setModuleList(modules)}
         serverHost={this.props.serverHost}
         serverPort={this.props.serverWSPort}
+        setModuleList={modules => this.setModuleList(modules)}
+        switchPage={page => this.switchPage(page)}
+        version={this.props.version}
       />);
     switch (this.state.activePage) {
       case 'splash':

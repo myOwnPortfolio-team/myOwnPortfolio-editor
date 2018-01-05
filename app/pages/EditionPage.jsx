@@ -13,8 +13,8 @@ const undefinedAccessToken = () => 'No access token found';
 const serverError = () => 'An error occured with the server';
 const invalidToken = () => 'Invalid access token';
 
-const compilePortfolio = (props, component) => {
-  component.setLoadingState(true);
+const compilePortfolio = (props, setLoadingState, setError) => {
+  setLoadingState(true);
 
   const infos = props.database.table('userInfos');
   infos
@@ -41,7 +41,7 @@ const compilePortfolio = (props, component) => {
       throw undefinedAccessToken();
     })
     .then((res) => {
-      component.setLoadingState(false);
+      setLoadingState(false);
       const { data } = res;
       if (data.status === 200) {
         props.setRenderedURL(data.message);
@@ -53,8 +53,8 @@ const compilePortfolio = (props, component) => {
       }
     })
     .catch((error) => {
-      component.setLoadingState(false);
-      component.setError(error);
+      setLoadingState(false);
+      setError(error);
     });
 };
 
@@ -173,7 +173,11 @@ class EditionPage extends React.Component {
         <Button
           primary
           name="compile"
-          onClick={() => compilePortfolio(this.props, this)}
+          onClick={() => compilePortfolio(
+            this.props,
+            state => this.setLoadingState(state),
+            error => this.setError(error),
+          )}
         >
           Generate
         </Button>);
