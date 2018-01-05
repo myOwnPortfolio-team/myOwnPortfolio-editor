@@ -29,10 +29,10 @@ class Authenticate extends React.Component {
 
   componentDidMount() {
     this.state.database
-      .table('userInfos')
-      .userExists()
-      .then((exists) => {
-        if (exists) {
+      .table('kvStore')
+      .get('accessToken')
+      .then((accessToken) => {
+        if (accessToken) {
           this.props.switchPage('splash');
         } else {
           const socket = new WebSocketClient(this.state.serverHost, this.state.serverPort);
@@ -48,8 +48,8 @@ class Authenticate extends React.Component {
             .getAccessToken()
             .then((token) => {
               this.state.database
-                .table('userInfos')
-                .createUser(token)
+                .table('kvStore')
+                .set('accessToken', token)
                 .then(() => this.props.switchPage('splash'));
             })
             .catch(() => this.props.switchPage('splash'));

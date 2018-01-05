@@ -17,26 +17,18 @@ class SplashScreen extends React.Component {
 
   componentDidMount() {
     const tableModules = this.state.database.table('modules');
-    const tableInfos = this.state.database.table('userInfos');
+    const kvStore = this.state.database.table('kvStore');
     // Load modules
 
-    tableInfos
-      .userExists()
-      .then((exists) => {
-        if (exists) {
-          this.updateMessage('Loading user infos');
-          return tableInfos.getUserInfos();
+    this.updateMessage('Loading user infos');
+    kvStore
+      .get('accessToken')
+      .then((accessToken) => {
+        if (accessToken) {
+          this.updateMessage('Downloading modules');
+          return tableModules.fill(accessToken);
         }
         return undefined;
-      })
-      .then((user) => {
-        this.updateMessage('Initializing modules');
-        let token;
-        if (user !== undefined) {
-          token = user.accessToken;
-        }
-
-        return tableModules.fill(token);
       })
       .then(() => {
         this.updateMessage('Loading modules');
