@@ -21,7 +21,6 @@ class Editor extends React.Component {
     } else {
       this.props.myOwnContent.app_properties = contentTab;
     }
-    this.setState({ myOwnContent: this.props.myOwnContent });
   }
 
   handleTabClick(tab) {
@@ -57,7 +56,7 @@ class Editor extends React.Component {
     };
 
     const menu = () => {
-      if ((activeSchema !== null && activeSchema !== undefined) || this.state.activeTab === 'module') {
+      if (activeSchema || this.state.activeTab === 'module') {
         return (
           <Menu attached="top" tabular>
             <Menu.Item
@@ -86,11 +85,14 @@ class Editor extends React.Component {
       return null;
     };
 
+    const menuComponent = menu();
+    const content = editorContent();
+
     return (
       <div className="container editor-content">
-        {menu()}
+        {menuComponent}
         <Form className="form editor-content-under-menu">
-          {editorContent()}
+          {content}
         </Form>
       </div>
     );

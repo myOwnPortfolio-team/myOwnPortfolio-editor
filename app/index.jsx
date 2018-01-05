@@ -22,7 +22,10 @@ ReactDOM.render(
     database={database}
     version={PROPERTIES.version}
     serverHost={PROPERTIES.serverHost}
+    serverWSPort={PROPERTIES.serverWSPort}
     serverPort={PROPERTIES.serverPort}
+    serverPostURL={PROPERTIES.serverPostURL}
+    serverGetURL={PROPERTIES.serverGetURL}
   />,
   document.getElementById('root'),
 );
