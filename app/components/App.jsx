@@ -47,6 +47,18 @@ class App extends React.Component {
       electron.ipcRenderer.on('loadedAppPropertiesSchema', (event, appPropertiesSchema) => {
         this.setState({ appPropertiesSchema });
       });
+
+      electron.ipcRenderer.on('loadedContent', (event, appContent) => {
+        if (appContent) {
+          this.setState({ myOwnContent: appContent });
+        }
+      });
+    }
+  }
+
+  setAppContent(appContent) {
+    if (appContent) {
+      this.setState({ myOwnContent: appContent });
     }
   }
 
@@ -152,7 +164,6 @@ class App extends React.Component {
         modules={this.state.modules}
         myOwnContent={this.state.myOwnContent}
         myOwnModules={this.state.myOwnModules}
-        serverGetURL={this.props.serverGetURL}
         serverHost={this.props.serverHost}
         serverPort={this.props.serverPort}
         serverPostURL={this.props.serverPostURL}
@@ -173,8 +184,11 @@ class App extends React.Component {
       <SplashPage
         database={this.state.database}
         serverHost={this.props.serverHost}
-        serverPort={this.props.serverWSPort}
+        serverPort={this.props.serverPort}
+        serverWSPort={this.props.serverWSPort}
+        serverGetURL={this.props.serverGetURL}
         setModuleList={modules => this.setModuleList(modules)}
+        setAppContent={appContent => this.setAppContent(appContent)}
         setAppPropertiesSchema={
           appPropertiesSchema => this.setAppPropertiesSchema(appPropertiesSchema)
         }

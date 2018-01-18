@@ -22,7 +22,7 @@ class SplashPage extends React.Component {
         database={this.props.database}
         switchPage={page => this.switchPage(page)}
         serverHost={this.props.serverHost}
-        serverPort={this.props.serverPort}
+        serverPort={this.props.serverWSPort}
       />
     );
 
@@ -30,9 +30,13 @@ class SplashPage extends React.Component {
       <SplashScreen
         database={this.props.database}
         version={this.props.version}
+        serverHost={this.props.serverHost}
+        serverPort={this.props.serverPort}
+        serverGetURL={this.props.serverGetURL}
         switchPage={this.props.switchPage}
         setModuleList={this.props.setModuleList}
         setAppPropertiesSchema={this.props.setAppPropertiesSchema}
+        setAppContent={this.props.setAppContent}
       />
     );
 
