@@ -201,7 +201,21 @@ class ModulesTable extends Table {
         `${this.repositoryURL}/${this.filesPaths[2].replace('$moduleName', name)}`,
         headers,
       ),
-    ]);
+    ]).then(axios.spread((content, properties, style) =>
+      axios.all([
+        axios({
+          url: content.data.download_url,
+          method: 'get',
+        }),
+        axios({
+          url: properties.data.download_url,
+          method: 'get',
+        }),
+        axios({
+          url: style.data.download_url,
+          method: 'get',
+        }),
+      ])));
 
     updatePromise = updatePromise
       .then(axios.spread((content, properties, style) =>
