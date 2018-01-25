@@ -134,8 +134,8 @@ class WebSocketClient {
     }
   }
 
-  [waitForConnection](resolve, reject, time = 0, wait = 250, timeout = 2000) {
-    if (time >= timeout) {
+  [waitForConnection](resolve, reject, time = 0, wait = 250, timeout = 0) {
+    if (timeout !== 0 && time >= timeout) {
       reject(requestTimeout());
     } else if (this.connected === false) {
       setTimeout(() => this[waitForConnection](resolve, reject, time + wait), wait);
@@ -144,8 +144,8 @@ class WebSocketClient {
     }
   }
 
-  [waitForKey](resolve, reject, time = 0, wait = 250, timeout = 2000) {
-    if (time >= timeout) {
+  [waitForKey](resolve, reject, time = 0, wait = 250, timeout = 0) {
+    if (timeout !== 0 && time >= timeout) {
       reject(requestTimeout());
     } else if (this.key === null) {
       setTimeout(() => this[waitForKey](resolve, reject, time + wait), wait);
@@ -154,8 +154,8 @@ class WebSocketClient {
     }
   }
 
-  [waitForAuthLink](resolve, reject, time = 0, wait = 250, timeout = 2000) {
-    if (time >= timeout) {
+  [waitForAuthLink](resolve, reject, time = 0, wait = 250, timeout = 0) {
+    if (timeout !== 0 && time >= timeout) {
       reject(requestTimeout());
     } else if (this.authLink === null && this.authLinkError === null) {
       setTimeout(() => this[waitForAuthLink](resolve, reject, time + wait), wait);

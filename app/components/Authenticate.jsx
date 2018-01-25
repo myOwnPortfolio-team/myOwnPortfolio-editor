@@ -41,8 +41,7 @@ class Authenticate extends React.Component {
             .getAuthLink()
             .then((link) => {
               this.setState({ authLink: link });
-            })
-            .catch(() => this.props.switchPage('splash'));
+            });
 
           socket
             .getAccessToken()
@@ -51,11 +50,9 @@ class Authenticate extends React.Component {
                 .table('kvStore')
                 .set('accessToken', token)
                 .then(() => this.props.switchPage('splash'));
-            })
-            .catch(() => this.props.switchPage('splash'));
+            });
         }
-      })
-      .catch(() => this.props.switchPage('splash'));
+      });
   }
 
   render() {
