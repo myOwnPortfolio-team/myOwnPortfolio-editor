@@ -16,6 +16,7 @@ const SELECT_ANIMATION_OPTIONS = require('../../properties/select_animation_opti
 
 const initializeFields = (properties, required, cont) => {
   let content = cont;
+
   Object.keys(properties).forEach((key) => {
     const updateField = (value, k) => {
       if (required === 'isSimpleArray') {
@@ -31,16 +32,10 @@ const initializeFields = (properties, required, cont) => {
       switch (properties[key].type) {
         case 'integer':
         case 'number':
-          switch (properties[key].input) {
-            case 'slider':
-              if (properties[key].minimum === undefined) {
-                updateField(0, key);
-              } else {
-                updateField(properties[key].minimum, key);
-              }
-              break;
-            default:
-              updateField(0, key);
+          if (properties[key].input === 'slider' && properties[key].minimum) {
+            updateField(properties[key].minimum, key);
+          } else {
+            updateField(0, key);
           }
           break;
         case 'string':
@@ -89,6 +84,7 @@ const initializeFields = (properties, required, cont) => {
       }
     }
   });
+
   return content;
 };
 
@@ -164,19 +160,9 @@ const fields = (properties, required, cont, updateContent) => {
 
     switch (properties[key].type) {
       case 'integer':
-        switch (properties[key].input) {
-          case 'slider':
-            return slider(properties, key, content[key], '1', updateField, isRequired);
-          default:
-            return slider(properties, key, content[key], '1', updateField, isRequired);
-        }
+        return slider(properties, key, content[key], '1', updateField, isRequired);
       case 'number':
-        switch (properties[key].input) {
-          case 'slider':
-            return slider(properties, key, content[key], 'any', updateField, isRequired);
-          default:
-            return slider(properties, key, content[key], 'any', updateField, isRequired);
-        }
+        return slider(properties, key, content[key], 'any', updateField, isRequired);
       case 'string':
         switch (properties[key].input) {
           case 'color-picker':
@@ -185,8 +171,6 @@ const fields = (properties, required, cont, updateContent) => {
             return input(properties, key, content[key], 'number', updateField, isRequired);
           case 'input-date':
             return input(properties, key, content[key], 'date', updateField, isRequired);
-          case 'input-text':
-            return input(properties, key, content[key], 'text', updateField, isRequired);
           case 'select-animation':
             return select(
               properties,
@@ -208,16 +192,12 @@ const fields = (properties, required, cont, updateContent) => {
                 </div>
               </div>
             );
+          case 'input-text':
           default:
             return input(properties, key, content[key], 'text', updateField, isRequired);
         }
       case 'boolean':
-        switch (properties[key].input) {
-          case 'checkbox':
-            return checkbox(properties, key, content[key], updateField, isRequired);
-          default:
-            return checkbox(properties, key, content[key], updateField, isRequired);
-        }
+        return checkbox(properties, key, content[key], updateField, isRequired);
       case 'object':
         return (
           <Segment key={key}>
