@@ -37,7 +37,8 @@ const compilePortfolio = (props, setLoadingState, setError) => {
       setLoadingState(false);
       const { data } = res;
       if (data.status === 200) {
-        props.setRenderedURL(data.message);
+        const url = `http://${props.serverHost}:${props.serverPort}/${data.message}`;
+        props.setRenderedURL(url);
         props.switchPage('render');
       } else if (data.status === 400) {
         throw invalidToken();
