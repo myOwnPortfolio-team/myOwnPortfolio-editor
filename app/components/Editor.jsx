@@ -12,17 +12,6 @@ class Editor extends React.Component {
     };
   }
 
-  updateContent(contentTab) {
-    if (this.state.activeTab === 'module') {
-      this.props.myOwnContent.modules[this.props.activeModuleIndex] = contentTab;
-    } else if (this.props.module.schema[this.state.activeTab] !== null) {
-      this.props.myOwnContent
-        .modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
-    } else {
-      this.props.myOwnContent.app_properties = contentTab;
-    }
-  }
-
   handleTabClick(tab) {
     this.setState({ activeTab: tab.toLowerCase() });
   }
@@ -36,7 +25,7 @@ class Editor extends React.Component {
           this.props.appPropertiesSchema.properties,
           this.props.appPropertiesSchema.required,
           this.props.myOwnContent.app_properties,
-          contentTab => this.updateContent(contentTab),
+          contentTab => this.props.updateContent(contentTab, undefined),
         );
       }
       if (this.state.activeTab === 'module') {
@@ -44,14 +33,14 @@ class Editor extends React.Component {
           this.props.moduleSettingSchema.properties,
           this.props.moduleSettingSchema.required,
           this.props.myOwnContent.modules[this.props.activeModuleIndex],
-          contentTab => this.updateContent(contentTab),
+          contentTab => this.props.updateContent(contentTab, this.state.activeTab),
         );
       }
       return fields(
         activeSchema.properties,
         activeSchema.required,
         this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab],
-        contentTab => this.updateContent(contentTab),
+        contentTab => this.props.updateContent(contentTab, this.state.activeTab),
       );
     };
 

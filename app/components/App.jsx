@@ -150,6 +150,22 @@ class App extends React.Component {
     this.switchActiveModule(index, module);
   }
 
+  updateContent(content, activeTab) {
+    const { myOwnContent } = this.state;
+
+    if (activeTab === 'module') {
+      myOwnContent.modules[this.state.activeModuleIndex] = content;
+    } else if (activeTab) {
+      myOwnContent.modules[this.state.activeModuleIndex][activeTab] = content;
+    } else {
+      myOwnContent.app_properties = content;
+    }
+
+    this.setState({
+      myOwnContent,
+    });
+  }
+
   render() {
     const editionPage = (
       <EditionPage
@@ -171,6 +187,7 @@ class App extends React.Component {
         switchActiveModule={(index, module) => this.switchActiveModule(index, module)}
         switchModules={order => this.switchModules(order)}
         switchPage={page => this.switchPage(page)}
+        updateContent={(content, activeTab) => this.updateContent(content, activeTab)}
       />
     );
     const renderPage = (

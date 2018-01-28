@@ -30,7 +30,6 @@ const initializeFields = (properties, required, cont) => {
 
     if (isRequired) {
       switch (properties[key].type) {
-        case 'integer':
         case 'number':
           if (properties[key].input === 'slider' && properties[key].minimum) {
             updateField(properties[key].minimum, key);
@@ -193,6 +192,7 @@ const fields = (properties, required, cont, updateContent) => {
               </div>
             );
           case 'input-text':
+            return input(properties, key, content[key], 'text', updateField, isRequired);
           default:
             return input(properties, key, content[key], 'text', updateField, isRequired);
         }

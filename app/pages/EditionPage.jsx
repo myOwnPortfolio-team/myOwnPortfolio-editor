@@ -198,6 +198,7 @@ class EditionPage extends React.Component {
               myOwnContent={this.props.myOwnContent}
               appPropertiesSchema={this.props.appPropertiesSchema}
               moduleSettingSchema={this.props.moduleSettingSchema}
+              updateContent={(content, activeTab) => this.props.updateContent(content, activeTab)}
             />
           </Grid.Column>
         </Grid>
