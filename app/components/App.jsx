@@ -56,9 +56,14 @@ class App extends React.Component {
     }
   }
 
-  setAppContent(appContent) {
-    if (appContent) {
-      this.setState({ myOwnContent: appContent });
+  setAppContent(myOwnContent) {
+    if (myOwnContent) {
+      const myOwnModules = myOwnContent.modules.map(currentModule =>
+        this.state.modules.find(module => currentModule.type === module.name));
+      this.setState({
+        myOwnContent,
+        myOwnModules,
+      });
     }
   }
 
@@ -104,30 +109,35 @@ class App extends React.Component {
   }
 
   switchModules(order) {
+    const { myOwnModules } = this.state;
     let index = this.state.activeModuleIndex;
     if (order === 'up' && (index > 0)) {
-      this.state.myOwnModules.splice(
+      myOwnModules.splice(
         index - 1,
         2,
-        this.state.myOwnModules[index],
-        this.state.myOwnModules[index - 1],
+        myOwnModules[index],
+        myOwnModules[index - 1],
       );
       index -= 1;
-    } else if (order === 'down' && (index < this.state.myOwnModules.length - 1)) {
-      this.state.myOwnModules.splice(
+    } else if (order === 'down' && (index < myOwnModules.length - 1)) {
+      myOwnModules.splice(
         index,
         2,
-        this.state.myOwnModules[index + 1],
-        this.state.myOwnModules[index],
+        myOwnModules[index + 1],
+        myOwnModules[index],
       );
       index += 1;
     }
-    this.setState({ activeModuleIndex: index });
+    this.setState({
+      activeModuleIndex: index,
+      myOwnModules,
+    });
   }
 
   addModule(module) {
-    const index = this.state.myOwnModules.push(module) - 1;
-    this.state.myOwnContent.modules.push({
+    const { myOwnContent, myOwnModules } = this.state;
+    const index = myOwnModules.push(module) - 1;
+    myOwnContent.modules.push({
       name: module.name,
       type: module.name,
       referenced: true,
@@ -146,6 +156,10 @@ class App extends React.Component {
         module.schema.style.required,
         {},
       ),
+    });
+    this.setState({
+      myOwnContent,
+      myOwnModules,
     });
     this.switchActiveModule(index, module);
   }
