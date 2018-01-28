@@ -8,7 +8,6 @@ import Header from '../components/Header.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
 
-const userDoesNotExists = () => 'No user authenticated';
 const undefinedAccessToken = () => 'No access token found';
 const serverError = () => 'An error occured with the server';
 const invalidToken = () => 'Invalid access token';
@@ -16,19 +15,13 @@ const invalidToken = () => 'Invalid access token';
 const compilePortfolio = (props, setLoadingState, setError) => {
   setLoadingState(true);
 
-  const infos = props.database.table('userInfos');
+  const infos = props.database.table('kvStore');
   infos
-    .userExists()
-    .then((exists) => {
-      if (exists === true) {
-        return infos.getUserInfos();
-      }
-      throw userDoesNotExists();
-    })
-    .then((user) => {
-      if (user.accessToken !== undefined) {
+    .get('accessToken')
+    .then((accessToken) => {
+      if (accessToken) {
         return axios.post(
-          `http://${props.serverHost}:${props.serverPort}${props.serverPostURL}?token=${user.accessToken}`,
+          `http://${props.serverHost}:${props.serverPort}${props.serverPostURL}?token=${accessToken}`,
           props.myOwnContent,
           {
             headers: {
