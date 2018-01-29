@@ -35,11 +35,19 @@ class Authenticate extends React.Component {
         if (accessToken) {
           this.props.switchPage('splash');
         } else {
-          const socket = new WebSocketClient(this.state.serverHost, this.state.serverPort);
+          console.log('Trying');
+          let socket;
+          try {
+            socket = new WebSocketClient(this.state.serverHost, this.state.serverPort);
+          } catch (error) {
+            console.log(error);
+          }
+          console.log('Websocket');
 
           socket
             .getAuthLink()
             .then((link) => {
+              console.log('Auth link');
               this.setState({ authLink: link });
             });
 
