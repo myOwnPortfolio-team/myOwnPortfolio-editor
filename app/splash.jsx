@@ -17,11 +17,11 @@ const database = new Database('MyOwnPortfolioDB', PROPERTIES);
 ReactDOM.render(
   <SplashPage
     database={database}
-    version={PROPERTIES.version}
     serverHost={PROPERTIES.serverHost}
     serverPort={PROPERTIES.serverPort}
     serverWSPort={PROPERTIES.serverWSPort}
     serverGetURL={PROPERTIES.serverGetURL}
+    version={PROPERTIES.version}
   />,
   document.getElementById('root'),
 );

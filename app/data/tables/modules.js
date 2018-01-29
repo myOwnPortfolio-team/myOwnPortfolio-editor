@@ -162,6 +162,7 @@ class ModulesTable extends Table {
         return Promise.all(repositoryModules.map(((repositoryModule) => {
           let updatePromise;
           if (repositoryModule.sha !== databaseModulesSha[repositoryModule.name]) {
+            console.log('update', repositoryModule.name);
             updatePromise = this[updateDatabaseModule](
               repositoryModule.name,
               repositoryModule.sha,
@@ -180,7 +181,7 @@ class ModulesTable extends Table {
     // Retrieve JSON schema files
     const headers = {
       headers: {
-        Accept: 'application/vnd.github.VERSION.object',
+        Accept: 'application/vnd.github.VERSION.raw',
       },
     };
 
@@ -188,7 +189,7 @@ class ModulesTable extends Table {
       headers.headers.Authorization = `token ${accessToken}`;
     }
 
-    let updatePromise = axios.all([
+    return axios.all([
       axios.get(
         `${this.repositoryURL}/${this.filesPaths[0].replace('$moduleName', name)}`,
         headers,
@@ -201,23 +202,22 @@ class ModulesTable extends Table {
         `${this.repositoryURL}/${this.filesPaths[2].replace('$moduleName', name)}`,
         headers,
       ),
-    ]).then(axios.spread((content, properties, style) =>
-      axios.all([
-        axios({
-          url: content.data.download_url,
-          method: 'get',
-        }),
-        axios({
-          url: properties.data.download_url,
-          method: 'get',
-        }),
-        axios({
-          url: style.data.download_url,
-          method: 'get',
-        }),
-      ])));
-
-    updatePromise = updatePromise
+    ])
+      // .then(axios.spread((content, properties, style) =>
+      //   axios.all([
+      //     axios({
+      //       url: content.data.download_url,
+      //       method: 'get',
+      //     }),
+      //     axios({
+      //       url: properties.data.download_url,
+      //       method: 'get',
+      //     }),
+      //     axios({
+      //       url: style.data.download_url,
+      //       method: 'get',
+      //     }),
+      //   ])))
       .then(axios.spread((content, properties, style) =>
         this.table
           .update(
@@ -229,9 +229,8 @@ class ModulesTable extends Table {
               style: style.data,
             },
           )));
-
-    return updatePromise;
   }
 }
 
 module.exports = ModulesTable;
+

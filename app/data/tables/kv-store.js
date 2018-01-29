@@ -49,18 +49,19 @@ class KVTable extends Table {
   [getAppPropertiesSchema](accessToken) {
     return new Promise((resolve, reject) => {
       const headers = {
-        Accept: 'application/vnd.github.VERSION.object',
+        headers: {
+          Accept: 'application/vnd.github.VERSION.raw',
+        },
       };
 
       if (accessToken) {
-        headers.Authorization = `token ${accessToken}`;
+        headers.headers.Authorization = `token ${accessToken}`;
       }
 
-      axios({
-        url: `${this.repositoryURL}/${this.appPropertiesPath}`,
-        method: 'get',
+      axios.get(
+        `${this.repositoryURL}/${this.appPropertiesPath}`,
         headers,
-      })
+      )
         .then((res) => {
           if (res.data.download_url) {
             return axios({
