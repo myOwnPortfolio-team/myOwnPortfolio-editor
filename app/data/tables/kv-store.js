@@ -27,13 +27,23 @@ class KVTable extends Table {
       });
   }
 
-  fill(accessToken = undefined) {
+  fill(accessToken) {
     return this[getAppPropertiesSchema](accessToken)
       .then((appPropertiesSchema) => {
         if (appPropertiesSchema) {
           this.set('appPropertiesSchema', appPropertiesSchema);
         }
-      });
+
+        // Retrieve user id
+        return axios
+          .get('https://api.github.com/user', {
+            headers: {
+              'Content-Type': 'text/json',
+              Authorization: `token ${accessToken}`,
+            },
+          });
+      })
+      .then(res => this.set('userID', res.data.id));
   }
 
   [getAppPropertiesSchema](accessToken) {

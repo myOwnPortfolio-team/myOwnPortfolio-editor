@@ -37,6 +37,7 @@ class SplashPage extends React.Component {
         setModuleList={this.props.setModuleList}
         setAppPropertiesSchema={this.props.setAppPropertiesSchema}
         setAppContent={this.props.setAppContent}
+        setRenderedURL={this.props.setRenderedURL}
       />
     );
 

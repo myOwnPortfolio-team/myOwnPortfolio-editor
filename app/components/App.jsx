@@ -53,6 +53,12 @@ class App extends React.Component {
           this.setState({ myOwnContent: appContent });
         }
       });
+
+      electron.ipcRenderer.on('renderedURL', (event, renderedURL) => {
+        if (renderedURL) {
+          this.setState({ url: renderedURL });
+        }
+      });
     }
   }
 
@@ -197,7 +203,6 @@ class App extends React.Component {
         serverHost={this.props.serverHost}
         serverPort={this.props.serverPort}
         serverPostURL={this.props.serverPostURL}
-        setRenderedURL={this.setRenderedURL}
         switchActiveModule={(index, module) => this.switchActiveModule(index, module)}
         switchModules={order => this.switchModules(order)}
         switchPage={page => this.switchPage(page)}
@@ -223,6 +228,7 @@ class App extends React.Component {
         setAppPropertiesSchema={
           appPropertiesSchema => this.setAppPropertiesSchema(appPropertiesSchema)
         }
+        setRenderedURL={renderedURL => this.setRenderedURL(renderedURL)}
         switchPage={page => this.switchPage(page)}
         version={this.props.version}
       />);

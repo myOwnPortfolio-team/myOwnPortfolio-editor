@@ -55,18 +55,21 @@ class SplashScreen extends React.Component {
           tableModules.getAll(),
           kvStore.get('appPropertiesSchema'),
           kvStore.get('content'),
+          kvStore.get('userID'),
         ]);
       })
       .then((data) => {
         this.updateMessage('Loaded');
+        const url = `http://${this.props.serverHost}:${this.props.serverPort}/${data[3]}`;
 
         if (platform.isElectron()) {
           const electron = platform.getPlatformModule(platform.getPlatform());
-          electron.ipcRenderer.send('closeSplashScreen', data[0], data[1], data[2]);
+          electron.ipcRenderer.send('closeSplashScreen', data[0], data[1], data[2], url);
         } else {
           this.props.setModuleList(data[0]);
           this.props.setAppPropertiesSchema(data[1]);
           this.props.setAppContent(data[2]);
+          this.props.setRenderedURL(url);
           this.props.switchPage('home');
         }
       });
