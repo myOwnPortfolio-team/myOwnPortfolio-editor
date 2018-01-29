@@ -41,23 +41,19 @@ class App extends React.Component {
     if (platform.isElectron()) {
       const electron = platform.getPlatformModule(platform.getPlatform());
       electron.ipcRenderer.on('loadedModules', (event, modules) => {
-        this.setState({ modules });
+        this.setModuleList(modules);
       });
 
       electron.ipcRenderer.on('loadedAppPropertiesSchema', (event, appPropertiesSchema) => {
-        this.setState({ appPropertiesSchema });
+        this.setAppPropertiesSchema(appPropertiesSchema);
       });
 
       electron.ipcRenderer.on('loadedContent', (event, appContent) => {
-        if (appContent) {
-          this.setState({ myOwnContent: appContent });
-        }
+        this.setAppContent(appContent);
       });
 
       electron.ipcRenderer.on('renderedURL', (event, renderedURL) => {
-        if (renderedURL) {
-          this.setState({ url: renderedURL });
-        }
+        this.setRenderedURL(renderedURL);
       });
     }
   }
