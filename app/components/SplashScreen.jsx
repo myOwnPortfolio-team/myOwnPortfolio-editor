@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Loader from 'react-loaders';
+import Axios from 'axios';
 
 import platform from '../utils/platform';
 
@@ -17,39 +18,58 @@ class SplashScreen extends React.Component {
 
   componentDidMount() {
     const tableModules = this.state.database.table('modules');
-    const tableInfos = this.state.database.table('userInfos');
-    // Load modules
+    const kvStore = this.state.database.table('kvStore');
+    let token;
 
-    tableInfos
-      .userExists()
-      .then((exists) => {
-        if (exists) {
-          this.updateMessage('Loading user infos');
-          return tableInfos.getUserInfos();
-        }
-        return undefined;
-      })
-      .then((user) => {
-        this.updateMessage('Initializing modules');
-        let token;
-        if (user !== undefined) {
-          token = user.accessToken;
-        }
+    // Load modules
+    this.updateMessage('Loading user infos');
+    kvStore
+      .get('accessToken')
+      .then((accessToken) => {
+        token = accessToken;
+        this.updateMessage('Downloading json modules');
 
         return tableModules.fill(token);
       })
       .then(() => {
-        this.updateMessage('Loading modules');
-        return tableModules.getAll();
+        this.updateMessage('Downloading app properties schema');
+        return kvStore.fill(token);
       })
-      .then((modules) => {
+      .then(() => {
+        this.updateMessage('Retrieving existing portfolio');
+        return Axios
+          .get(`http://${this.props.serverHost}:${this.props.serverPort}${this.props.serverGetURL}?token=${token}`);
+      })
+      .then((res) => {
+        this.updateMessage('Saving existing portfolio');
+        let content;
+        if (res.data && res.data.status === 200) {
+          content = res.data.message;
+        }
+
+        return kvStore.set('content', content);
+      })
+      .then(() => {
+        this.updateMessage('Loading modules and app properties');
+        return Promise.all([
+          tableModules.getAll(),
+          kvStore.get('appPropertiesSchema'),
+          kvStore.get('content'),
+          kvStore.get('userID'),
+        ]);
+      })
+      .then((data) => {
         this.updateMessage('Loaded');
+        const url = `http://${this.props.serverHost}:${this.props.serverPort}/${data[3]}`;
 
         if (platform.isElectron()) {
           const electron = platform.getPlatformModule(platform.getPlatform());
-          electron.ipcRenderer.send('closeSplashScreen', modules);
+          electron.ipcRenderer.send('closeSplashScreen', data[0], data[1], data[2], url);
         } else {
-          this.props.setModuleList(modules);
+          this.props.setModuleList(data[0]);
+          this.props.setAppPropertiesSchema(data[1]);
+          this.props.setAppContent(data[2]);
+          this.props.setRenderedURL(url);
           this.props.switchPage('home');
         }
       });

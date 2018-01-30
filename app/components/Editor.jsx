@@ -1,7 +1,8 @@
+/* eslint react/no-unused-state: "off" */
+
 import React from 'react';
-import { Form, Menu, Button } from 'semantic-ui-react';
+import { Form, Menu } from 'semantic-ui-react';
 import { fields } from './Fields.jsx';
-import Module from '../data/objects/module.js';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -9,29 +10,6 @@ class Editor extends React.Component {
     this.state = {
       activeTab: 'content',
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.activeModuleIndex !== this.state.activeModuleIndex) {
-      if (nextProps.activeModuleIndex === -2) {
-        this.setState({ activeTab: 'app_properties' });
-      } else {
-        this.setState({ activeTab: 'content' });
-      }
-    }
-  }
-
-  updateContent(contentTab) {
-    if (this.state.activeTab === 'module') {
-      this.props.myOwnContent.modules[this.props.activeModuleIndex] = contentTab;
-    } else {
-      if (this.state.activeTab === 'app_properties') {
-        this.props.myOwnContent.app_properties = contentTab;
-      } else {
-        this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab] = contentTab;
-      }
-    }
-    this.setState({ myOwnContent: this.props.myOwnContent });
   }
 
   handleTabClick(tab) {
@@ -43,34 +21,31 @@ class Editor extends React.Component {
 
     const editorContent = () => {
       if (activeSchema === null) {
-        return (<div className="editor-empty-content">Create your own porfolio</div>);
-      }
-      if (this.state.activeTab === 'module') {
-        return fields(
-          this.props.moduleListSchema.items.properties,
-          this.props.moduleListSchema.items.required,
-          this.props.myOwnContent.modules[this.props.activeModuleIndex],
-          contentTab => this.updateContent(contentTab),
-        );
-      }
-      if (this.state.activeTab === 'app_properties') {
         return fields(
           this.props.appPropertiesSchema.properties,
           this.props.appPropertiesSchema.required,
           this.props.myOwnContent.app_properties,
-          contentTab => this.updateContent(contentTab),
+          contentTab => this.props.updateContent(contentTab, undefined),
+        );
+      }
+      if (this.state.activeTab === 'module') {
+        return fields(
+          this.props.moduleSettingSchema.properties,
+          this.props.moduleSettingSchema.required,
+          this.props.myOwnContent.modules[this.props.activeModuleIndex],
+          contentTab => this.props.updateContent(contentTab, this.state.activeTab),
         );
       }
       return fields(
         activeSchema.properties,
         activeSchema.required,
         this.props.myOwnContent.modules[this.props.activeModuleIndex][this.state.activeTab],
-        contentTab => this.updateContent(contentTab),
+        contentTab => this.props.updateContent(contentTab, this.state.activeTab),
       );
     };
 
     const menu = () => {
-      if ((activeSchema !== null && activeSchema !== undefined) || this.state.activeTab === 'module') {
+      if (activeSchema || this.state.activeTab === 'module') {
         return (
           <Menu attached="top" tabular>
             <Menu.Item
@@ -96,23 +71,18 @@ class Editor extends React.Component {
           </Menu>
         );
       }
+      return null;
     };
 
+    const menuComponent = menu();
+    const content = editorContent();
+
     return (
-      <div className="container editor">
-        <Button
-          onClick={() => {
-            this.props.switchActiveModule(-2, new Module('default'));
-          }}
-        >
-          Edit app properties
-        </Button>
-        {menu()}
-        <div className="form editor-content">
-          <Form className="form editor-content">
-            {editorContent()}
-          </Form>
-        </div>
+      <div className="container editor-content">
+        {menuComponent}
+        <Form className="form editor-content-under-menu">
+          {content}
+        </Form>
       </div>
     );
   }

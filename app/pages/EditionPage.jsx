@@ -1,11 +1,54 @@
 import React from 'react';
-import { Grid, Button } from 'semantic-ui-react';
+import { Button, Divider, Grid } from 'semantic-ui-react';
 
+import axios from 'axios';
+
+import Module from '../data/objects/module.js';
 import Header from '../components/Header.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Editor from '../components/Editor.jsx';
 
-const headerItems = props => [(<Button primary name="compile" onClick={() => props.switchPage('render')}>Generate</Button>)];
+const undefinedAccessToken = () => 'No access token found';
+const serverError = () => 'An error occured with the server';
+const invalidToken = () => 'Invalid access token';
+
+const compilePortfolio = (props, setLoadingState, setError) => {
+  setLoadingState(true);
+
+  const infos = props.database.table('kvStore');
+  infos
+    .get('accessToken')
+    .then((accessToken) => {
+      if (accessToken) {
+        return axios.post(
+          `http://${props.serverHost}:${props.serverPort}${props.serverPostURL}?token=${accessToken}`,
+          props.myOwnContent,
+          {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+      }
+      throw undefinedAccessToken();
+    })
+    .then((res) => {
+      setLoadingState(false);
+      const { data } = res;
+      if (data.status === 200) {
+        props.switchPage('render');
+      } else if (data.status === 400) {
+        throw invalidToken();
+      } else {
+        throw serverError();
+      }
+    })
+    .catch((error) => {
+      setLoadingState(false);
+      setError(error);
+    });
+};
 
 class EditionPage extends React.Component {
   constructor(props) {
@@ -13,7 +56,17 @@ class EditionPage extends React.Component {
 
     this.state = {
       activeSideBar: 'myOwnModules',
+      compileLoading: false,
+      compileError: undefined,
     };
+  }
+
+  setError(error) {
+    this.setState({ compileError: error });
+  }
+
+  setLoadingState(isLoading) {
+    this.setState({ compileLoading: isLoading });
   }
 
   switchSideBar(sideBar) {
@@ -29,7 +82,7 @@ class EditionPage extends React.Component {
               <div className="side-bar-group-button">
                 <Button circular icon="arrow left" onClick={() => this.switchSideBar('myOwnModules')} />
               </div>
-              <div className="side-bar-content">
+              <div className="side-bar-content modules-navbar">
                 <Navbar
                   modules={this.props.modules}
                   handleClick={(index, module) => {
@@ -44,12 +97,47 @@ class EditionPage extends React.Component {
           return (
             <div className="side-bar">
               <div className="side-bar-group-button">
-                <Button circular icon="plus" onClick={() => this.switchSideBar('toolsBar')} />
+                <Button
+                  onClick={() => {
+                    this.props.switchActiveModule(-1, new Module('default'));
+                  }}
+                  primary
+                  fluid
+                >
+                  Edit my app properties
+                </Button>
+                <Divider horizontal>Or</Divider>
+                <Button
+                  onClick={() => this.switchSideBar('toolsBar')}
+                  secondary
+                  fluid
+                >
+                  Add a module
+                </Button>
               </div>
+              <Divider />
+              <div className="side-bar-title">My own modules</div>
               <div className="side-bar-group-button">
-                <Button circular icon="chevron down" onClick={() => this.props.switchModules('down')} />
-                <Button circular icon="chevron up" onClick={() => this.props.switchModules('up')} />
-                <Button circular icon="trash outline" onClick={() => this.props.deleteModule('up')} />
+                <Button
+                  circular
+                  icon="chevron down"
+                  onClick={() => this.props.switchModules('down')}
+                  disabled={this.props.activeModuleIndex === -1
+                    || this.props.activeModuleIndex >= this.props.myOwnModules.length - 1}
+                />
+                <Button
+                  circular
+                  icon="chevron up"
+                  onClick={() => this.props.switchModules('up')}
+                  disabled={this.props.activeModuleIndex === -1
+                    || this.props.activeModuleIndex <= 0}
+                />
+                <Button
+                  circular
+                  icon="trash outline"
+                  onClick={() => this.props.deleteModule()}
+                  disabled={this.props.activeModuleIndex === -1}
+                />
               </div>
               <div className="side-bar-content">
                 <Navbar
@@ -62,24 +150,47 @@ class EditionPage extends React.Component {
           );
         default:
           return (
-            <div>bla</div>
+            <div>Error</div>
           );
       }
     };
 
+    let compile;
+    if (this.state.compileError !== undefined) {
+      compile = <Button disabled color="red" primary name="compile">Generate</Button>;
+    } else if (this.state.compileLoading === true) {
+      compile = <Button loading primary name="compile">Generate</Button>;
+    } else {
+      compile = (
+        <Button
+          primary
+          name="compile"
+          onClick={() => compilePortfolio(
+            this.props,
+            state => this.setLoadingState(state),
+            error => this.setError(error),
+          )}
+        >
+          Generate
+        </Button>);
+    }
+
     return (
       <div className="container edition-page">
-        <Header switchPage={page => this.props.switchPage(page)} items={headerItems(this.props)} />
+        <Header switchPage={page => this.props.switchPage(page)} items={[compile]} />
         <Grid>
-          <Grid.Column width={3}>
+          <Grid.Column className="side-bar" width={3}>
             {sideBar(this.state.activeSideBar)}
           </Grid.Column>
-          <Grid.Column stretched width={13}>
+          <Grid.Column className="editor" stretched width={13}>
             <Editor
+              switchActiveModule={this.props.switchActiveModule}
               activeModuleIndex={this.props.activeModuleIndex}
               module={this.props.activeModule}
               myOwnContent={this.props.myOwnContent}
-              moduleListSchema={this.props.moduleListSchema}
+              appPropertiesSchema={this.props.appPropertiesSchema}
+              moduleSettingSchema={this.props.moduleSettingSchema}
+              updateContent={(content, activeTab) => this.props.updateContent(content, activeTab)}
             />
           </Grid.Column>
         </Grid>

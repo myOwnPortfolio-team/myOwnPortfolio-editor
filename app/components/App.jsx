@@ -1,3 +1,5 @@
+/* eslint react/no-did-mount-set-state: "off" */
+
 import React from 'react';
 
 import EditionPage from '../pages/EditionPage.jsx';
@@ -16,33 +18,59 @@ class App extends React.Component {
 
     const page = platform.isElectron() ? 'home' : 'splash';
     this.state = {
-      database: props.database,
-      modules: [],
-      myOwnContent: [],
-      appPropertiesSchema: {},
-      moduleListSchema: {},
-      myOwnModules: [],
       activeModule: new Module('default'),
       activeModuleIndex: -1,
       activePage: page,
-    };
-  }
-
-  componentDidMount() {
-    // Check for updates and load modules
-    if (platform.isElectron()) {
-      const electron = platform.getPlatformModule(platform.getPlatform());
-      electron.ipcRenderer.on('loadedModules', (event, modules) => {
-        this.setState({ modules });
-      });
-    }
-    this.setState({
+      appPropertiesSchema: {},
+      database: props.database,
+      moduleListSchema: {},
+      moduleSettingSchema: this.props.moduleSettingSchema,
+      modules: [],
       myOwnContent: {
         name: '',
         app_properties: {},
         modules: [],
       },
-    });
+      myOwnModules: [],
+      url: undefined,
+    };
+  }
+
+  componentWillMount() {
+    // Check for updates and load modules
+    if (platform.isElectron()) {
+      const electron = platform.getPlatformModule(platform.getPlatform());
+      electron.ipcRenderer.on('loadedModules', (event, modules) => {
+        this.setModuleList(modules);
+      });
+
+      electron.ipcRenderer.on('loadedAppPropertiesSchema', (event, appPropertiesSchema) => {
+        this.setAppPropertiesSchema(appPropertiesSchema);
+      });
+
+      electron.ipcRenderer.on('loadedContent', (event, appContent) => {
+        this.setAppContent(appContent);
+      });
+
+      electron.ipcRenderer.on('renderedURL', (event, renderedURL) => {
+        this.setRenderedURL(renderedURL);
+      });
+    }
+  }
+
+  setAppContent(myOwnContent) {
+    if (myOwnContent) {
+      const myOwnModules = myOwnContent.modules.map(currentModule =>
+        this.state.modules.find(module => currentModule.type === module.name));
+      this.setState({
+        myOwnContent,
+        myOwnModules,
+      });
+    }
+  }
+
+  setAppPropertiesSchema(appPropertiesSchema) {
+    this.setState({ appPropertiesSchema });
   }
 
   setModuleList(modules) {
@@ -52,59 +80,8 @@ class App extends React.Component {
     this.setState({ modules });
   }
 
-  addModule(module) {
-    const index = this.state.myOwnModules.push(module) - 1;
-    this.state.myOwnContent.modules.push({
-      name: module.name,
-      type: module.name,
-      referenced: true,
-      content: initializeFields(
-        module.schema.content.properties,
-        module.schema.content.required,
-        {},
-      ),
-      properties: initializeFields(
-        module.schema.properties.properties,
-        module.schema.properties.required,
-        {},
-      ),
-      style: initializeFields(
-        module.schema.style.properties,
-        module.schema.style.required,
-        {},
-      ),
-    });
-    this.switchActiveModule(index, module);
-  }
-
-  switchActiveModule(index, module) {
-    this.setState({
-      activeModule: module,
-      activeModuleIndex: index,
-    });
-  }
-
-  switchModules(order) {
-    let index = this.state.activeModuleIndex;
-    if (order === 'up' && (index > 0)) {
-      this.state.myOwnModules.splice(
-        index - 1,
-        2,
-        this.state.myOwnModules[index],
-        this.state.myOwnModules[index - 1],
-      );
-      index -= 1;
-    } else if (order === 'down' && (index < this.state.myOwnModules.length - 1)) {
-      this.state.myOwnModules.splice(
-        index,
-        2,
-        this.state.myOwnModules[index + 1],
-        this.state.myOwnModules[index],
-      );
-      index += 1;
-    }
-
-    this.setState({ activeModuleIndex: index });
+  setRenderedURL(url) {
+    this.setState({ url });
   }
 
   deleteModule() {
@@ -126,33 +103,130 @@ class App extends React.Component {
     this.setState({ activePage: page });
   }
 
+  switchActiveModule(index, module) {
+    this.setState({
+      activeModule: module,
+      activeModuleIndex: index,
+    });
+  }
+
+  switchModules(order) {
+    const { myOwnModules } = this.state;
+    let index = this.state.activeModuleIndex;
+    if (order === 'up' && (index > 0)) {
+      myOwnModules.splice(
+        index - 1,
+        2,
+        myOwnModules[index],
+        myOwnModules[index - 1],
+      );
+      index -= 1;
+    } else if (order === 'down' && (index < myOwnModules.length - 1)) {
+      myOwnModules.splice(
+        index,
+        2,
+        myOwnModules[index + 1],
+        myOwnModules[index],
+      );
+      index += 1;
+    }
+    this.setState({
+      activeModuleIndex: index,
+      myOwnModules,
+    });
+  }
+
+  addModule(module) {
+    const { myOwnContent, myOwnModules } = this.state;
+    const index = myOwnModules.push(module) - 1;
+    myOwnContent.modules.push({
+      name: module.name,
+      type: module.name,
+      referenced: true,
+      content: initializeFields(
+        module.schema.content.properties,
+        module.schema.content.required,
+        {},
+      ),
+      properties: initializeFields(
+        module.schema.properties.properties,
+        module.schema.properties.required,
+        {},
+      ),
+      style: initializeFields(
+        module.schema.style.properties,
+        module.schema.style.required,
+        {},
+      ),
+    });
+    this.setState({
+      myOwnContent,
+      myOwnModules,
+    });
+    this.switchActiveModule(index, module);
+  }
+
+  updateContent(content, activeTab) {
+    const { myOwnContent } = this.state;
+
+    if (activeTab === 'module') {
+      myOwnContent.modules[this.state.activeModuleIndex] = content;
+    } else if (activeTab) {
+      myOwnContent.modules[this.state.activeModuleIndex][activeTab] = content;
+    } else {
+      myOwnContent.app_properties = content;
+    }
+
+    this.setState({
+      myOwnContent,
+    });
+  }
+
   render() {
     const editionPage = (
       <EditionPage
-        modules={this.state.modules}
-        myOwnContent={this.state.myOwnContent}
-        appPropertiesSchema={this.state.appPropertiesSchema}
-        moduleListSchema={this.state.moduleListSchema}
-        myOwnModules={this.state.myOwnModules}
         activeModule={this.state.activeModule}
         activeModuleIndex={this.state.activeModuleIndex}
         addModule={module => this.addModule(module)}
+        appPropertiesSchema={this.state.appPropertiesSchema}
+        database={this.state.database}
         deleteModule={() => this.deleteModule()}
+        moduleListSchema={this.state.moduleListSchema}
+        moduleSettingSchema={this.state.moduleSettingSchema}
+        modules={this.state.modules}
+        myOwnContent={this.state.myOwnContent}
+        myOwnModules={this.state.myOwnModules}
+        serverHost={this.props.serverHost}
+        serverPort={this.props.serverPort}
+        serverPostURL={this.props.serverPostURL}
+        switchActiveModule={(index, module) => this.switchActiveModule(index, module)}
         switchModules={order => this.switchModules(order)}
         switchPage={page => this.switchPage(page)}
-        switchActiveModule={(index, module) => this.switchActiveModule(index, module)}
+        updateContent={(content, activeTab) => this.updateContent(content, activeTab)}
       />
     );
-    const renderPage = <RenderPage switchPage={page => this.switchPage(page)} />;
+    const renderPage = (
+      <RenderPage
+        database={this.state.database}
+        switchPage={page => this.switchPage(page)}
+        url={this.state.url}
+      />);
     const homePage = <HomePage switchPage={page => this.switchPage(page)} />;
     const splashPage = (
       <SplashPage
         database={this.state.database}
-        version={this.props.version}
-        switchPage={page => this.switchPage(page)}
-        setModuleList={modules => this.setModuleList(modules)}
         serverHost={this.props.serverHost}
         serverPort={this.props.serverPort}
+        serverWSPort={this.props.serverWSPort}
+        serverGetURL={this.props.serverGetURL}
+        setModuleList={modules => this.setModuleList(modules)}
+        setAppContent={appContent => this.setAppContent(appContent)}
+        setAppPropertiesSchema={
+          appPropertiesSchema => this.setAppPropertiesSchema(appPropertiesSchema)
+        }
+        setRenderedURL={renderedURL => this.setRenderedURL(renderedURL)}
+        switchPage={page => this.switchPage(page)}
+        version={this.props.version}
       />);
     switch (this.state.activePage) {
       case 'splash':

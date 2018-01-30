@@ -2,6 +2,7 @@ import Dexie from 'dexie';
 
 import ModulesTable from './tables/modules';
 import UserInfosTable from './tables/user-infos';
+import KVTable from './tables/kv-store';
 
 const databaseException = (message) => {
   this.message = message;
@@ -15,7 +16,8 @@ class Database {
     this.database = new Dexie(this.name);
     this.tables = {
       modules: new ModulesTable(this.database, properties),
-      userInfos: new UserInfosTable(this.database, properties),
+      userInfos: new UserInfosTable(this.database),
+      kvStore: new KVTable(this.database, properties),
     };
   }
 

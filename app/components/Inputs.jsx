@@ -1,25 +1,25 @@
 import React from 'react';
 import { Checkbox, Form, Input, Select, TextArea } from 'semantic-ui-react';
 
-const checkbox = (properties, key, index, value, updateField, isRequired) => (
+const checkbox = (properties, key, value, updateField, isRequired) => (
   <div>
-    <div>{key}</div>
+    <div>{key.replace(/_/g, ' ')}</div>
     <Form.Field
+      key={key}
       control={Checkbox}
-      key={index}
       label={properties[key].description}
       checked={value}
-      onChange={(e, data) => updateField(data.value, key)}
+      onChange={(e, data) => updateField(data.checked, key)}
       required={isRequired}
     />
   </div>
 );
 
-const input = (properties, key, index, value, type, updateField, isRequired) => (
+const input = (properties, key, value, type, updateField, isRequired) => (
   <Form.Field
+    key={key}
     control={Input}
-    key={index}
-    label={key}
+    label={key.replace(/_/g, ' ')}
     placeholder={properties[key].description}
     type={type}
     value={value}
@@ -28,11 +28,11 @@ const input = (properties, key, index, value, type, updateField, isRequired) => 
   />
 );
 
-const textfield = (properties, key, index, value, updateField, isRequired) => (
+const textfield = (properties, key, value, updateField, isRequired) => (
   <Form.Field
+    key={key}
     control={TextArea}
-    key={index}
-    label={key}
+    label={key.replace(/_/g, ' ')}
     placeholder={properties[key].description}
     value={value}
     onChange={e => updateField(e.target.value, key)}
@@ -40,11 +40,11 @@ const textfield = (properties, key, index, value, updateField, isRequired) => (
   />
 );
 
-const select = (properties, key, index, value, options, updateField, isRequired) => (
+const select = (properties, key, value, options, updateField, isRequired) => (
   <Form.Field
+    key={key}
     control={Select}
-    key={index}
-    label={key}
+    label={key.replace(/_/g, ' ')}
     placeholder={properties[key].description}
     options={options}
     value={value}
@@ -53,12 +53,12 @@ const select = (properties, key, index, value, options, updateField, isRequired)
   />
 );
 
-const slider = (properties, key, index, value, step, updateField, isRequired) => (
+const slider = (properties, key, value, step, updateField, isRequired) => (
   <div>
     <Form.Field
+      key={key}
       control={Input}
-      key={index}
-      label={key}
+      label={`${key.replace(/_/g, ' ')}: ${value}`}
       placeholder={properties[key].description}
       type="range"
       min={properties[key].minimum}
@@ -68,7 +68,6 @@ const slider = (properties, key, index, value, step, updateField, isRequired) =>
       onChange={e => updateField(e.target.value, key)}
       required={isRequired}
     />
-    <p>{value}</p>
   </div>
 );
 

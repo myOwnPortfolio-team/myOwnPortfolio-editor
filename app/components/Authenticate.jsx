@@ -29,33 +29,38 @@ class Authenticate extends React.Component {
 
   componentDidMount() {
     this.state.database
-      .table('userInfos')
-      .userExists()
-      .then((exists) => {
-        if (exists) {
+      .table('kvStore')
+      .get('accessToken')
+      .then((accessToken) => {
+        if (accessToken) {
           this.props.switchPage('splash');
         } else {
-          const socket = new WebSocketClient(this.state.serverHost, this.state.serverPort);
+          console.log('Trying');
+          let socket;
+          try {
+            socket = new WebSocketClient(this.state.serverHost, this.state.serverPort);
+          } catch (error) {
+            console.log(error);
+          }
+          console.log('Websocket');
 
           socket
             .getAuthLink()
             .then((link) => {
+              console.log('Auth link');
               this.setState({ authLink: link });
-            })
-            .catch(() => this.props.switchPage('splash'));
+            });
 
           socket
             .getAccessToken()
             .then((token) => {
               this.state.database
-                .table('userInfos')
-                .createUser(token)
+                .table('kvStore')
+                .set('accessToken', token)
                 .then(() => this.props.switchPage('splash'));
-            })
-            .catch(() => this.props.switchPage('splash'));
+            });
         }
-      })
-      .catch(() => this.props.switchPage('splash'));
+      });
   }
 
   render() {

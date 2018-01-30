@@ -11,7 +11,11 @@
     "contents/app/modules/$moduleName/json_schema/properties.json",
     "contents/app/modules/$moduleName/json_schema/style.json"
   ],
+  "appPropertiesPath": "contents/app/json_schema/app_properties.json",
   "githubAPI": "https://api.github.com",
-  "serverHost": "localhost",
-  "serverPort": 1337
+  "serverHost": "theologien.fr",
+  "serverWSPort": 1337,
+  "serverPort": 3000,
+  "serverPostURL": "/portfolio",
+  "serverGetURL": "/portfolio"
 }

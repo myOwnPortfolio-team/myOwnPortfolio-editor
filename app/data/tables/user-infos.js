@@ -1,15 +1,9 @@
-import axios from 'axios';
-
 import Table from './table';
 import UserInfos from '../objects/user-infos';
 
 class UserInfosTable extends Table {
-  constructor(database, properties) {
-    super(database, 'userInfos', 'id, username, accessToken, scopes, avatarURL');
-
-    this.serverHost = properties.serverHost;
-    this.serverPort = properties.serverPort;
-    this.githubAPI = properties.githubAPI;
+  constructor(database) {
+    super(database, 'userInfos', 'id, username, scopes, avatarURL');
   }
 
   userExists() {
@@ -24,7 +18,6 @@ class UserInfosTable extends Table {
       .then(infos =>
         new UserInfos(
           infos.username,
-          infos.accessToken,
           infos.scopes,
           infos.avatarURL,
         ));
@@ -34,13 +27,13 @@ class UserInfosTable extends Table {
     // TODO Revoke access token (Request to My Own Portfolio server)
     return this.userExists()
       .then(() => this.getUserInfos()
-        .then(user =>
+        .then(() =>
           Promise.all([
             this.table.delete(1),
           ])));
   }
 
-  createUser(accessToken) {
+  createUser() {
     // TODO Get additional informations (Avatar url, ...)
     return this.userExists()
       .then(() =>
@@ -48,7 +41,6 @@ class UserInfosTable extends Table {
           .put({
             id: 1,
             username: null,
-            accessToken,
             scopes: null,
             avatarURL: null,
           }));
