@@ -1,0 +1,33 @@
+{
+  "app": {
+    "title": "MyOwnPortfolio Editor",
+    "version":  {
+      "name": "Boursin",
+      "id": "2.00"
+    },
+    "repositoryURL": "https://api.github.com/repos/myOwnPortfolio-team/myOwnPortfolio-core"
+  },
+  "ressources": {
+    "github": {
+      "apiURL": "https://api.github.com",
+      "paths": {
+        "appProperties": "contents/app/json_schema/app_properties.json",
+        "modules": "contents/app/modules/",
+        "content": "contents/app/modules/$moduleName/json_schema/content.json",
+        "properties": "contents/app/modules/$moduleName/json_schema/properties.json",
+        "style": "contents/app/modules/$moduleName/json_schema/style.json"
+      }
+    }
+  },
+  "server": {
+    "host": "theologien.fr",
+    "ports": {
+      "ws": 1337,
+      "web": 3000
+    },
+    "endpoints": {
+      "post": "/portfolio",
+      "get": "/portfolio"
+    }
+  }
+}
