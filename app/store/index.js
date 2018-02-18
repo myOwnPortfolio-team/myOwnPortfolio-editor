@@ -1,18 +1,20 @@
 import { createStore } from 'redux';
 import reducers from './reducers';
 
-const configuration = require('../../properties/configuration.json');
+// const configuration = require('../../properties/configuration.json');
+//
+// const initialState = {
+//   schemas: {
+//     appProperties: {},
+//     moduleSettings: {},
+//   },
+//   content: {
+//     appProperties: {},
+//     modules: [],
+//   },
+//   configuration,
+// };
 
-const initialState = {
-  schemas: {
-    appProperties: {},
-    moduleSettings: {},
-  },
-  content: {
-    appProperties: {},
-    modules: [],
-  },
-  configuration,
-};
+const store = createStore(reducers);
 
-export default createStore(initialState, reducers);
+module.exports = store;

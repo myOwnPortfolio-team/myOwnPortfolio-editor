@@ -1,9 +1,9 @@
-import EditionPage from './EditionPage';
-import HomePage from './HomePage';
-import RenderPage from './RenderPage';
-import SplashPage from './SplashPage';
+import EditionPage from './EditionPage.jsx';
+import HomePage from './HomePage.jsx';
+import RenderPage from './RenderPage.jsx';
+import SplashPage from './SplashPage.jsx';
 
-module.export = {
+module.exports = {
   EditionPage,
   HomePage,
   RenderPage,

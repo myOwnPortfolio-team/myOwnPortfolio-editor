@@ -3,7 +3,7 @@ import { Button } from 'semantic-ui-react';
 
 import Header from '../components/Header.jsx';
 
-const EditionPage = props => (
+const HomePage = props => (
   <div className="container home-page">
     <Header switchPage={page => props.switchPage(page)} />
     <div className="page-content">
@@ -24,4 +24,4 @@ const EditionPage = props => (
   </div>
 );
 
-module.exports = EditionPage;
+module.exports = HomePage;

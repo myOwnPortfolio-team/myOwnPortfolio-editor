@@ -4,7 +4,7 @@ const path = require('path');
 
 const config = {
   entry: {
-    index: ['webpack/hot/only-dev-server', './app/index.jsx'],
+    index: ['webpack/hot/only-dev-server', './app/index.new.jsx'],
     splash: './app/splash.jsx',
   },
   output: {

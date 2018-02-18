@@ -6,7 +6,7 @@ import {
   HomePage,
   RenderPage,
   SplashPage,
-} from './pages';
+} from '../pages';
 
 const routes = [
   {
@@ -36,4 +36,4 @@ const RouteWithSubRoutes = route => (
   />
 );
 
-export default routes.map(route => <RouteWithSubRoutes key={`route${route.path}`} {...route} />);
+module.exports = routes.map(route => <RouteWithSubRoutes key={`route${route.path}`} {...route} />);
